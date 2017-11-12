@@ -1,12 +1,12 @@
 <?php
 /**
- * HelloWorld SpecialPage for BoilerPlate extension
+ * HelloWorld SpecialPage for ScryfallLinks extension
  *
  * @file
  * @ingroup Extensions
  */
 
-namespace MediaWiki\Extension\BoilerPlate;
+namespace MediaWiki\Extension\ScryfallLinks;
 
 use HTMLForm;
 use MediaWiki\MediaWikiServices;
@@ -26,11 +26,11 @@ class SpecialHelloWorld extends SpecialPage {
 	public function execute( $sub ) {
 		$out = $this->getOutput();
 
-		$out->setPageTitle( $this->msg( 'boilerplate-helloworld' ) );
+		$out->setPageTitle( $this->msg( 'scryfalllinks-helloworld' ) );
 
 		$out->addHelpLink( 'How to become a MediaWiki hacker' );
 
-		$out->addWikiMsg( 'boilerplate-helloworld-intro' );
+		$out->addWikiMsg( 'scryfalllinks-helloworld-intro' );
 
 		$formDescriptor = [
 			'myfield1' => [
@@ -72,8 +72,8 @@ class SpecialHelloWorld extends SpecialPage {
 		];
 
 		// If foo is enabled, add another form field.
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'boilerplate' );
-		if ( $config->get( 'BoilerPlateEnableFoo' ) ) {
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'scryfalllinks' );
+		if ( $config->get( 'ScryfallLinksEnableFoo' ) ) {
 			$formDescriptor['radiolol'] = [
 				'class' => 'HTMLRadioField',
 				'label' => 'Who do you like?',

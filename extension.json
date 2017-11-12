@@ -1,58 +1,62 @@
 {
-	"name": "BoilerPlate",
-	"version": "0.0.0",
+	"name": "ScryfallLinks",
+	"version": "0.1.0",
 	"author": [
-		"Your Name"
+		"Nils Enevoldsen"
 	],
-	"url": "https://www.mediawiki.org/wiki/Extension:BoilerPlate",
-	"descriptionmsg": "boilerplate-desc",
+	"url": "https://www.mediawiki.org/wiki/Extension:ScryfallLinks",
+	"descriptionmsg": "scryfalllinks-desc",
 	"license-name": "MIT",
-	"type": "other",
+	"type": "parserhook",
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\BoilerPlate\\Hooks": "src/Hooks.php",
-		"MediaWiki\\Extension\\BoilerPlate\\SpecialHelloWorld": "src/SpecialHelloWorld.php"
+		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php",
+		"MediaWiki\\Extension\\ScryfallLinks\\SpecialHelloWorld": "src/SpecialHelloWorld.php"
 	},
 	"ConfigRegistry": {
-		"boilerplate": "GlobalVarConfig::newInstance"
+		"scryfalllinks": "GlobalVarConfig::newInstance"
 	},
 	"config": {
-		"BoilerPlateEnableFoo": {
+		"ScryfallLinksEnableFoo": {
 			"value": true,
 			"description": "Whether or not the foo feature is enabled."
 		}
 	},
 	"ExtensionMessagesFiles": {
-		"BoilerPlateAlias": "BoilerPlate.i18n.alias.php"
+		"ScryfallLinksAlias": "ScryfallLinks.i18n.alias.php"
 	},
 	"Hooks": {
-		"NameOfHook": [
-			"MediaWiki\\Extension\\BoilerPlate\\Hooks::onNameOfHook"
+		"ParserFirstCallInit": [
+			"MediaWiki\\Extension\\ScryfallLinks\\Hooks::onParserFirstCallInit"
 		]
 	},
 	"MessagesDirs": {
-		"BoilerPlate": [
+		"ScryfallLinks": [
 			"i18n"
 		]
 	},
 	"ResourceModules": {
-		"ext.boilerPlate.foo": {
+		"ext.scryfallLinks.foo": {
 			"scripts": [
-				"ext.boilerPlate.js",
-				"ext.boilerPlate.foo.js"
+				"ext.scryfallLinks.js",
+				"ext.scryfallLinks.foo.js",
+				"ext.scryfallLinks.tooltip.js"
 			],
 			"styles": [
-				"ext.boilerPlate.foo.css"
+				"ext.scryfallLinks.foo.css"
 			],
 			"messages": [],
-			"dependencies": []
+			"dependencies": [
+				"oojs-ui-core",
+				"oojs-ui-widgets"
+			]
 		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "modules",
-		"remoteExtPath": "BoilerPlate/modules"
+		"remoteExtPath": "ScryfallLinks/modules"
 	},
 	"SpecialPages": {
-		"HelloWorld": "MediaWiki\\Extension\\BoilerPlate\\SpecialHelloWorld"
+		"HelloWorld": "MediaWiki\\Extension\\ScryfallLinks\\SpecialHelloWorld"
 	},
 	"manifest_version": 2
 }

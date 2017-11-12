@@ -1,10 +1,10 @@
 ( function ( mw ) {
 
 	/**
-	 * @class mw.boilerPlate
+	 * @class mw.scryfallLinks
 	 * @singleton
 	 */
-	mw.boilerPlate = {
+	mw.scryfallLinks = {
 	};
 
 }( mediaWiki ) );
