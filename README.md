@@ -1,4 +1,4 @@
-#ScryfallLinks
+# ScryfallLinks
 
 ScryfallLinks is a [MediaWiki extension](https://www.mediawiki.org/wiki/Manual:Extensions) that creates [Scryfall](https://scryfall.com/) links from [*Magic: The Gathering*](https://magic.wizards.com/) card names.
 
