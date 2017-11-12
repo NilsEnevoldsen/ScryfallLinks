@@ -22,7 +22,7 @@
 		]
 	},
 	"ResourceModules": {
-		"ext.scryfallLinks.foo": {
+		"ext.scryfallLinks.tooltip": {
 			"scripts": [
 				"ext.scryfallLinks.js",
 				"ext.scryfallLinks.tooltip.js"

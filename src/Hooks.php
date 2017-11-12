@@ -31,7 +31,7 @@ class Hooks {
 	 * @return string
 	 */
 	public static function renderScryfallLink( $input, array $args, $parser, $frame ) {
-		$parser->getOutput()->addModules( 'ext.scryfallLinks.foo' );
+		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
 		$urlset = '';
