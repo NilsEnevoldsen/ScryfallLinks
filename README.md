@@ -1,21 +1,11 @@
-This is a blank extension template. It doesn't really do anything on its own.
-It is intended to provide a boiler template for an actual MediaWiki extension.
+#ScryfallLinks
 
-If you are checking this out from Git and intend to use it, you may use the
-following commands to make a clean directory of just this template without the
-Git meta-data and other examples.
+ScryfallLinks is a [MediaWiki extension](https://www.mediawiki.org/wiki/Manual:Extensions) that creates [Scryfall](https://scryfall.com/) links from [*Magic: The Gathering*](https://magic.wizards.com/) card names.
 
-	cd extensions
-	git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/BoilerPlate.git
-	cp -R BoilerPlate ./MyExtension
+It is designed to be backwards-compatible with the [MTG Wiki](https://mtg.gamepedia.com)'s "MTGSCards" extension.
 
-This automates the recommended code checkers for PHP and JavaScript code in Wikimedia projects
-(see https://www.mediawiki.org/wiki/Continuous_integration/Entry_points).
-To take advantage of this automation.
+It is based on https://www.mediawiki.org/wiki/Extension:BoilerPlate.
 
-1. install nodejs, npm, and PHP composer
-2. change to the extension's directory
-3. `npm install`
-4. `composer install`
+It makes use of the [Scryfall API](https://scryfall.com/docs/api/images) to load images, and [OOjs popups](https://doc.wikimedia.org/oojs-ui/master/js/#!/api/OO.ui.PopupWidget), which are native to MediaWiki.
 
-Once set up, running `npm test` and `composer test` will run automated code checks.
+Running `npm test` and `composer test` will run automated code checks.
