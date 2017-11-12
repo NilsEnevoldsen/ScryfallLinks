@@ -1,14 +1,9 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Nils Enevoldsen"
+		]
 	},
-	"scryfalllinks-desc": "This is an example extension",
-	"scryfalllinks-i18n-welcome": "Welcome to the localization file of the ScryfallLinks extension.",
-	"scryfalllinks-helloworld": "Hello world!",
-	"scryfalllinks-helloworld-intro": "Welcome to the \"Hello world\" special page of the ScryfallLinks extension.",
-	"helloworld": "Hello world",
-	"testform-section1": "Test Form",
-	"testform-subsection": "Subsection",
-	"testform-myfield1": "Howdy!",
-	"testform-myfield2": "Sup?"
+	"scryfalllinks-desc": "Creates Scryfall links from Magic: The Gathering card names.",
+	"scryfalllinks-i18n-welcome": "Welcome to the localization file of the ScryfallLinks extension."
 }

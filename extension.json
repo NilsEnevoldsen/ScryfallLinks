@@ -1,6 +1,6 @@
 {
 	"name": "ScryfallLinks",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"author": [
 		"Nils Enevoldsen"
 	],
@@ -9,20 +9,7 @@
 	"license-name": "MIT",
 	"type": "parserhook",
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php",
-		"MediaWiki\\Extension\\ScryfallLinks\\SpecialHelloWorld": "src/SpecialHelloWorld.php"
-	},
-	"ConfigRegistry": {
-		"scryfalllinks": "GlobalVarConfig::newInstance"
-	},
-	"config": {
-		"ScryfallLinksEnableFoo": {
-			"value": true,
-			"description": "Whether or not the foo feature is enabled."
-		}
-	},
-	"ExtensionMessagesFiles": {
-		"ScryfallLinksAlias": "ScryfallLinks.i18n.alias.php"
+		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php"
 	},
 	"Hooks": {
 		"ParserFirstCallInit": [
@@ -38,11 +25,10 @@
 		"ext.scryfallLinks.foo": {
 			"scripts": [
 				"ext.scryfallLinks.js",
-				"ext.scryfallLinks.foo.js",
 				"ext.scryfallLinks.tooltip.js"
 			],
 			"styles": [
-				"ext.scryfallLinks.foo.css"
+				"ext.scryfallLinks.css"
 			],
 			"messages": [],
 			"dependencies": [
@@ -54,9 +40,6 @@
 	"ResourceFileModulePaths": {
 		"localBasePath": "modules",
 		"remoteExtPath": "ScryfallLinks/modules"
-	},
-	"SpecialPages": {
-		"HelloWorld": "MediaWiki\\Extension\\ScryfallLinks\\SpecialHelloWorld"
 	},
 	"manifest_version": 2
 }
