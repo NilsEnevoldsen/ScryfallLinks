@@ -3,6 +3,8 @@
 	font-weight: bold;
 }
 
-.oo-ui-popupWidget-popup {
+.mw-scryfall-link .oo-ui-popupWidget-popup {
 	border-radius: 12px;
+	width: 244px !important;
+	/* height: 340px !important; */
 }

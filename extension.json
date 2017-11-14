@@ -24,6 +24,7 @@
 	"ResourceModules": {
 		"ext.scryfallLinks.tooltip": {
 			"scripts": [
+				"jquery.hoverIntent.min.js",
 				"ext.scryfallLinks.js",
 				"ext.scryfallLinks.tooltip.js"
 			],
