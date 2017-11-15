@@ -6,7 +6,7 @@ It is designed to be backwards-compatible with the [MTG Wiki](https://mtg.gamepe
 
 It is based on https://www.mediawiki.org/wiki/Extension:BoilerPlate.
 
-It makes use of the [Scryfall API](https://scryfall.com/docs/api/images) to load images, and [Tippy.js tooltips](https://atomiks.github.io/tippyjs/).
+It makes use of the [Scryfall API](https://scryfall.com/docs/api/images) to load images, and [Tippy.js tooltips](https://atomiks.github.io/tippyjs/) (also MIT licensed).
 
 Running `npm test` and `composer test` will run automated code checks.
 
