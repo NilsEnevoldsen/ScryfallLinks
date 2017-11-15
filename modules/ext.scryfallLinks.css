@@ -1,5 +1,6 @@
 a.mw-scryfall-link {
-	text-decoration: underline dotted;	
+	text-decoration: underline dotted;
+	-webkit-text-decoration: underline dotted;
 }
 
 div.tippy-tooltip {
