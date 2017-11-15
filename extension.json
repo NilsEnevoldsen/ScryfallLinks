@@ -24,17 +24,15 @@
 	"ResourceModules": {
 		"ext.scryfallLinks.tooltip": {
 			"scripts": [
-				"jquery.hoverIntent.min.js",
-				"ext.scryfallLinks.js",
+				"tippy.min.js",
 				"ext.scryfallLinks.tooltip.js"
 			],
 			"styles": [
+				"tippy.css",
 				"ext.scryfallLinks.css"
 			],
 			"messages": [],
 			"dependencies": [
-				"oojs-ui-core",
-				"oojs-ui-widgets"
 			]
 		}
 	},

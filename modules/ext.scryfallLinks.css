@@ -1,10 +1,14 @@
-.mw-scryfall-link {
-	color: #804000;
-	font-weight: bold;
+a.mw-scryfall-link {
+	text-decoration: underline dotted;	
 }
 
-.mw-scryfall-link .oo-ui-popupWidget-popup {
-	border-radius: 12px;
+div.tippy-tooltip {
+	border-radius: 12px !important;
+	padding: 0px !important;
 	width: 244px !important;
-	/* height: 340px !important; */
+	height: 340px !important;
+}
+
+img.cardimage {
+	border-radius: 12px;
 }
