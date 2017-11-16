@@ -39,16 +39,16 @@ class Hooks {
 		}
 
 		$set = $args['set'] ?? '';
-		$setquery = '';
-		if ( $set ) {
-			$setquery = ' e:' . $set;
-		};
+		$setquery = $set ? ' e:' . $set : '';
 
 		$link = $args['title'] ?? $input;
 
 		$search = '!"' . $input . '"' . $setquery;
 
-		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars(urlencode($search)) . '" class="mw-scryfall-link" data-card-name="' . htmlspecialchars(urlencode($input)) . '" data-card-set="' . htmlspecialchars(urlencode($set)) . '">' . htmlspecialchars($link) . '</a>';
+		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
+			'" class="mw-scryfall-link" data-card-name="' . htmlspecialchars( urlencode( $input ) ) .
+			'" data-card-set="' . htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $link ) .
+			'</a>';
 
 		return $output;
 	}
