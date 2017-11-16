@@ -32,7 +32,7 @@ class Hooks {
 	 * @return string
 	 */
 	public static function renderScryfallDeck( $input, array $args, $parser, $frame ) {
-		// $parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
+		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
 		if ( !$input ) {
