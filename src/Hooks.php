@@ -34,26 +34,21 @@ class Hooks {
 		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
-		$urlset = '';
+		if ( !$input ) {
+			return '';
+		}
+
+		$set = $args['set'] ?? '';
 		$setquery = '';
-		if ( isset( $args['set'] ) ) {
-			$urlset = urlencode( $args['set'] );
-			$setquery = '+e:'.$urlset;
+		if ( $set ) {
+			$setquery = ' e:' . $set;
 		};
 
-		$linktitle = '';
-		if ( isset( $args['title'] ) ) {
-			$linktitle = $args['title'];
-		} else {
-			$linktitle = $input;
-		};
+		$link = $args['title'] ?? $input;
 
-		$cardquery = urlencode( $input );
+		$search = '!"' . $input . '"' . $setquery;
 
-		$output = '';
-		if ( $input ) {
-			$output = '<a href="https://scryfall.com/search?q=!%22'.$cardquery.'%22'.$setquery.'" class="mw-scryfall-link" cardname="'.$cardquery.'" cardset="'.$urlset.'">'.$linktitle.'</a>';
-		};
+		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars(urlencode($search)) . '" class="mw-scryfall-link" data-card-name="' . htmlspecialchars(urlencode($input)) . '" data-card-set="' . htmlspecialchars(urlencode($set)) . '">'. htmlspecialchars($link) . '</a>';
 
 		return $output;
 	}
