@@ -2,15 +2,32 @@
 module.exports = function ( grunt ) {
 	var conf = grunt.file.readJSON( 'extension.json' );
 
+	grunt.loadNpmTasks( 'grunt-contrib-less' );
 	grunt.loadNpmTasks( 'grunt-banana-checker' );
 	grunt.loadNpmTasks( 'grunt-eslint' );
 	grunt.loadNpmTasks( 'grunt-jsonlint' );
 	grunt.loadNpmTasks( 'grunt-stylelint' );
 
 	grunt.initConfig( {
+		less: {
+			development: {
+				options: {
+					paths: [ 'modules' ],
+					plugins: [
+						new ( require( 'less-plugin-autoprefix' ) )( { browsers: [ 'last 2 versions' ] } )
+					],
+					compress: true
+				},
+				files: {
+					'modules/ext.scryfallLinks.css': 'modules/ext.scryfallLinks.less'
+				}
+			}
+		},
 		eslint: {
 			all: [
 				'**/*.js',
+				'!modules/tippy.js',
+				'!modules/tippy.min.js',
 				'!node_modules/**',
 				'!vendor/**'
 			]
@@ -21,6 +38,8 @@ module.exports = function ( grunt ) {
 			},
 			all: [
 				'**/*.{css,less}',
+				'!modules/ext.scryfallLinks.css',
+				'!modules/tippy.css',
 				'!node_modules/**',
 				'!vendor/**'
 			]
@@ -36,5 +55,5 @@ module.exports = function ( grunt ) {
 	} );
 
 	grunt.registerTask( 'test', [ 'eslint', 'stylelint', 'jsonlint', 'banana' ] );
-	grunt.registerTask( 'default', 'test' );
+	grunt.registerTask( 'default', [ 'less', 'test' ] );
 };

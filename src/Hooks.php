@@ -48,7 +48,7 @@ class Hooks {
 
 		$search = '!"' . $input . '"' . $setquery;
 
-		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars(urlencode($search)) . '" class="mw-scryfall-link" data-card-name="' . htmlspecialchars(urlencode($input)) . '" data-card-set="' . htmlspecialchars(urlencode($set)) . '">'. htmlspecialchars($link) . '</a>';
+		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars(urlencode($search)) . '" class="mw-scryfall-link" data-card-name="' . htmlspecialchars(urlencode($input)) . '" data-card-set="' . htmlspecialchars(urlencode($set)) . '">' . htmlspecialchars($link) . '</a>';
 
 		return $output;
 	}

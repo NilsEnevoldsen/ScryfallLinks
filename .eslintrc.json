@@ -6,5 +6,8 @@
 	},
 	"globals": {
 		"mediaWiki": false
+	},
+	"parserOptions": {
+		"ecmaVersion": 6
 	}
 }

@@ -1,15 +1,1 @@
-a.mw-scryfall-link {
-	text-decoration: underline dotted;
-	-webkit-text-decoration: underline dotted;
-}
-
-div.tippy-tooltip {
-	border-radius: 12px !important;
-	padding: 0px !important;
-	width: 244px !important;
-	height: 340px !important;
-}
-
-img.cardimage {
-	border-radius: 12px;
-}
+a.mw-scryfall-link{text-decoration:underline;-webkit-text-decoration-style:dotted;text-decoration-style:dotted}div.tippy-tooltip.scryfall-theme{border-radius:12px;padding:0;width:244px;height:340px}img.cardimage{border-radius:12px}
