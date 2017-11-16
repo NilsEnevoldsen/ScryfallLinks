@@ -48,9 +48,9 @@ class Hooks {
 			$decklist );
 		$decklist = preg_replace_callback( '/^(\d+)\s+(.+)$/',
 			function ( $m ) {
-				return '<p>' . $m[1] . ' <a href="https://scryfall.com/search?q=%21%22' .
-				htmlspecialchars( urlencode( $m[2] ) ) . '%22" class="mw-scryfall-link" data-card-name="' .
-				htmlspecialchars( urlencode( $m[2] ) ) . '">' . $m[2] . '</a></p>';
+				return '<p>' . $m[1] . ' <a href="https://scryfall.com/search?q=' .
+				htmlspecialchars( urlencode( '!"' . $m[2] . '"' ) ) . '" class="mw-scryfall-link"' .
+				'data-card-name="' . htmlspecialchars( urlencode( $m[2] ) ) . '">' . $m[2] . '</a></p>';
 			},
 			$decklist );
 		$decklist = implode( PHP_EOL, $decklist );
