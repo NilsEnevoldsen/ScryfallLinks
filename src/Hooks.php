@@ -40,11 +40,11 @@ class Hooks {
 		}
 
 		$decktitle = $args['title'] ?? '';
-		$decktitlespan = '<h3 class="mw-scryfall-decktitle">' . htmlspecialchars( $decktitle ) . '</h3>';
+		$decktitlespan = '<div class="mw-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) . '</h3></div>';
 
 		$decklist = explode( PHP_EOL, $input );
 		$decklist = array_filter( $decklist );
-		$decklist = preg_replace( '/^[^\d].+$/', '<h4 class="mw-scryfall-decksection">$0</h4>',
+		$decklist = preg_replace( '/^[^\d].+$/', '</div><div class="mw-scryfall-decksection"><h4>$0</h4>',
 			$decklist );
 		$decklist = preg_replace_callback( '/^(\d+)\s+(.+)$/',
 			function ( $m ) {
@@ -55,7 +55,9 @@ class Hooks {
 			$decklist );
 		$decklist = implode( PHP_EOL, $decklist );
 
-		$output = '<div class="mw-scryfall-deck">' . $decktitlespan . $decklist .'</div>';
+		$output = '<div class="mw-scryfall-deck">' . $decktitlespan .
+			'<div class="mw-scryfall-deckcontents"><div class="mw-scryfall-decksection">' .
+			$decklist . '</div></div></div>';
 
 		return $output;
 	}
