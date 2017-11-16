@@ -23,7 +23,7 @@ const tip = tippy( '.mw-scryfall-link', {
 			title = target.text,
 			cardNameQuery = '&exact=' + target.dataset.cardName,
 			cardSet = target.dataset.cardSet,
-			cardSetQuery = cardSet ? '' : '&set=' + cardSet,
+			cardSetQuery = cardSet ? '&set=' + cardSet : '',
 			formatQuery = '&format=image',
 			versionQuery = '&version=normal',
 			imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameQuery + cardSetQuery + formatQuery + versionQuery,
