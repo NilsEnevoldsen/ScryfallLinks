@@ -40,7 +40,8 @@ class Hooks {
 		}
 
 		$decktitle = $args['title'] ?? '';
-		$decktitlespan = '<div class="mw-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) . '</h3></div>';
+		$decktitlespan = '<div class="mw-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) .
+			'</h3></div>';
 
 		$decklist = explode( PHP_EOL, $input );
 		$decklist = array_filter( $decklist );
@@ -48,9 +49,7 @@ class Hooks {
 			$decklist );
 		$decklist = preg_replace_callback( '/^(\d+)\s+(.+)$/',
 			function ( $m ) {
-				return '<p>' . $m[1] . ' <a href="https://scryfall.com/search?q=' .
-				htmlspecialchars( urlencode( '!"' . $m[2] . '"' ) ) . '" class="mw-scryfall-link"' .
-				'data-card-name="' . htmlspecialchars( urlencode( $m[2] ) ) . '">' . $m[2] . '</a></p>';
+				return '<p>' . $m[1] . ' ' . self::outputLink( $m[2], '', $m[2] ) . '</p>';
 			},
 			$decklist );
 		$decklist = implode( PHP_EOL, $decklist );
@@ -79,16 +78,25 @@ class Hooks {
 		}
 
 		$set = $args['set'] ?? '';
+
+		$anchor = $args['title'] ?? $input;
+
+		return self::outputLink( $input, $set, $anchor );
+	}
+	/**
+	 * Create link
+	 * @param string $card Card name
+	 * @param string $set Set abbreviation
+	 * @param string $anchor Anchor text
+	 * @return string
+	 */
+	protected static function outputLink( $card, $set, $anchor ) {
 		$setquery = $set ? ' e:' . $set : '';
-
-		$link = $args['title'] ?? $input;
-
-		$search = '!"' . $input . '"' . $setquery;
-
+		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'" class="mw-scryfall-link" data-card-name="' . htmlspecialchars( urlencode( $input ) ) .
-			'" data-card-set="' . htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $link ) .
-			'</a>';
+			'" class="mw-scryfall-link" data-card-name="' . htmlspecialchars( urlencode( $card ) ) .
+			'" data-card-set="' . htmlspecialchars( urlencode( $set ) ) . '">' .
+			htmlspecialchars( $anchor ) . '</a>';
 
 		return $output;
 	}
