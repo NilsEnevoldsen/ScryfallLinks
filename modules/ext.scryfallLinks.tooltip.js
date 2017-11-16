@@ -17,14 +17,15 @@ const tip = tippy('.mw-scryfall-link', {
 		// `this` inside callbacks refers to the popper element
 		const target = tip.getReferenceData(this).el;
 		const title = target.text;
-		const cardname = target.getAttribute('cardname');
+		const cardName = target.dataset.cardName;
+		const cardSet = target.dataset.cardSet;
 
-		var cardset = '';
-		if (target.getAttribute('cardset')) {
-			cardset = '&set=' + target.getAttribute('cardset');
+		var cardSetQuery = '';
+		if (cardSet) {
+			cardSetQuery = '&set=' + cardSet;
 		}
 
-		const imageSrc = 'https://api.scryfall.com/cards/named?exact=' + cardname + cardset + '&format=image&version=normal';
+		const imageSrc = 'https://api.scryfall.com/cards/named?exact=' + cardName + cardSetQuery + '&format=image&version=normal';
 
 		this.querySelector('.tippy-tooltip-content').innerHTML = '<img class="cardimage" width="244" alt="' + title + '" src="' + imageSrc + '">';
 	},
