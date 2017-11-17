@@ -12,18 +12,28 @@ img.cardimage {
 	border-radius: 12px;
 }
 div.mw-scryfall-deck {
-	border: 4px solid #000;
-	max-width: 45em;
+	overflow: hidden; // So border-radius applies to deck title
+	min-width: 15em;
+	max-width: 35em;
+	border: 1px solid #000;
+	border-radius: 0.8em;
 }
 div.mw-scryfall-decktitle {
-	border: 4px solid #d00;
+	padding-left: 1em;
+	background-color: #444;
+}
+div.mw-scryfall-decktitle > h3 {
+	margin-top: 0;
+	padding-bottom: 5px;
+	color: #fff;
 }
 div.mw-scryfall-deckcontents {
-	border: 4px solid #0d0;
 	column-count: 2;
 	column-width: 15em;
 }
 div.mw-scryfall-decksection {
-	border: 4px solid #00d;
 	break-inside: avoid-column;
+	white-space: nowrap;
+	overflow-x: hidden;
+	padding-left: 1em;
 }
