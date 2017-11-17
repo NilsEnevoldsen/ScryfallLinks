@@ -27,9 +27,10 @@ const tip = tippy( '.mw-scryfall-link', {
 			formatQuery = '&format=image',
 			versionQuery = '&version=normal',
 			imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameQuery + cardSetQuery + formatQuery + versionQuery,
-			imageElement = '<img class="cardimage" width="244" alt="' + title + '" src="' + imageSrc + '">';
+			imageElement = '<img class="cardimage" width="244" alt="' + title + '" src="' + imageSrc + '">',
+			anchorElement = '<a href="' + target.href + '">' + imageElement + '</a>';
 
-		this.querySelector( '.tippy-tooltip-content' ).innerHTML = imageElement;
+		this.querySelector( '.tippy-tooltip-content' ).innerHTML = anchorElement;
 	},
 	onHidden() {
 		this.querySelector( '.tippy-tooltip-content' ).innerHTML = '';
