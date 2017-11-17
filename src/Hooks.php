@@ -42,21 +42,36 @@ class Hooks {
 		$decktitle = $args['title'] ?? '';
 		$decktitlespan = '<div class="mw-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) .
 			'</h3></div>';
+		$pattern_decksection = '/^[^\d].+/';
+		$pattern_card = '/^(\d+)\s+(.+)/';
 
+		// Build decklist line-by-line
 		$decklist = explode( PHP_EOL, $input );
-		$decklist = array_filter( $decklist );
-		$decklist = preg_replace( '/^[^\d].+$/', '</div><div class="mw-scryfall-decksection"><h4>$0</h4>',
-			$decklist );
-		$decklist = preg_replace_callback( '/^(\d+)\s+(.+)$/',
-			function ( $m ) {
-				return '<p>' . $m[1] . ' ' . self::outputLink( $m[2], '', $m[2] ) . '</p>';
-			},
-			$decklist );
-		$decklist = implode( PHP_EOL, $decklist );
-
+		$decklist = array_values( array_filter( $decklist ) );
+		$decklist_html = [];
+		$decklist_html[] = '<div class="mw-scryfall-decksection">';
+		foreach ( $decklist as $key => $value ) {
+			if ( preg_match( $pattern_decksection, $value ) ) {
+				// Write a decksection element
+				if ( $key != 0 ) {
+					// If decklist begins with a decksection, don't prefix an empty decksection
+					$decklist_html[] = '</div>';
+					$decklist_html[] = '<div class="mw-scryfall-decksection">';
+				}
+				$decklist_html[] = '<h4>' . $value . '</h4>';
+			} else {
+				// Write a card element
+				$decklist_html[] = preg_replace_callback( $pattern_card,
+					function ( $m ) {
+						return '<p> ' . $m[1] . ' ' . self::outputLink( $m[2], '', $m[2] ) . '</p>';
+					}, $value );
+			}
+		}
+		$decklist_html[] = '</div>';
+		$decklist_html = implode( PHP_EOL, $decklist_html );
 		$output = '<div class="mw-scryfall-deck">' . $decktitlespan .
-			'<div class="mw-scryfall-deckcontents"><div class="mw-scryfall-decksection">' .
-			$decklist . '</div></div></div>';
+			'<div class="mw-scryfall-deckcontents">' . $decklist_html . '</div>' .
+			'</div>';
 
 		return $output;
 	}
@@ -83,6 +98,7 @@ class Hooks {
 
 		return self::outputLink( $input, $set, $anchor );
 	}
+
 	/**
 	 * Create link
 	 * @param string $card Card name
