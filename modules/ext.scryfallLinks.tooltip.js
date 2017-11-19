@@ -6,7 +6,7 @@
 }() );
 
 /* global tippy */
-const tip = tippy( '.mw-scryfall-link', {
+const tip = tippy( '.ext-scryfall-link', {
 	arrow: false,
 	animateFill: false,
 	html: '#js--card-popup',
@@ -27,7 +27,7 @@ const tip = tippy( '.mw-scryfall-link', {
 			formatQuery = '&format=image',
 			versionQuery = '&version=normal',
 			imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameQuery + cardSetQuery + formatQuery + versionQuery,
-			imageElement = '<img class="cardimage" width="244" alt="' + title + '" src="' + imageSrc + '">',
+			imageElement = '<img class="ext-scryfall-cardimage" width="244" alt="' + title + '" src="' + imageSrc + '">',
 			anchorElement = '<a href="' + target.href + '">' + imageElement + '</a>';
 
 		this.querySelector( '.tippy-tooltip-content' ).innerHTML = anchorElement;

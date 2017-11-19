@@ -40,7 +40,7 @@ class Hooks {
 		}
 
 		$decktitle = $args['title'] ?? '';
-		$decktitlespan = '<div class="mw-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) .
+		$decktitlespan = '<div class="ext-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) .
 			'</h3></div>';
 		$pattern_decksection = '/^[^\d].+/';
 		$pattern_card = '/^(\d+)\s+(.+)/';
@@ -49,14 +49,14 @@ class Hooks {
 		$decklist = explode( PHP_EOL, $input );
 		$decklist = array_values( array_filter( $decklist ) );
 		$decklist_html = [];
-		$decklist_html[] = '<div class="mw-scryfall-decksection">';
+		$decklist_html[] = '<div class="ext-scryfall-decksection">';
 		foreach ( $decklist as $key => $value ) {
 			if ( preg_match( $pattern_decksection, $value ) ) {
 				// Write a decksection element
 				if ( $key != 0 ) {
 					// If decklist begins with a decksection, don't prefix an empty decksection
 					$decklist_html[] = '</div>';
-					$decklist_html[] = '<div class="mw-scryfall-decksection">';
+					$decklist_html[] = '<div class="ext-scryfall-decksection">';
 				}
 				$decklist_html[] = '<h4>' . $value . '</h4>';
 			} else {
@@ -69,8 +69,8 @@ class Hooks {
 		}
 		$decklist_html[] = '</div>';
 		$decklist_html = implode( PHP_EOL, $decklist_html );
-		$output = '<div class="mw-scryfall-deck">' . $decktitlespan .
-			'<div class="mw-scryfall-deckcontents">' . $decklist_html . '</div>' .
+		$output = '<div class="ext-scryfall-deck">' . $decktitlespan .
+			'<div class="ext-scryfall-deckcontents">' . $decklist_html . '</div>' .
 			'</div>';
 
 		return $output;
@@ -110,7 +110,7 @@ class Hooks {
 		$setquery = $set ? ' e:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'" class="mw-scryfall-link" data-card-name="' . htmlspecialchars( urlencode( $card ) ) .
+			'" class="ext-scryfall-link" data-card-name="' . htmlspecialchars( urlencode( $card ) ) .
 			'" data-card-set="' . htmlspecialchars( urlencode( $set ) ) . '">' .
 			htmlspecialchars( $anchor ) . '</a>';
 

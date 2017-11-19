@@ -1,6 +1,7 @@
-a.mw-scryfall-link {
+a.ext-scryfall-link {
 	text-decoration: underline;
 	text-decoration-style: dotted;
+	-webkit-text-decoration-style: dotted; //ResourceLoader fails to autoprefix this
 }
 div.tippy-tooltip.scryfall-theme {
 	border-radius: 12px;
@@ -8,30 +9,30 @@ div.tippy-tooltip.scryfall-theme {
 	width: 244px;
 	height: 340px;
 }
-img.cardimage {
+img.ext-scryfall-cardimage {
 	border-radius: 12px;
 }
-div.mw-scryfall-deck {
+div.ext-scryfall-deck {
 	overflow: hidden; // So border-radius applies to deck title
 	min-width: 15em;
 	max-width: 35em;
 	border: 1px solid #000;
 	border-radius: 0.8em;
 }
-div.mw-scryfall-decktitle {
+div.ext-scryfall-decktitle {
 	padding-left: 1em;
 	background-color: #444;
 }
-div.mw-scryfall-decktitle > h3 {
+div.ext-scryfall-decktitle > h3 {
 	margin-top: 0;
 	padding-bottom: 5px;
 	color: #fff;
 }
-div.mw-scryfall-deckcontents {
+div.ext-scryfall-deckcontents {
 	column-count: 2;
 	column-width: 15em;
 }
-div.mw-scryfall-decksection {
+div.ext-scryfall-decksection {
 	break-inside: avoid-column;
 	white-space: nowrap;
 	overflow-x: hidden;

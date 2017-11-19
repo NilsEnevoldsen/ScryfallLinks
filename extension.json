@@ -29,7 +29,7 @@
 			],
 			"styles": [
 				"tippy.css",
-				"ext.scryfallLinks.css"
+				"ext.scryfallLinks.less"
 			],
 			"messages": [],
 			"dependencies": [
