@@ -4,10 +4,18 @@ a.ext-scryfall-link {
 	-webkit-text-decoration-style: dotted; //ResourceLoader fails to autoprefix this
 }
 div.tippy-tooltip.scryfall-theme {
+    /* @embed */
+	background: url(../images/cardback.jpg);
+	background-size: 244px 340px;
+	background-repeat: no-repeat;
 	border-radius: 12px;
 	padding: 0;
 	width: 244px;
 	height: 340px;
+}
+div.tippy-tooltip-content > a {
+	color: #fff;
+	font-weight: bold;
 }
 img.ext-scryfall-cardimage {
 	border-radius: 12px;
