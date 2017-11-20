@@ -17,6 +17,7 @@ class Hooks {
 	 * @return bool
 	 */
 	public static function onParserFirstCallInit( &$parser ) {
+		$parser->setHook( 'd', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallDeck' );
 		$parser->setHook( 'deck', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallDeck' );
 		$parser->setHook( 'c', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
 		$parser->setHook( 'card', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
