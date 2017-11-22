@@ -30,9 +30,6 @@
 			"styles": [
 				"tippy.css",
 				"ext.scryfallLinks.less"
-			],
-			"messages": [],
-			"dependencies": [
 			]
 		}
 	},

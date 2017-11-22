@@ -31,13 +31,28 @@ div.ext-scryfall-deck {
 	border: 1px solid #000;
 	border-radius: 0.8em;
 }
-div.ext-scryfall-decktitle {
+div.ext-scryfall-decktitlecontainer {
 	padding-left: 1em;
+	padding-right: 1em;
 	background-color: #444;
+	line-height: 1.8em;
+	font-size: 1.6em;
+	color: #fff;
 }
-div.ext-scryfall-decktitle > h3 {
-	margin-top: 0;
-	padding-bottom: 5px;
+span.ext-scryfall-decktitle {
+	font-weight: bold;
+}
+a.ext-scryfall-deckexport {
+	overflow: hidden;
+	text-indent: -9999em;
+	height: 1.3em;
+	width: 2em;
+	margin-top: 0.25em;
+	float: right;
+	/* @embed */
+	background: url( ../images/mtgo.png ); // Must be <24kb to get embedded
+	background-size: 2em;
+	background-repeat: no-repeat;
 	color: #fff;
 }
 div.ext-scryfall-deckcontents {

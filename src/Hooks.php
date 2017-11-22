@@ -41,8 +41,9 @@ class Hooks {
 		}
 
 		$decktitle = $args['title'] ?? '';
-		$decktitlespan = '<div class="ext-scryfall-decktitle"><h3>' . htmlspecialchars( $decktitle ) .
-			'</h3></div>';
+		$decklist_mtgo = base64_encode( $input );
+		$deckexport_anchor = '<a class="ext-scryfall-deckexport" href="data:text/plain;base64,' .
+			$decklist_mtgo . '" ' . 'download="' . $decktitle . '.dec"></a>';
 		$pattern_decksection = '/^[^\d].+/';
 		$pattern_card = '/^(\d+)\s+(.+)/';
 
@@ -70,9 +71,11 @@ class Hooks {
 		}
 		$decklist_html[] = '</div>';
 		$decklist_html = implode( PHP_EOL, $decklist_html );
-		$output = '<div class="ext-scryfall-deck">' . $decktitlespan .
-			'<div class="ext-scryfall-deckcontents">' . $decklist_html . '</div>' .
-			'</div>';
+
+		$output = '<div class="ext-scryfall-deck"><div class="ext-scryfall-decktitlecontainer">' .
+			'<span class="ext-scryfall-decktitle">' . htmlspecialchars( $decktitle ) . '</span>' .
+			$deckexport_anchor . '</div><div class="ext-scryfall-deckcontents">' . $decklist_html .
+			'</div></div>';
 
 		return $output;
 	}
