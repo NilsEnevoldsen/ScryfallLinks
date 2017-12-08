@@ -88,6 +88,9 @@ class Hooks {
 		// Create HTML decklist
 		$decklist_html = [];
 		$prevsection = '';
+		foreach($cards as $card) {
+			$sectionquantities[$card['section']][] = $card['quantity'];
+		}
 		$decklist_html[] = '<div class="ext-scryfall-decksection">';
 		foreach ( $cards as $key => $card ) {
 			if ( $card['section'] != $prevsection ) {
@@ -96,7 +99,8 @@ class Hooks {
 					$decklist_html[] = '</div>';
 					$decklist_html[] = '<div class="ext-scryfall-decksection">';
 				}
-				$decklist_html[] = '<h4>' . $card['section'] . '</h4>';
+				$decklist_html[] = '<h4>' . $card['section'] . ' (' .
+					array_sum($sectionquantities[$card['section']]) . ')</h4>';
 				$prevsection = $card['section'];
 			}
 			$decklist_html[] = '<p><span class="ext-scryfall-deckcardcount">' . $card['quantity'] .
