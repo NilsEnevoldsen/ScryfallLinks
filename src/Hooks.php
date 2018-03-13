@@ -158,10 +158,10 @@ class Hooks {
 		// Break input into array by lines
 		$lines = explode( "\n", $input );
 
-		if ( count($lines)) {
+		if ( count($lines) ) {
 			$return = "";
 			foreach( $lines as $line ) {
-				if (!empty($line)) {
+				if ( !empty( $line ) ) {
 					$return .= self::outputLink( $line, '', $line );
 				}
 				$return .= "\n";
