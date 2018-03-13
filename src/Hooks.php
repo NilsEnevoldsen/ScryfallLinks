@@ -162,10 +162,11 @@ class Hooks {
 			$return = "";
 			foreach( $lines as $line ) {
 				if ( !empty( $line ) ) {
-					$return .= self::outputLink( $line, '', $line );
+					$return .= self::outputLink( $line, '', $line ). "\n";
 				}
 				$return .= "\n";
 			}
+			$return = trim($return); // don't add extra  line breaks around tag
 			return $return;
 		} else {
 			// return input if failure
