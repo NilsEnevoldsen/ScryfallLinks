@@ -171,8 +171,6 @@ class Hooks {
 			// return input if failure
 			return $input;
 		}
-
-		return self::outputLink( $input, $set, $anchor );
 	}
 
 	/**
