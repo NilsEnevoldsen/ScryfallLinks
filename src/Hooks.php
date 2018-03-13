@@ -90,7 +90,7 @@ class Hooks {
 		// Create HTML decklist
 		$decklist_html = [];
 		$prevsection = '';
-		foreach($cards as $card) {
+		foreach ( $cards as $card ) {
 			$sectionquantities[$card['section']][] = $card['quantity'];
 		}
 		$decklist_html[] = '<div class="ext-scryfall-decksection">';
@@ -102,7 +102,7 @@ class Hooks {
 					$decklist_html[] = '<div class="ext-scryfall-decksection">';
 				}
 				$decklist_html[] = '<h4>' . $card['section'] . ' (' .
-					array_sum($sectionquantities[$card['section']]) . ')</h4>';
+					array_sum( $sectionquantities[$card['section']] ) . ')</h4>';
 				$prevsection = $card['section'];
 			}
 			$decklist_html[] = '<p><span class="ext-scryfall-deckcardcount">' . $card['quantity'] .
@@ -158,15 +158,16 @@ class Hooks {
 		// Break input into array by lines
 		$lines = explode( "\n", $input );
 
-		if ( count($lines) ) {
+		if ( count( $lines ) ) {
 			$return = "";
-			foreach( $lines as $line ) {
+			foreach ( $lines as $line ) {
 				if ( !empty( $line ) ) {
 					$return .= self::outputLink( $line, '', $line ). "\n";
 				}
 				$return .= "\n";
 			}
-			$return = trim($return); // don't add extra  line breaks around tag
+			// don't add extra  line breaks around tag
+			$return = trim( $return );
 			return $return;
 		} else {
 			// return input if failure
@@ -186,8 +187,8 @@ class Hooks {
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
 			'&utm_source=mediawiki" class="ext-scryfall-link" data-card-name="' .
-			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' . htmlspecialchars( urlencode( $set ) ) .
-			'">' . htmlspecialchars( $anchor ) . '</a>';
+			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' .
+			htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $anchor ) . '</a>';
 
 		return $output;
 	}
