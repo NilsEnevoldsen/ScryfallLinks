@@ -186,7 +186,7 @@ class Hooks {
 		$setquery = $set ? ' e:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'&utm_source=mediawiki" class="ext-scryfall-link" data-card-name="' .
+			'&utm_source=mtgwiki" class="ext-scryfall-link" data-card-name="' .
 			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' .
 			htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $anchor ) . '</a>';
 
