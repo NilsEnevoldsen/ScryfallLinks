@@ -21,6 +21,8 @@ class Hooks {
 		$parser->setHook( 'deck', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallDeck' );
 		$parser->setHook( 'c', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
 		$parser->setHook( 'card', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
+		$parser->setHook( 'cs', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallMultiLink' );
+		$parser->setHook( 'cards', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallMultiLink' );
 		return true;
 	}
 
@@ -139,6 +141,37 @@ class Hooks {
 		$anchor = $args['title'] ?? $input;
 
 		return self::outputLink( $input, $set, $anchor );
+	}
+
+	/**
+	 * Render <cs>
+	 * @param string $input Some input
+	 * @param array $args Some args
+	 * @param Parser $parser A parser
+	 * @param PPFrame $frame A PPFrame
+	 * @return string
+	 */
+	public static function renderScryfallMultiLink( $input, array $args, $parser, $frame ) {
+		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
+		$input = $parser->recursiveTagParse( $input, $frame );
+
+		// Break input into array by lines
+		$lines = explode( "\n", $input );
+
+		if ( count($lines) ) {
+			$return = "";
+			foreach( $lines as $line ) {
+				if ( !empty( $line ) ) {
+					$return .= self::outputLink( $line, '', $line ). "\n";
+				}
+				$return .= "\n";
+			}
+			$return = trim($return); // don't add extra  line breaks around tag
+			return $return;
+		} else {
+			// return input if failure
+			return $input;
+		}
 	}
 
 	/**
