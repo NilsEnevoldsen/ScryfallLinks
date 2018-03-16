@@ -183,10 +183,12 @@ class Hooks {
 	 * @return string
 	 */
 	protected static function outputLink( $card, $set, $anchor ) {
+		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
+		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
 		$setquery = $set ? ' e:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'&utm_source=mtgwiki" class="ext-scryfall-link" data-card-name="' .
+			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
 			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' .
 			htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $anchor ) . '</a>';
 
