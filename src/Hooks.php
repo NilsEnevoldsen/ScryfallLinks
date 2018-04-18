@@ -185,7 +185,7 @@ class Hooks {
 	protected static function outputLink( $card, $set, $anchor ) {
 		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
 		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
-		$setquery = $set ? ' e:' . $set : '';
+		$setquery = $set ? ' set:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
 			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
