@@ -19,7 +19,7 @@ const tip = tippy( '.ext-scryfall-link', {
 	theme: 'scryfall',
 	onShow() {
 		// `this` inside callbacks refers to the popper element
-		const target = tip.getReferenceData( this ).el,
+		const target = this._reference,
 			title = target.text,
 			cardNameQuery = '&exact=' + target.dataset.cardName,
 			cardSet = target.dataset.cardSet,
@@ -30,14 +30,13 @@ const tip = tippy( '.ext-scryfall-link', {
 			imageElement = '<img class="ext-scryfall-cardimage" width="244" alt="' + title + '" src="' + imageSrc + '">',
 			anchorElement = '<a href="' + target.href + '">' + imageElement + '</a>';
 
-		this.querySelector( '.tippy-tooltip-content' ).innerHTML = anchorElement;
+		this.querySelector( '.tippy-content' ).innerHTML = anchorElement;
 	},
 	onHidden() {
-		this.querySelector( '.tippy-tooltip-content' ).innerHTML = '';
+		this.querySelector( '.tippy-content' ).innerHTML = '';
 	},
 	// prevent tooltip from displaying over button
 	popperOptions: {
-		flipDuration: 0,
 		modifiers: {
 			preventOverflow: {
 				enabled: false
