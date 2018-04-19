@@ -10,7 +10,7 @@ const tip = tippy( '.ext-scryfall-link', {
 	arrow: false,
 	animateFill: false,
 	html: '#js--card-popup',
-	position: 'bottom',
+	placement: 'bottom',
 	interactive: 'true',
 	delay: [ 500, 0 ],
 	animation: 'scale',
