@@ -52,10 +52,11 @@ class Hooks {
 			// Split at the first whitespace following numerals
 			$line = preg_split( '/^\s*(?:(\d+)\s+)?/', $string, -1,
 				PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
-
 			if ( count( $line ) == 1 ) {
-				$thissection = preg_replace( '/[^A-Za-z]/', '', $line[0] );
+				// This line is a section title
+				$thissection = preg_replace( '/[^A-Za-z- ]/', '', $line[0] );
 			} else {
+				// This line is a card name with a quantity
 				$cards[$key]['quantity'] = $line[0];
 				$cards[$key]['name'] = $line[1];
 				$cards[$key]['section'] = $thissection;
