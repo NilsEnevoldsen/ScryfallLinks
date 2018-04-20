@@ -21,6 +21,8 @@ class Hooks {
 		$parser->setHook( 'deck', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallDeck' );
 		$parser->setHook( 'c', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
 		$parser->setHook( 'card', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
+		$parser->setHook( 'cs', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallMultiLink' );
+		$parser->setHook( 'cards', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallMultiLink' );
 		return true;
 	}
 
@@ -50,10 +52,11 @@ class Hooks {
 			// Split at the first whitespace following numerals
 			$line = preg_split( '/^\s*(?:(\d+)\s+)?/', $string, -1,
 				PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
-
 			if ( count( $line ) == 1 ) {
-				$thissection = preg_replace( '/[^A-Za-z]/', '', $line[0] );
+				// This line is a section title
+				$thissection = preg_replace( '/[^A-Za-z- ]/', '', $line[0] );
 			} else {
+				// This line is a card name with a quantity
 				$cards[$key]['quantity'] = $line[0];
 				$cards[$key]['name'] = $line[1];
 				$cards[$key]['section'] = $thissection;
@@ -88,7 +91,7 @@ class Hooks {
 		// Create HTML decklist
 		$decklist_html = [];
 		$prevsection = '';
-		foreach($cards as $card) {
+		foreach ( $cards as $card ) {
 			$sectionquantities[$card['section']][] = $card['quantity'];
 		}
 		$decklist_html[] = '<div class="ext-scryfall-decksection">';
@@ -100,7 +103,7 @@ class Hooks {
 					$decklist_html[] = '<div class="ext-scryfall-decksection">';
 				}
 				$decklist_html[] = '<h4>' . $card['section'] . ' (' .
-					array_sum($sectionquantities[$card['section']]) . ')</h4>';
+					array_sum( $sectionquantities[$card['section']] ) . ')</h4>';
 				$prevsection = $card['section'];
 			}
 			$decklist_html[] = '<p><span class="ext-scryfall-deckcardcount">' . $card['quantity'] .
@@ -142,6 +145,38 @@ class Hooks {
 	}
 
 	/**
+	 * Render <cs>
+	 * @param string $input Some input
+	 * @param array $args Some args
+	 * @param Parser $parser A parser
+	 * @param PPFrame $frame A PPFrame
+	 * @return string
+	 */
+	public static function renderScryfallMultiLink( $input, array $args, $parser, $frame ) {
+		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
+		$input = $parser->recursiveTagParse( $input, $frame );
+
+		// Break input into array by lines
+		$lines = explode( "\n", $input );
+
+		if ( count( $lines ) ) {
+			$return = "";
+			foreach ( $lines as $line ) {
+				if ( !empty( $line ) ) {
+					$return .= self::outputLink( $line, '', $line ). "\n";
+				}
+				$return .= "\n";
+			}
+			// don't add extra  line breaks around tag
+			$return = trim( $return );
+			return $return;
+		} else {
+			// return input if failure
+			return $input;
+		}
+	}
+
+	/**
 	 * Create link
 	 * @param string $card Card name
 	 * @param string $set Set abbreviation
@@ -149,12 +184,14 @@ class Hooks {
 	 * @return string
 	 */
 	protected static function outputLink( $card, $set, $anchor ) {
-		$setquery = $set ? ' e:' . $set : '';
+		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
+		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
+		$setquery = $set ? ' set:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'&utm_source=mediawiki" class="ext-scryfall-link" data-card-name="' .
-			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' . htmlspecialchars( urlencode( $set ) ) .
-			'">' . htmlspecialchars( $anchor ) . '</a>';
+			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
+			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' .
+			htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $anchor ) . '</a>';
 
 		return $output;
 	}
