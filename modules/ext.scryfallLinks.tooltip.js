@@ -21,11 +21,10 @@ $( function () {
 		performance: true,
 		theme: 'scryfall',
 		onShow() {
-			// `this` inside callbacks refers to the popper element
-			var self = this,
+			var thisPopper = this,
 				cardImage = new Image( 244 );
 			/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true }] */
-			const target = this._reference,
+			const target = thisPopper._reference,
 				anchorElement = '<a href="' + target.href + '"><img class="ext-scryfall-placeholder"></a>',
 				cardNameQuery = '&exact=' + target.dataset.cardName,
 				cardSet = target.dataset.cardSet,
@@ -33,13 +32,14 @@ $( function () {
 				formatQuery = '&format=image',
 				versionQuery = '&version=normal',
 				imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameQuery + cardSetQuery + formatQuery + versionQuery;
-			this.style.display = 'none';
-			this.querySelector( '.tippy-content' ).innerHTML = anchorElement;
+			thisPopper.style.display = 'none';
+			thisPopper.querySelector( '.tippy-content' ).innerHTML = anchorElement;
 			cardImage.alt = target.text;
 			cardImage.className = 'ext-scryfall-cardimage';
 			cardImage.onload = function () {
-				$( '.ext-scryfall-placeholder' ).replaceWith( cardImage );
-				self.style.display = '';
+				var placeholder = thisPopper.querySelector( '.ext-scryfall-placeholder' );
+				placeholder.replaceWith( cardImage );
+				thisPopper.style.display = '';
 			};
 			cardImage.src = imageSrc;
 		},
