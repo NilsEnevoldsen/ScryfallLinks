@@ -7,13 +7,13 @@
 
 $( function () {
 	/* global tippy */
-	const tip = tippy( '.ext-scryfall-link', {
+	tippy( '.ext-scryfall-link', {
 		arrow: false,
 		animateFill: false,
-		// followCursor: true,
+		// "followCursor" mutually exclusive with "interactive"
+		followCursor: true,
 		html: '#js--card-popup',
 		placement: 'bottom',
-		interactive: true,
 		touchHold: true,
 		delay: [ 50, 0 ],
 		animation: 'fade',
@@ -23,7 +23,7 @@ $( function () {
 		onShow() {
 			var thisPopper = this,
 				cardImage = new Image( 244 );
-			/* eslint no-underscore-dangle: ["error", { "allowAfterThis": true }] */
+			/* eslint no-underscore-dangle: ["error", { "allow": ["_reference"] }] */
 			const target = thisPopper._reference,
 				anchorElement = '<a href="' + target.href + '"><img class="ext-scryfall-placeholder"></a>',
 				cardNameQuery = '&exact=' + target.dataset.cardName,
