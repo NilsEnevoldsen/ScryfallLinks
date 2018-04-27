@@ -41,7 +41,31 @@ $( function () {
 					return response;
 				} )
 				.then( response => response.json() )
-				.then( data => fetch( data.image_uris.normal ) )
+				.then( data => {
+					if ( data.hasOwnProperty( 'card_faces' ) ) {
+						// Is a multiface card
+						if ( data.card_faces[0].hasOwnProperty( 'image_uris' ) ) {
+							const frontside = 
+								decodeURIComponent(target.dataset.cardName).replace(/[^a-z]/ig,'').toUpperCase() ==
+								data.card_faces[0].name.replace(/[^a-z]/ig,'').toUpperCase()
+							// Is a double-sided card
+							if ( frontside ) {
+								// Is a front side
+								return data.card_faces[0].image_uris.normal;
+							} else {
+								// Is a back side
+								return data.card_faces[1].image_uris.normal;
+							}
+						} else {
+							// Is a split or flip card
+							return data.image_uris.normal;
+						}
+					} else {
+						// Not a multiface card
+						return data.image_uris.normal;
+					}
+				} )
+				.then( imageURI => fetch( imageURI ) )
 				.then( response => response.blob() )
 				.then( blob => {
 					const url = URL.createObjectURL( blob ),
