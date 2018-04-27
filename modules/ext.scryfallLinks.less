@@ -4,16 +4,10 @@ a.ext-scryfall-link {
 	-webkit-text-decoration-style: dotted; // ResourceLoader fails to autoprefix this
 }
 div.tippy-tooltip.scryfall-theme {
-	///* @embed */
-	//background: url( ../images/cardback.jpg ); // Must be <24kb to get embedded
-	//background-size: 244px 340px;
-	//background-repeat: no-repeat;
-	border-radius: 12px;
 	padding: 0;
-	width: 244px;
-	height: 340px;
+	background-color: transparent;
 }
-div.tippy-tooltip.ext-scryfall-notfound {
+div.tippy-tooltip.ext-scryfall-error {
 	border-radius: 12px;
 	color: #fff;
 	text-shadow: 2px 2px 6px #000;
@@ -22,6 +16,15 @@ img.ext-scryfall-cardimage {
 	border-radius: 12px;
 	display: block;
 	overflow: hidden;
+}
+img.ext-scryfall-rotate-90cw {
+	transform: rotate( 90deg );
+}
+img.ext-scryfall-rotate-90ccw {
+	transform: rotate( -90deg );
+}
+img.ext-scryfall-rotate-180 {
+	transform: rotate( 180deg );
 }
 div.ext-scryfall-deck {
 	overflow: hidden; // So border-radius applies to deck title
