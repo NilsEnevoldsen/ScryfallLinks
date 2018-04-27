@@ -7,13 +7,12 @@
 
 $( function () {
 	/* global tippy */
-	tippy( '.ext-scryfall-link', {
+	const tip = tippy( '.ext-scryfall-link', {
 		arrow: false,
 		animateFill: false,
-		// "followCursor" mutually exclusive with "interactive"
 		followCursor: true,
 		html: '#js--card-popup',
-		placement: 'bottom',
+		placement: 'top',
 		touchHold: true,
 		delay: [ 50, 0 ],
 		animation: 'fade',
@@ -21,30 +20,52 @@ $( function () {
 		performance: true,
 		theme: 'scryfall',
 		onShow() {
-			var thisPopper = this,
-				cardImage = new Image( 244 );
-			/* eslint no-underscore-dangle: ["error", { "allow": ["_reference"] }] */
-			const target = thisPopper._reference,
-				anchorElement = '<a href="' + target.href + '"><img class="ext-scryfall-placeholder"></a>',
-				cardNameQuery = '&exact=' + target.dataset.cardName,
+			const thisPopper = this,
+				content = thisPopper.querySelector( '.tippy-content' ),
+				/* eslint no-underscore-dangle: ["error", { "allow": ["_reference"] }] */
+				target = thisPopper._reference,
+				cardNameParam = 'exact=' + target.dataset.cardName,
 				cardSet = target.dataset.cardSet,
-				cardSetQuery = cardSet ? '&set=' + cardSet : '',
-				formatQuery = '&format=image',
-				versionQuery = '&version=normal',
-				imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameQuery + cardSetQuery + formatQuery + versionQuery;
+				cardSetParam = cardSet ? '&set=' + cardSet : '',
+				formatParam = '&format=image',
+				versionParam = '&version=normal',
+				imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameParam + cardSetParam + formatParam + versionParam;
+			if ( tip.loading || content.innerHTML !== '' ) { return; }
+			tip.loading = true;
+			// Hide the tooltip until we've finished loaded the image
 			thisPopper.style.display = 'none';
-			thisPopper.querySelector( '.tippy-content' ).innerHTML = anchorElement;
-			cardImage.alt = target.text;
-			cardImage.className = 'ext-scryfall-cardimage';
-			cardImage.onload = function () {
-				var placeholder = thisPopper.querySelector( '.ext-scryfall-placeholder' );
-				placeholder.replaceWith( cardImage );
-				thisPopper.style.display = '';
-			};
-			cardImage.src = imageSrc;
+			// fetch() only works on modern browsers
+			fetch( imageSrc )
+				.then( response => {
+					if ( !response.ok ) {
+						throw Error( response.statusText );
+					}
+					return response;
+				} )
+				.then( response => response.blob() )
+				.then( blob => {
+					const url = URL.createObjectURL( blob ),
+						img = document.createElement( 'img' );
+					img.classList.add( 'ext-scryfall-cardimage' );
+					img.src = url;
+					img.alt = target.text;
+					img.width = 244;
+					content.append( img );
+					thisPopper.style.removeProperty( 'display' );
+					tip.loading = false;
+				} )
+				.catch( function () {
+					// TODO: This should be localized
+					content.innerHTML = 'Not found';
+					content.parentNode.classList.remove( 'scryfall-theme' );
+					content.parentNode.classList.add( 'ext-scryfall-notfound' );
+					thisPopper.style.removeProperty( 'display' );
+					tip.loading = false;
+				} );
 		},
 		onHidden() {
-			this.querySelector( '.tippy-content' ).innerHTML = '';
+			const content = this.querySelector( '.tippy-content' );
+			content.innerHTML = '';
 		},
 		// prevent tooltip from displaying over button
 		popperOptions: {
