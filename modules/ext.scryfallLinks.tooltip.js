@@ -27,21 +27,21 @@ $( function () {
 				cardNameParam = 'exact=' + target.dataset.cardName,
 				cardSet = target.dataset.cardSet,
 				cardSetParam = cardSet ? '&set=' + cardSet : '',
-				formatParam = '&format=image',
-				versionParam = '&version=normal',
-				imageSrc = 'https://api.scryfall.com/cards/named?' + cardNameParam + cardSetParam + formatParam + versionParam;
+				cardJSON = 'https://api.scryfall.com/cards/named?' + cardNameParam + cardSetParam;
 			if ( tip.loading || content.innerHTML !== '' ) { return; }
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
 			thisPopper.style.display = 'none';
 			// fetch() only works on modern browsers
-			fetch( imageSrc )
+			fetch( cardJSON )
 				.then( response => {
 					if ( !response.ok ) {
 						throw Error( response.statusText );
 					}
 					return response;
 				} )
+				.then( response => response.json() )
+				.then( data => fetch( data.image_uris.normal ) )
 				.then( response => response.blob() )
 				.then( blob => {
 					const url = URL.createObjectURL( blob ),
