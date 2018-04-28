@@ -24,29 +24,36 @@ $( function () {
 				content = thisPopper.querySelector( '.tippy-content' ),
 				/* eslint no-underscore-dangle: ["error", { "allow": ["_reference"] }] */
 				target = thisPopper._reference,
-				cardNameParam = 'exact=' + target.dataset.cardName,
-				cardSet = target.dataset.cardSet,
-				cardSetParam = cardSet ? '&set=' + cardSet : '',
-				cardJSON = 'https://api.scryfall.com/cards/named?' + cardNameParam + cardSetParam;
+				jsonURI = new URL( 'https://api.scryfall.com/cards/named' );
 			var rotationClass = 'ext-scryfall-rotate-0';
+			jsonURI.searchParams.set( 'exact', target.dataset.cardName );
+			jsonURI.searchParams.set( 'set', typeof target.dataset.cardSet === 'undefined' ? '' : target.dataset.cardSet );
 			if ( tip.loading || content.innerHTML !== '' ) { return; }
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
 			thisPopper.style.display = 'none';
 			// fetch() only works on modern browsers
-			fetch( cardJSON )
+			fetch( jsonURI )
 				.then( response => {
 					if ( !response.ok ) { throw Error( response.statusText ); }
 					return response;
 				} )
 				.then( response => response.json() )
 				.then( data => {
+					const queryURI = new URL( target.href );
+					const directURI = new URL( data.scryfall_uri );
+					const utm_source = queryURI.searchParams.get( 'utm_source' );
+					directURI.searchParams.set( 'utm_source', utm_source );
 					if ( data.hasOwnProperty( 'card_faces' ) ) {
 						const isSecondface = data.card_faces[ 0 ].name.replace( /[^a-z]/ig, '' ).toUpperCase() !==
 							decodeURIComponent( target.dataset.cardName ).replace( /[^a-z]/ig, '' ).toUpperCase();
 						if ( data.layout === 'transform' || data.layout === 'double_faced_token' ) {
-							const i = isSecondface ? 1 : 0;
-							return data.card_faces[ i ].image_uris.normal;
+							if ( isSecondface ) {
+								target.href = directURI.href + '&back';
+								return data.card_faces[ 1 ].image_uris.normal;
+							} else {
+								return data.card_faces[ 0 ].image_uris.normal;
+							}
 						} else if ( data.layout === 'split' ) {
 							if ( data.card_faces[ 1 ].oracle_text.startsWith( 'Aftermath' ) ) {
 								if ( isSecondface ) { rotationClass = 'ext-scryfall-rotate-90ccw'; }
@@ -55,6 +62,7 @@ $( function () {
 							if ( isSecondface ) { rotationClass = 'ext-scryfall-rotate-180'; }
 						}
 					}
+					target.href = directURI.href;
 					if ( data.layout === 'planar' ) { rotationClass = 'ext-scryfall-rotate-90cw'; }
 					return data.image_uris.normal;
 				} )

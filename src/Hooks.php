@@ -190,8 +190,8 @@ class Hooks {
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
 			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
-			htmlspecialchars( urlencode( $card ) ) . '" data-card-set="' .
-			htmlspecialchars( urlencode( $set ) ) . '">' . htmlspecialchars( $anchor ) . '</a>';
+			htmlspecialchars( $card ) . '" data-card-set="' .
+			htmlspecialchars( $set ) . '">' . htmlspecialchars( $anchor ) . '</a>';
 
 		return $output;
 	}
