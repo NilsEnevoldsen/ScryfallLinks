@@ -40,10 +40,10 @@ $( function () {
 				} )
 				.then( response => response.json() )
 				.then( data => {
-					const queryURI = new URL( target.href );
-					const directURI = new URL( data.scryfall_uri );
-					const utm_source = queryURI.searchParams.get( 'utm_source' );
-					directURI.searchParams.set( 'utm_source', utm_source );
+					const queryURI = new URL( target.href ),
+						directURI = new URL( data.scryfall_uri ),
+						utmSource = queryURI.searchParams.get( 'utm_source' );
+					directURI.searchParams.set( 'utm_source', utmSource );
 					if ( data.hasOwnProperty( 'card_faces' ) ) {
 						const isSecondface = data.card_faces[ 0 ].name.replace( /[^a-z]/ig, '' ).toUpperCase() !==
 							decodeURIComponent( target.dataset.cardName ).replace( /[^a-z]/ig, '' ).toUpperCase();
