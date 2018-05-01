@@ -5,5 +5,7 @@
 		]
 	},
 	"scryfalllinks-desc": "Creates Scryfall links from Magic: The Gathering card names.",
-	"scryfalllinks-i18n-welcome": "Welcome to the localization file of the ScryfallLinks extension."
+	"scryfalllinks-i18n-welcome": "Welcome to the localization file of the ScryfallLinks extension.",
+	"no-deck-found": "No Deck was found matching the criteria passed.",
+	"invalid-format": "Please choose a valid deck format."
 }

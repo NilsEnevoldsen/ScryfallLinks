@@ -8,8 +8,12 @@
 	"descriptionmsg": "scryfalllinks-desc",
 	"license-name": "MIT",
 	"type": "parserhook",
+	"SpecialPages": {
+		"DownloadDeck": "MediaWiki\\Extension\\ScryfallLinks\\SpecialDownloadDeck"
+	},
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php"
+		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php",
+		"MediaWiki\\Extension\\ScryfallLinks\\SpecialDownloadDeck": "src/specials/SpecialDownloadDeck.php"
 	},
 	"Hooks": {
 		"ParserFirstCallInit": [
