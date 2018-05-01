@@ -188,10 +188,12 @@ class Hooks {
 	protected static function outputLink($card, $set, $anchor) {
 		$setquery = $set ? ' e:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
-		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars(urlencode($search)) .
-			'&utm_source=mediawiki" class="ext-scryfall-link" data-card-name="' .
-			htmlspecialchars(urlencode($card)) . '" data-card-set="' . htmlspecialchars(urlencode($set)) .
-			'">' . htmlspecialchars($anchor) . '</a>';
+
+		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
+			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
+			htmlspecialchars( $card ) . '" data-card-set="' .
+			htmlspecialchars( $set ) . '">' . htmlspecialchars( $anchor ) . '</a>';
+
 
 		return $output;
 	}
