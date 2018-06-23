@@ -36,7 +36,7 @@ $( function () {
 			fetch( jsonURI )
 				.then( response => {
 					if ( !response.ok ) { throw Error( response.statusText ); }
-					{ return response; } 
+					{ return response; }
 				} )
 				.then( response => response.json() )
 				.then( data => {
