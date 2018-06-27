@@ -9,11 +9,17 @@
 	"license-name": "MIT",
 	"type": "parserhook",
 	"AutoloadClasses": {
-		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php"
+		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php",
+		"MediaWiki\\Extension\\ScryfallLinks\\SpecialDownloadDeck": "src/specials/SpecialDownloadDeck.php"
 	},
 	"Hooks": {
 		"ParserFirstCallInit": [
 			"MediaWiki\\Extension\\ScryfallLinks\\Hooks::onParserFirstCallInit"
+		]
+	},
+	"SpecialPages": {
+		"DownloadDeck": [
+			"MediaWiki\\Extension\\ScryfallLinks\\SpecialDownloadDeck"
 		]
 	},
 	"MessagesDirs": {
@@ -30,6 +36,11 @@
 			"styles": [
 				"tippy.css",
 				"ext.scryfallLinks.less"
+			]
+		},
+		"ext.scryfallLinks.deckExport": {
+			"scripts": [
+				"ext.scryfallLinks.deckExport.js"
 			]
 		}
 	},

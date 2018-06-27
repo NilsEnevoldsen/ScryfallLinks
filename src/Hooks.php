@@ -35,7 +35,9 @@ class Hooks {
 	 * @return string
 	 */
 	public static function renderScryfallDeck( $input, array $args, $parser, $frame ) {
-		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
+		$parser->getOutput()->addModules(
+			[ 'ext.scryfallLinks.tooltip', 'ext.scryfallLinks.deckExport' ]
+		);
 		$input = $parser->recursiveTagParse( $input, $frame );
 
 		if ( !$input ) {
@@ -43,7 +45,7 @@ class Hooks {
 		}
 
 		// Save the title
-		$decktitle = $args['title'] ?? '';
+		$decktitle = $args['title'] ?? 'Untitled Deck';
 
 		// Create "cards" array from raw input
 		$cards = [];
@@ -54,7 +56,7 @@ class Hooks {
 				PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 			if ( count( $line ) == 1 ) {
 				// This line is a section title
-				$thissection = preg_replace( '/[^A-Za-z- ]/', '', $line[0] );
+				$thissection = trim( preg_replace( '/[^A-Za-z- ]/', '', $line[0] ) );
 			} else {
 				// This line is a card name with a quantity
 				$cards[$key]['quantity'] = $line[0];
@@ -73,44 +75,34 @@ class Hooks {
 		// Hack to move SB cards to the end while preserving order (2/2)
 		ksort( $cards );
 
-		// Create deck export format(s)
-		$decklist_mtgo = [];
-		$sbbegun = false;
-		foreach ( $cards as $key => $card ) {
-			if ( !$sbbegun && $key > 10000 ) {
-				$decklist_mtgo[] = 'SB:';
-				$sbbegun = true;
-			}
-			$decklist_mtgo[] = $card['quantity'] . ' ' . $card['name'];
-		}
-		$decklist_mtgo = implode( PHP_EOL, $decklist_mtgo );
-		$decklist_mtgo = base64_encode( $decklist_mtgo );
-		$deckexport_anchor = '<a class="ext-scryfall-deckexport" href="data:text/plain;base64,' .
-			$decklist_mtgo . '" ' . 'download="' . $decktitle . '.dec"></a>';
-
 		// Create HTML decklist
 		$decklist_html = [];
 		$prevsection = '';
+		$first_card_written = false;
 		foreach ( $cards as $card ) {
 			$sectionquantities[$card['section']][] = $card['quantity'];
 		}
 		$decklist_html[] = '<div class="ext-scryfall-decksection">';
 		foreach ( $cards as $key => $card ) {
 			if ( $card['section'] != $prevsection ) {
-				if ( $prevsection != '' ) {
-					// If decklist begins with a decksection, don't prefix an empty decksection
+				if ( $first_card_written ) {
+					// Only start a new section if the first section is nonempty
 					$decklist_html[] = '</div>';
 					$decklist_html[] = '<div class="ext-scryfall-decksection">';
 				}
-				$decklist_html[] = '<h4>' . $card['section'] . ' (' .
-					array_sum( $sectionquantities[$card['section']] ) . ')</h4>';
+				$decklist_html[] = '<h4><span class="ext-scryfall-decksectiontitle">' . $card['section']
+					. '</span> (' . array_sum( $sectionquantities[$card['section']] ) . ')</h4>';
 				$prevsection = $card['section'];
 			}
-			$decklist_html[] = '<p><span class="ext-scryfall-deckcardcount">' . $card['quantity'] .
-				'</span> ' . self::outputLink( $card['name'], '', $card['name'] ) . '</p>';
+			$decklist_html[] = '<p class="ext-scryfall-deckentry"><span class="ext-scryfall-deckcardcount">' .
+				$card['quantity'] . '</span> ' . self::outputLink( $card['name'], '', $card['name'] ) . '</p>';
+			$first_card_written = true;
 		}
 		$decklist_html[] = '</div>';
 		$decklist_html = implode( PHP_EOL, $decklist_html );
+
+		// Create deck download tools
+		$deckexport_anchor = '<button type="button" class="ext-scryfall-deckexport-text">Download deck</button>';
 
 		// Return the HTML
 		$output = '<div class="ext-scryfall-deck"><div class="ext-scryfall-decktitlecontainer">' .
@@ -189,7 +181,7 @@ class Hooks {
 		$setquery = $set ? ' set:' . $set : '';
 		$search = '!"' . $card . '"' . $setquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
+			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-cardname" data-card-name="' .
 			htmlspecialchars( $card ) . '" data-card-set="' .
 			htmlspecialchars( $set ) . '">' . htmlspecialchars( $anchor ) . '</a>';
 

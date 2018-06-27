@@ -7,7 +7,7 @@
 
 $( function () {
 	/* global tippy */
-	const tip = tippy( '.ext-scryfall-link', {
+	const tip = tippy( '.ext-scryfall-cardname', {
 		arrow: false,
 		animateFill: false,
 		followCursor: true,

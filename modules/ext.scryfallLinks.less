@@ -1,4 +1,4 @@
-a.ext-scryfall-link {
+a.ext-scryfall-cardname {
 	text-decoration: underline;
 	text-decoration-style: dotted;
 	-webkit-text-decoration-style: dotted; // ResourceLoader fails to autoprefix this
@@ -45,18 +45,26 @@ div.ext-scryfall-decktitlecontainer {
 span.ext-scryfall-decktitle {
 	font-weight: bold;
 }
-a.ext-scryfall-deckexport {
+button.ext-scryfall-deckexport-text {
+	float: right;
+	/* Reset */
+	border: 0;
+	padding: 0;
+	color: inherit;
+	font: inherit;
+	line-height: normal;
+	user-select: none;
+	/* Hide text */
 	overflow: hidden;
 	text-indent: -9999em;
-	height: 1.3em;
-	width: 2em;
+	/* Set image */
 	margin-top: 0.25em;
-	float: right;
-	/* @embed */
-	background: url( ../images/mtgo.png ); // Must be <24kb to get embedded
-	background-size: 2em;
+	height: 1.3em;
+	width: 1.3em;
+	// stylelint-disable-next-line function-url-quotes
+	background: url( 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve"><g id="share"><path d="M459,216.75L280.5,38.25v102c-178.5,25.5-255,153-280.5,280.5C63.75,331.5,153,290.7,280.5,290.7v104.55L459,216.75z" fill="#FFFFFF"/></g></svg>' );
+	background-size: 1.3em;
 	background-repeat: no-repeat;
-	color: #fff;
 }
 div.ext-scryfall-deckcontents {
 	columns: 15em 2;
