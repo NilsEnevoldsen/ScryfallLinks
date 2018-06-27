@@ -73,20 +73,22 @@ class Hooks {
 		// Hack to move SB cards to the end while preserving order (2/2)
 		ksort( $cards );
 
-		// Create deck export format(s)
-		$decklist_mtgo = [];
-		$sbbegun = false;
-		foreach ( $cards as $key => $card ) {
-			if ( !$sbbegun && $key > 10000 ) {
-				$decklist_mtgo[] = 'SB:';
-				$sbbegun = true;
-			}
-			$decklist_mtgo[] = $card['quantity'] . ' ' . $card['name'];
+		$pageid = $parser->getTitle()->getArticleID();
+		static $nums;
+		if ( !isset( $nums[$pageid] ) ) {
+			$nums[$pageid] = 0;
 		}
-		$decklist_mtgo = implode( PHP_EOL, $decklist_mtgo );
-		$decklist_mtgo = base64_encode( $decklist_mtgo );
-		$deckexport_anchor = '<a class="ext-scryfall-deckexport" href="data:text/plain;base64,' .
-			$decklist_mtgo . '" ' . 'download="' . $decktitle . '.dec"></a>';
+		$decknum = $nums[$pageid]++;
+		$deckexport_anchor = "
+		<div class=\"ext-scryfall-deckdownloadcontainer\">
+		<div class=\"ext-scryfall-downloadlinks\">
+			Download:
+			<a href=\"/Special:DownloadDeck?pageid={$pageid}&num={$decknum}&format=apprentice\" title=\"Download in Apprentice format.\">apprentice</a>,
+			<a href=\"/Special:DownloadDeck?pageid={$pageid}&num={$decknum}&format=octgn\" title=\"Download in OCTGN2 format.\">octgn</a>,
+			<a href=\"/Special:DownloadDeck?pageid={$pageid}&num={$decknum}&format=magiconline\" title=\"Download in Magic Online format.\">magiconline</a>
+		</div>
+		</div>
+		";
 
 		// Create HTML decklist
 		$decklist_html = [];
@@ -115,8 +117,8 @@ class Hooks {
 		// Return the HTML
 		$output = '<div class="ext-scryfall-deck"><div class="ext-scryfall-decktitlecontainer">' .
 			'<span class="ext-scryfall-decktitle">' . htmlspecialchars( $decktitle ) . '</span>' .
-			$deckexport_anchor . '</div><div class="ext-scryfall-deckcontents">' . $decklist_html .
-			'</div></div>';
+			'</div><div class="ext-scryfall-deckcontents">' . $decklist_html .
+			'</div>' . $deckexport_anchor . '</div>';
 
 		return $output;
 	}
