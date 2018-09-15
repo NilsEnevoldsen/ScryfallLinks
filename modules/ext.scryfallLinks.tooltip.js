@@ -32,6 +32,7 @@ $( function () {
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
 			thisPopper.style.display = 'none';
+			target.style.cursor = 'progress';
 			// fetch() only works on modern browsers
 			fetch( jsonURI )
 				.then( response => {
@@ -79,6 +80,7 @@ $( function () {
 					content.append( img );
 					// Show the tooltip by removing display:none
 					thisPopper.style.removeProperty( 'display' );
+					target.style.removeProperty( 'cursor' );
 					tip.loading = false;
 				} )
 				.catch( function () {
@@ -88,6 +90,7 @@ $( function () {
 					content.parentNode.classList.add( 'ext-scryfall-error' );
 					// Show the tooltip by removing display:none
 					thisPopper.style.removeProperty( 'display' );
+					target.style.removeProperty( 'cursor' );
 					tip.loading = false;
 				} );
 		},
