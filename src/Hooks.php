@@ -107,7 +107,7 @@ class Hooks {
 				$prevsection = $card['section'];
 			}
 			$decklist_html[] = '<p><span class="ext-scryfall-deckcardcount">' . $card['quantity'] .
-				'</span> ' . self::outputLink( $card['name'], '', $card['name'] ) . '</p>';
+				'</span> ' . self::outputLink( $card['name'], '', '', $card['name'] ) . '</p>';
 		}
 		$decklist_html[] = '</div>';
 		$decklist_html = implode( PHP_EOL, $decklist_html );
@@ -138,10 +138,11 @@ class Hooks {
 		}
 
 		$set = $args['set'] ?? '';
+		$cn = $args['number'] ?? '';
 
 		$anchor = $args['title'] ?? $input;
 
-		return self::outputLink( $input, $set, $anchor );
+		return self::outputLink( $input, $set, $cn, $anchor );
 	}
 
 	/**
@@ -163,7 +164,7 @@ class Hooks {
 			$return = "";
 			foreach ( $lines as $line ) {
 				if ( !empty( $line ) ) {
-					$return .= self::outputLink( $line, '', $line ). "\n";
+					$return .= self::outputLink( $line, '', '', $line ). "\n";
 				}
 				$return .= "\n";
 			}
@@ -183,15 +184,26 @@ class Hooks {
 	 * @param string $anchor Anchor text
 	 * @return string
 	 */
-	protected static function outputLink( $card, $set, $anchor ) {
+	protected static function outputLink( $card, $set, $cn, $anchor ) {
 		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
 		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
 		$setquery = $set ? ' set:' . $set : '';
-		$search = '!"' . $card . '"' . $setquery;
+		$cnquery =  $cn ? ' cn:' . $cn : '';
+		$search = '!"' . $card . '"' . $setquery . $cnquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
-			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link" data-card-name="' .
-			htmlspecialchars( $card ) . '" data-card-set="' .
-			htmlspecialchars( $set ) . '">' . htmlspecialchars( $anchor ) . '</a>';
+			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-link"';
+
+		$output .= ' data-card-name="' . htmlspecialchars( $card ) . '"';
+
+		// only add this attributes if set
+		if ($set) {
+			$output .= ' data-card-set="' . htmlspecialchars( $set ) . '"';
+		}
+		if ($cn) {
+			$output .= ' data-card-number="' . htmlspecialchars( $cn ) . '"';
+		}
+
+		$output .= '>' . htmlspecialchars( $anchor ) . '</a>';
 
 		return $output;
 	}

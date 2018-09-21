@@ -23,11 +23,18 @@ $( function () {
 			const thisPopper = this,
 				content = thisPopper.querySelector( '.tippy-content' ),
 				/* eslint no-underscore-dangle: ["error", { "allow": ["_reference"] }] */
-				target = thisPopper._reference,
-				jsonURI = new URL( 'https://api.scryfall.com/cards/named' );
+				target = thisPopper._reference;
+
 			var rotationClass = 'ext-scryfall-rotate-0';
-			jsonURI.searchParams.set( 'exact', target.dataset.cardName );
-			jsonURI.searchParams.set( 'set', typeof target.dataset.cardSet === 'undefined' ? '' : target.dataset.cardSet );
+			if (typeof target.dataset.cardNumber === 'undefined' || target.dataset.cardNumber === '') {
+				var jsonURI = new URL( 'https://api.scryfall.com/cards/named' );
+				jsonURI.searchParams.set( 'exact', target.dataset.cardName );
+				if (typeof target.dataset.cardSet !== 'undefined') {
+					jsonURI.searchParams.set( 'set', target.dataset.cardSet );
+				}
+			} else {
+				var jsonURI = new URL( 'https://api.scryfall.com/cards/' + target.dataset.cardSet + "/" + target.dataset.cardNumber);
+			}
 			if ( tip.loading || content.innerHTML !== '' ) { return; }
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
