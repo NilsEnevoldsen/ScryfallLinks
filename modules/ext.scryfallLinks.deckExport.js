@@ -19,6 +19,8 @@
 			print: function ( format ) {
 				if ( format === 'octgn' ) {
 					return '<card qty="' + this.count + '" id="88e8742b-5da7-4458-853f-0fd10980d959">' + this.name + '</card>';
+				} else if ( format === 'decklist.org' ) {
+					return this.count + '%09' + encodeURIComponent( this.name );
 				} else {
 					return this.count + ' ' + this.name;
 				}
@@ -37,6 +39,10 @@
 					return 'SB:\n' + this.cardlist.map( entry => entry.print( format ) ).join( '\n' );
 				} else if ( format === 'octgn' && this.isSideboard ) {
 					return '</section>\n<section name="Sideboard">\n' + this.cardlist.map( entry => entry.print( format ) ).join( '\n' );
+				} else if ( format === 'decklist.org' && this.isSideboard ) {
+					return '&deckside=' + this.cardlist.map( entry => entry.print( format ) ).join( '%0A' );
+				} else if ( format === 'decklist.org' ) {
+					return this.cardlist.map( entry => entry.print( format ) ).join( '%0A' );
 				} else {
 					return this.cardlist.map( entry => entry.print( format ) ).join( '\n' );
 				}
@@ -56,6 +62,9 @@
 						'<section name="Main">\n' +
 						this.sectionlist.map( section => section.print( format ) ).join( '\n' ) +
 						'\n</section>\n</deck>';
+				} else if ( format === 'decklist.org' ) {
+					return 'https://www.decklist.org/?deckmain=' +
+						this.sectionlist.map( section => section.print( format ) ).join( '%0A' );
 				} else {
 					return this.sectionlist.map( section => section.print( format ) ).join( '\n\n' );
 				}
@@ -142,6 +151,12 @@
 				deck.print( 'octgn' ),
 				'text/plain'
 			);
+		} );
+
+		$( '.ext-scryfall-deckexport-decklist' ).click( event => {
+			const deck = getDeck( event ),
+				uri = new URL( deck.print( 'decklist.org' ) );
+			window.open(uri,'_blank');
 		} );
 	} );
 }() );

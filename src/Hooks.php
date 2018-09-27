@@ -116,6 +116,7 @@ class Hooks {
 					'<li><button title="Download in Magic: The Gathering Online format." type="button" class="ext-scryfall-deckexport-mtgo">MTGO</button></li>' .
 					'<li><button title="Download in Apprentice format." type="button" class="ext-scryfall-deckexport-apprentice">Apprentice</button></li>' .
 					'<li><button title="Download in OCTGN format." type="button" class="ext-scryfall-deckexport-octgn">OCTGN</button></li>' .
+					'<li><button title="Export to decklist.org." type="button" class="ext-scryfall-deckexport-decklist">decklist.org</button></li>' .
 				'</ul>' .
 			'</div>';
 
