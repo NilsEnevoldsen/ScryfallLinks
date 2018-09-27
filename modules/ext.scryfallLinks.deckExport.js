@@ -156,7 +156,7 @@
 		$( '.ext-scryfall-deckexport-decklist' ).click( event => {
 			const deck = getDeck( event ),
 				uri = new URL( deck.print( 'decklist.org' ) );
-			window.open(uri,'_blank');
+			window.open( uri, '_blank' );
 		} );
 	} );
 }() );
