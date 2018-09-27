@@ -1,82 +1,134 @@
-a.ext-scryfall-cardname {
-	text-decoration: underline;
-	text-decoration-style: dotted;
-	-webkit-text-decoration-style: dotted; // ResourceLoader fails to autoprefix this
+.ext-scryfall {
+	&-cardname {
+		text-decoration: underline;
+		text-decoration-style: dotted;
+		-webkit-text-decoration-style: dotted; // ResourceLoader fails to autoprefix this
+	}
+	&-cardimage {
+		border-radius: 4.75% / 3.5%;
+		display: block;
+		overflow: hidden;
+	}
+	&-rotate-90cw {
+		transform: rotate( 90deg );
+	}
+	&-rotate-90ccw {
+		transform: rotate( -90deg );
+	}
+	&-rotate-180 {
+		transform: rotate( 180deg );
+	}
+	&-deck {
+		overflow: hidden; // So border-radius applies to deck title
+		min-width: 15em;
+		max-width: 35em;
+		border: 1px solid #000;
+		border-radius: 0.8em;
+		p {
+			line-height: 1.2;
+		}
+		&titlecontainer {
+			padding: 0 1em;
+			background: #444;
+			color: #fff;
+			line-height: 1.8em;
+			font-size: 1.6em;
+		}
+		&title {
+			font-weight: bold;
+		}
+		&contents {
+			columns: 15em 2;
+		}
+		&section {
+			break-inside: avoid-column;
+			white-space: nowrap;
+			overflow-x: hidden;
+			padding-left: 1em;
+		}
+		&cardcount {
+			display: inline-block;
+			width: 1.2em;
+			text-align: right;
+		}
+		&export {
+			position: relative;
+			float: right;
+			&-dropbtn {
+				/* Reset */
+				border: 0;
+				padding: 0;
+				color: inherit;
+				font: inherit;
+				line-height: normal;
+				user-select: none;
+				/* Hide text */
+				overflow: hidden;
+				text-indent: -9999em;
+				/* Set image */
+				margin-top: 0.3em;
+				height: 1.1em;
+				width: 1.1em;
+				// Download icon is from https://useiconic.com/open with fill="white" added
+				// stylelint-disable-next-line function-url-quotes
+				background: url( 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="white"><path d="M3 0v3h-2l3 3 3-3h-2v-3h-2zm-3 7v1h8v-1h-8z" /></svg>' );
+				background-size: 1.1em;
+				background-repeat: no-repeat;
+			}
+			&-dropmenu {
+				visibility: hidden;
+				opacity: 0;
+				z-index: -1;
+				transform: translateY( -2em );
+				transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0s;
+				position: absolute;
+				overflow: auto;
+				right: 0;
+				background: #444;
+				box-shadow: 0 0.3em 0.6em 0 rgba( 0, 0, 0, 0.2 );
+				ul& {
+					list-style-type: none;
+					margin: 0;
+				}
+				li {
+					list-style-type: none;
+					font-size: small;
+					line-height: 1em;
+					button {
+						cursor: pointer;
+						color: #fff;
+						background: none;
+						border: 0;
+						font-size: small;
+						padding: 0.5em 0.5em;
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+			&:focus &-dropmenu,
+			&:focus-within &-dropmenu,
+			&:hover &-dropmenu {
+				visibility: visible;
+				opacity: 1;
+				z-index: 1;
+				transform: translateY( 0% );
+				transition-delay: 0s, 0s, 0.3s;
+			}
+		}
+	}
 }
-div.tippy-tooltip.scryfall-theme {
-	padding: 0;
-	background-color: transparent;
-	height: 340px;
-}
-div.tippy-tooltip.ext-scryfall-error {
-	border-radius: 12px;
-	color: #fff;
-	text-shadow: 2px 2px 6px #000;
-}
-img.ext-scryfall-cardimage {
-	border-radius: 12px;
-	display: block;
-	overflow: hidden;
-}
-img.ext-scryfall-rotate-90cw {
-	transform: rotate( 90deg );
-}
-img.ext-scryfall-rotate-90ccw {
-	transform: rotate( -90deg );
-}
-img.ext-scryfall-rotate-180 {
-	transform: rotate( 180deg );
-}
-div.ext-scryfall-deck {
-	overflow: hidden; // So border-radius applies to deck title
-	min-width: 15em;
-	max-width: 35em;
-	border: 1px solid #000;
-	border-radius: 0.8em;
-}
-div.ext-scryfall-decktitlecontainer {
-	padding-left: 1em;
-	padding-right: 1em;
-	background-color: #444;
-	line-height: 1.8em;
-	font-size: 1.6em;
-	color: #fff;
-}
-span.ext-scryfall-decktitle {
-	font-weight: bold;
-}
-button.ext-scryfall-deckexport-text {
-	float: right;
-	/* Reset */
-	border: 0;
-	padding: 0;
-	color: inherit;
-	font: inherit;
-	line-height: normal;
-	user-select: none;
-	/* Hide text */
-	overflow: hidden;
-	text-indent: -9999em;
-	/* Set image */
-	margin-top: 0.25em;
-	height: 1.3em;
-	width: 1.3em;
-	// stylelint-disable-next-line function-url-quotes
-	background: url( 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 459 459" style="enable-background:new 0 0 459 459;" xml:space="preserve"><g id="share"><path d="M459,216.75L280.5,38.25v102c-178.5,25.5-255,153-280.5,280.5C63.75,331.5,153,290.7,280.5,290.7v104.55L459,216.75z" fill="#FFFFFF"/></g></svg>' );
-	background-size: 1.3em;
-	background-repeat: no-repeat;
-}
-div.ext-scryfall-deckcontents {
-	columns: 15em 2;
-}
-div.ext-scryfall-decksection {
-	break-inside: avoid-column;
-	white-space: nowrap;
-	overflow-x: hidden;
-	padding-left: 1em;
-}
-span.ext-scryfall-deckcardcount {
-	display: inline-block;
-	width: 1.2em;
-	text-align: right;
+
+div.tippy-tooltip {
+	&.scryfall-theme {
+		padding: 0;
+		background-color: transparent;
+		height: 340px;
+	}
+	&.ext-scryfall-error {
+		border-radius: 12px;
+		color: #fff;
+		text-shadow: 2px 2px 6px #000;
+	}
 }

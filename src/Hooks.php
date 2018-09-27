@@ -62,8 +62,10 @@ class Hooks {
 				$cards[$key]['quantity'] = $line[0];
 				$cards[$key]['name'] = $line[1];
 				$cards[$key]['section'] = $thissection;
+				$cards[$key]['sb'] = false;
 				// Hack to move SB cards to the end while preserving order (1/2)
 				if ( in_array( strtolower( $cards[$key]['section'] ), [ 'sideboard', 'sb' ] ) ) {
+					$cards[$key]['sb'] = true;
 					$cards[$key + 10000] = $cards[$key];
 					unset( $cards[$key] );
 				};
@@ -88,7 +90,11 @@ class Hooks {
 				if ( $first_card_written ) {
 					// Only start a new section if the first section is nonempty
 					$decklist_html[] = '</div>';
-					$decklist_html[] = '<div class="ext-scryfall-decksection">';
+					if ( $card['sb'] ) {
+						$decklist_html[] = '<div class="ext-scryfall-decksection ext-scryfall-decksideboard">';
+					} else {
+						$decklist_html[] = '<div class="ext-scryfall-decksection">';
+					}
 				}
 				$decklist_html[] = '<h4><span class="ext-scryfall-decksectiontitle">' . $card['section']
 					. '</span> (' . array_sum( $sectionquantities[$card['section']] ) . ')</h4>';
@@ -102,7 +108,15 @@ class Hooks {
 		$decklist_html = implode( PHP_EOL, $decklist_html );
 
 		// Create deck download tools
-		$deckexport_anchor = '<button type="button" class="ext-scryfall-deckexport-text">Download deck</button>';
+		$deckexport_anchor = '<div class="ext-scryfall-deckexport">' .
+				'<button type="button" class="ext-scryfall-deckexport-dropbtn">Download/Export</button>' .
+				'<ul class="ext-scryfall-deckexport-dropmenu">' .
+					'<li><button title="Download in text format." type="button" class="ext-scryfall-deckexport-text">Text</button></li>' .
+					'<li><button title="Download in Magic: The Gathering Online format." type="button" class="ext-scryfall-deckexport-mtgo">MTGO</button></li>' .
+					'<li><button title="Download in Apprentice format." type="button" class="ext-scryfall-deckexport-apprentice">Apprentice</button></li>' .
+					'<li><button title="Download in OCTGN format." type="button" class="ext-scryfall-deckexport-octgn">OCTGN</button></li>' .
+				'</ul>' .
+			'</div>';
 
 		// Return the HTML
 		$output = '<div class="ext-scryfall-deck"><div class="ext-scryfall-decktitlecontainer">' .
