@@ -26,7 +26,7 @@ $( function () {
 				target = thisPopper._reference,
 				jsonURI = new URL( 'https://api.scryfall.com/cards/named' );
 			var rotationClass = 'ext-scryfall-rotate-0';
-			if ( typeof target.dataset.cardNumber === 'undefined' || target.dataset.cardNumber === '' ) {
+			if ( typeof target.dataset.cardSet === 'undefined' || typeof target.dataset.cardNumber === 'undefined' || target.dataset.cardNumber === '' ) {
 				jsonURI.searchParams.set( 'exact', target.dataset.cardName );
 				if ( typeof target.dataset.cardSet !== 'undefined' ) {
 					jsonURI.searchParams.set( 'set', target.dataset.cardSet );
