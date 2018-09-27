@@ -26,8 +26,14 @@ $( function () {
 				target = thisPopper._reference,
 				jsonURI = new URL( 'https://api.scryfall.com/cards/named' );
 			var rotationClass = 'ext-scryfall-rotate-0';
-			jsonURI.searchParams.set( 'exact', target.dataset.cardName );
-			jsonURI.searchParams.set( 'set', typeof target.dataset.cardSet === 'undefined' ? '' : target.dataset.cardSet );
+			if ( typeof target.dataset.cardNumber === 'undefined' || target.dataset.cardNumber === '' ) {
+				jsonURI.searchParams.set( 'exact', target.dataset.cardName );
+				if ( typeof target.dataset.cardSet !== 'undefined' ) {
+					jsonURI.searchParams.set( 'set', target.dataset.cardSet );
+				}
+			} else {
+				jsonURI.pathname = 'cards/' + target.dataset.cardSet.toLowerCase() + '/' + target.dataset.cardNumber.toLowerCase();
+			}
 			if ( tip.loading || content.innerHTML !== '' ) { return; }
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
