@@ -1,5 +1,14 @@
 ( function () {
 	/*
+	* This file provides the ability to download/export decks.
+	*
+	* This is what happens when an export link is clicked: The <deck> from the webpage
+	* is vacuumed up just as it is, as an XML object. Then a function parses the XML deck into
+	* a JSON object: a Deck, which contains DeckSections, which contains DeckEntrys (i.e. cards).
+	* The print() function of a Deck object recursively calls the print() function on each
+	* DeckSection, which recursively calls the print() function on each DeckEntry. The print()
+	* functions all take a format parameter (such as mtgo).
+	*
 	* Want to add a new format? Define how to print the DeckEntries, DeckSections, and Deck,
 	* then hook up a click event to a new ".ext-scryfall-deckexport-foo" element. Add the
 	* element itself in Hooks.php.
@@ -53,6 +62,7 @@
 			}
 		};
 
+	// parseXMLDeck() accepts a <deck> in XML and returns it in JSON
 	function parseXMLDeck( xmlDeck ) {
 		const deck = Object.create( Deck );
 		deck.title = $( xmlDeck ).find( '.ext-scryfall-decktitle' ).text();
@@ -71,11 +81,13 @@
 		return deck;
 	}
 
+	// getDeck() finds the nearest <deck> and returns it as a JSON object
 	function getDeck( event ) {
 		const xmlDeck = $( event.target ).closest( '.ext-scryfall-deck' );
 		return parseXMLDeck( xmlDeck );
 	}
 
+	// Once we have the deck in the format we want it, this function downloads it as a file
 	function download( filename, data, contenttype ) {
 		var blob = new Blob( [ data ], { type: contenttype } );
 		if ( window.navigator.msSaveOrOpenBlob ) {
