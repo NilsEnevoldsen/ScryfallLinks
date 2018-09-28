@@ -5,7 +5,8 @@
 		-webkit-text-decoration-style: dotted; // ResourceLoader fails to autoprefix this
 	}
 	&-cardimage {
-		border-radius: 4.75% / 3.5%;
+		// The ~'…' is necessary so LESS doesn't interpret the slash as division
+		border-radius: ~'4.75% / 3.5%';
 		display: block;
 		overflow: hidden;
 	}
