@@ -70,7 +70,9 @@ $( function () {
 						}
 					}
 					target.href = directURI.href;
-					if ( data.layout === 'planar' ) { rotationClass = 'ext-scryfall-rotate-90cw'; }
+					if ( data.layout === 'planar' || data.name === 'Burning Cinder Fury of Crimson Chaos Fire' ) {
+						rotationClass = 'ext-scryfall-rotate-90cw';
+					}
 					return data.image_uris.normal;
 				} )
 				.then( imageURI => fetch( imageURI ) )
