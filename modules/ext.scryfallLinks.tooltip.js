@@ -23,7 +23,7 @@ $( function () {
 			} else {
 				jsonURI.pathname = 'cards/' + params.cardSet.toLowerCase() + '/' + params.cardNumber.toLowerCase();
 			}
-			if ( tip.loading || tip.popper.querySelector( '.tippy-content' ).innerHTML !== '' ) { return; }
+			if ( tip.loading || tip.props.content !== '' ) { return; }
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
 			tip.popper.style.display = 'none';
