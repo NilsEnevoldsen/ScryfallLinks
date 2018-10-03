@@ -1,17 +1,9 @@
-( function () {
-	var el = document.createElement( 'div' );
-	el.style.display = 'none';
-	el.id = 'js--card-popup';
-	document.body.append( el );
-}() );
-
 $( function () {
 	/* global tippy */
-	const tip = tippy( '.ext-scryfall-cardname', {
+	tippy( '.ext-scryfall-cardname', {
 		arrow: false,
 		animateFill: false,
 		followCursor: true,
-		html: '#js--card-popup',
 		placement: 'top',
 		touchHold: true,
 		delay: [ 50, 0 ],
@@ -19,26 +11,23 @@ $( function () {
 		duration: 0,
 		performance: true,
 		theme: 'scryfall',
-		onShow() {
-			const thisPopper = this,
-				content = thisPopper.querySelector( '.tippy-content' ),
-				/* eslint no-underscore-dangle: ["error", { "allow": ["_reference"] }] */
-				target = thisPopper._reference,
+		onShow( tip ) {
+			const params = tip.reference.dataset,
 				jsonURI = new URL( 'https://api.scryfall.com/cards/named' );
 			var rotationClass = 'ext-scryfall-rotate-0';
-			if ( typeof target.dataset.cardSet === 'undefined' || typeof target.dataset.cardNumber === 'undefined' || target.dataset.cardNumber === '' ) {
-				jsonURI.searchParams.set( 'exact', target.dataset.cardName );
-				if ( typeof target.dataset.cardSet !== 'undefined' ) {
-					jsonURI.searchParams.set( 'set', target.dataset.cardSet );
+			if ( typeof params.cardSet === 'undefined' || typeof params.cardNumber === 'undefined' || params.cardNumber === '' ) {
+				jsonURI.searchParams.set( 'exact', params.cardName );
+				if ( typeof params.cardSet !== 'undefined' ) {
+					jsonURI.searchParams.set( 'set', params.cardSet );
 				}
 			} else {
-				jsonURI.pathname = 'cards/' + target.dataset.cardSet.toLowerCase() + '/' + target.dataset.cardNumber.toLowerCase();
+				jsonURI.pathname = 'cards/' + params.cardSet.toLowerCase() + '/' + params.cardNumber.toLowerCase();
 			}
-			if ( tip.loading || content.innerHTML !== '' ) { return; }
+			if ( tip.loading || tip.popper.querySelector( '.tippy-content' ).innerHTML !== '' ) { return; }
 			tip.loading = true;
 			// Hide the tooltip until we've finished loaded the image
-			thisPopper.style.display = 'none';
-			target.style.cursor = 'progress';
+			tip.popper.style.display = 'none';
+			tip.reference.style.cursor = 'progress';
 			// fetch() only works on modern browsers
 			fetch( jsonURI )
 				.then( response => {
@@ -47,16 +36,16 @@ $( function () {
 				} )
 				.then( response => response.json() )
 				.then( data => {
-					const queryURI = new URL( target.href ),
+					const queryURI = new URL( tip.reference.href ),
 						directURI = new URL( data.scryfall_uri ),
 						utmSource = queryURI.searchParams.get( 'utm_source' );
 					directURI.searchParams.set( 'utm_source', utmSource );
 					if ( data.hasOwnProperty( 'card_faces' ) ) {
 						const isSecondface = data.card_faces[ 0 ].name.replace( /[^a-z]/ig, '' ).toUpperCase() !==
-							decodeURIComponent( target.dataset.cardName ).replace( /[^a-z]/ig, '' ).toUpperCase();
+							decodeURIComponent( params.cardName ).replace( /[^a-z]/ig, '' ).toUpperCase();
 						if ( data.layout === 'transform' || data.layout === 'double_faced_token' ) {
 							if ( isSecondface ) {
-								target.href = directURI.href + '&back';
+								tip.reference.href = directURI.href + '&back';
 								return data.card_faces[ 1 ].image_uris.normal;
 							} else {
 								return data.card_faces[ 0 ].image_uris.normal;
@@ -69,7 +58,7 @@ $( function () {
 							if ( isSecondface ) { rotationClass = 'ext-scryfall-rotate-180'; }
 						}
 					}
-					target.href = directURI.href;
+					tip.reference.href = directURI.href;
 					if ( data.layout === 'planar' || data.name === 'Burning Cinder Fury of Crimson Chaos Fire' ) {
 						rotationClass = 'ext-scryfall-rotate-90cw';
 					}
@@ -80,31 +69,28 @@ $( function () {
 				.then( blob => {
 					const url = URL.createObjectURL( blob ),
 						img = document.createElement( 'img' );
-					img.classList.add( 'ext-scryfall-cardimage' );
-					img.classList.add( rotationClass );
+					img.classList.add( 'ext-scryfall-cardimage', rotationClass );
 					img.src = url;
-					img.alt = target.text;
+					img.alt = tip.reference.text;
 					img.width = 244;
-					content.append( img );
+					tip.setContent( img );
 					// Show the tooltip by removing display:none
-					thisPopper.style.removeProperty( 'display' );
-					target.style.removeProperty( 'cursor' );
+					tip.popper.style.removeProperty( 'display' );
+					tip.reference.style.removeProperty( 'cursor' );
 					tip.loading = false;
 				} )
 				.catch( function () {
 					// TODO: This should be localized
-					content.innerHTML = 'Preview error';
-					content.parentNode.classList.remove( 'scryfall-theme' );
-					content.parentNode.classList.add( 'ext-scryfall-error' );
+					tip.setContent( 'Preview error' );
+					tip.set( { theme: 'scryfall-error' } );
 					// Show the tooltip by removing display:none
-					thisPopper.style.removeProperty( 'display' );
-					target.style.removeProperty( 'cursor' );
+					tip.popper.style.removeProperty( 'display' );
+					tip.reference.style.removeProperty( 'cursor' );
 					tip.loading = false;
 				} );
 		},
-		onHidden() {
-			const content = this.querySelector( '.tippy-content' );
-			content.innerHTML = '';
+		onHidden( tip ) {
+			tip.setContent( '' );
 		}
 	} );
 }() );

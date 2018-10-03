@@ -11,8 +11,8 @@ module.exports = function ( grunt ) {
 		eslint: {
 			all: [
 				'**/*.js',
-				'!modules/tippy.js',
-				'!modules/tippy.min.js',
+				'!modules/tippy.all.js',
+				'!modules/tippy.all.min.js',
 				'!node_modules/**',
 				'!vendor/**'
 			]
