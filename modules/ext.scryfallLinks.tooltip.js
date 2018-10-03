@@ -74,17 +74,16 @@ $( function () {
 					img.alt = tip.reference.text;
 					img.width = 244;
 					tip.setContent( img );
-					// Show the tooltip by removing display:none
-					tip.popper.style.removeProperty( 'display' );
-					tip.reference.style.removeProperty( 'cursor' );
-					tip.loading = false;
 				} )
 				.catch( function () {
 					// TODO: This should be localized
 					tip.setContent( 'Preview error' );
 					tip.set( { theme: 'scryfall-error' } );
+				} )
+				.finally( function () {
 					// Show the tooltip by removing display:none
 					tip.popper.style.removeProperty( 'display' );
+					// End cursor:progress
 					tip.reference.style.removeProperty( 'cursor' );
 					tip.loading = false;
 				} );
