@@ -4,21 +4,23 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "eslint-config-wikimedia": "^0.5.0",
+    "eslint-config-wikimedia": "^0.8.1",
     "grunt": "^1.0.3",
     "grunt-banana-checker": "^0.6.0",
     "grunt-contrib-less": "^2.0.0",
-    "grunt-eslint": "^20.2.0",
+    "grunt-eslint": "^21.0.0",
     "grunt-jsonlint": "^1.1.0",
-    "grunt-stylelint": "^0.10.0",
-    "less-plugin-autoprefix": "^1.5.1",
+    "grunt-stylelint": "^0.10.1",
+    "less-plugin-autoprefix": "^2.0.0",
     "less-plugin-clean-css": "^1.5.1",
-    "stylelint": "9.2.0",
+    "stylelint": "^9.6.0",
     "stylelint-config-wikimedia": "^0.4.3"
   },
   "dependencies": {
-    "autoprefixer": "^8.6.3",
-    "less": "^3.0.4",
-    "npm": "^6.1.0"
+    "ajv": "^6.5.4",
+    "autoprefixer": "^9.1.5",
+    "eslint-plugin-qunit": "^4.0.0",
+    "less": "^3.8.1",
+    "npm": "^6.4.1"
   }
 }
