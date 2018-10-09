@@ -1,5 +1,15 @@
 /* eslint one-var: "off", vars-on-top: "off" */
 {
+	// Shows a tip that we've previously loaded
+	function showCachedTip( tip ) {
+		const img = document.createElement( 'img' );
+		img.classList.add( 'ext-scryfall-cardimage', tip.reference.dataset.rotationClass );
+		img.alt = tip.reference.text;
+		img.width = 244;
+		img.src = tip.reference.dataset.imgUri;
+		tip.setContent( img );
+	}
+
 	// Fetches the correct card image as long as it's not a back face
 	async function fastBranch( searchUri, tip, img, fastController ) {
 		try {
@@ -10,6 +20,7 @@
 			if ( !response.ok ) { throw Error( response.status ); }
 			img.src = URL.createObjectURL( await response.blob() );
 			tip.setContent( img );
+			tip.reference.dataset.imgUri = img.src;
 			// Show the tooltip by removing display:none
 			tip.popper.style.removeProperty( 'display' );
 		} catch ( e ) {
@@ -36,14 +47,24 @@
 				}
 			} else if ( data.layout === 'split' ) {
 				if ( data.card_faces[ 1 ].oracle_text.startsWith( 'Aftermath' ) ) {
-					if ( isSecondface ) { img.classList.add( 'ext-scryfall-rotate-90ccw' ); }
-				} else { img.classList.add( 'ext-scryfall-rotate-90cw' ); }
+					if ( isSecondface ) {
+						img.classList.add( 'ext-scryfall-rotate-90ccw' );
+						tip.reference.dataset.rotationClass = 'ext-scryfall-rotate-90ccw';
+					}
+				} else {
+					img.classList.add( 'ext-scryfall-rotate-90cw' );
+					tip.reference.dataset.rotationClass = 'ext-scryfall-rotate-90cw';
+				}
 			} else if ( data.layout === 'flip' ) {
-				if ( isSecondface ) { img.classList.add( 'ext-scryfall-rotate-180' ); }
+				if ( isSecondface ) {
+					img.classList.add( 'ext-scryfall-rotate-180' );
+					tip.reference.dataset.rotationClass = 'ext-scryfall-rotate-180';
+				}
 			}
 		}
 		if ( data.layout === 'planar' || data.name === 'Burning Cinder Fury of Crimson Chaos Fire' ) {
 			img.classList.add( 'ext-scryfall-rotate-90cw' );
+			tip.reference.dataset.rotationClass = 'ext-scryfall-rotate-90cw';
 		}
 		// Change the card link from a redirect link to a direct (permapage) link
 		tip.reference.href = permapageUri.href;
@@ -54,6 +75,7 @@
 			if ( !response.ok ) { throw Error( response.status ); }
 			img.src = URL.createObjectURL( await response.blob() );
 			tip.setContent( img );
+			tip.reference.dataset.imgUri = img.src;
 			// Show the tooltip by removing display:none
 			tip.popper.style.removeProperty( 'display' );
 		}
@@ -76,6 +98,13 @@
 				if ( tip.loading || tip.props.content !== '' ) { return; }
 				( async () => {
 					try {
+						if ( tip.reference.dataset.unrecognized ) {
+							throw new Error( '404' );
+						}
+						if ( tip.reference.dataset.cached ) {
+							showCachedTip( tip );
+							return;
+						}
 						tip.loading = true;
 						// Hide the tooltip until we've finished loaded the image
 						tip.popper.style.display = 'none';
@@ -100,10 +129,12 @@
 						const correctPromise = correctBranch( searchUri, tip, img, fastController );
 						await fastPromise;
 						await correctPromise;
+						tip.reference.dataset.cached = true;
 					} catch ( e ) {
 						// TODO: This should be localized
 						if ( e.message === '404' ) {
 							tip.setContent( 'Unrecognized card' );
+							tip.reference.dataset.unrecognized = true;
 						} else {
 							tip.setContent( 'Preview error' );
 						}
