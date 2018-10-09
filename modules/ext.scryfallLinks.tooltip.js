@@ -49,6 +49,7 @@
 				if ( data.card_faces[ 1 ].oracle_text.startsWith( 'Aftermath' ) ) {
 					if ( isSecondface ) {
 						img.classList.add( 'ext-scryfall-rotate-90ccw' );
+						// We add rotationClass to the reference attributes to cache it
 						tip.reference.dataset.rotationClass = 'ext-scryfall-rotate-90ccw';
 					}
 				} else {
@@ -86,8 +87,7 @@
 		tippy( '.ext-scryfall-cardname', {
 			arrow: false,
 			animateFill: false,
-			followCursor: true,
-			placement: 'top',
+			followCursor: 'horizontal',
 			touchHold: true,
 			delay: [ 50, 0 ],
 			animation: 'fade',
@@ -134,6 +134,7 @@
 						// TODO: This should be localized
 						if ( e.message === '404' ) {
 							tip.setContent( 'Unrecognized card' );
+							// If we get a 404, we'll also short-circuit all future attempts
 							tip.reference.dataset.unrecognized = true;
 						} else {
 							tip.setContent( 'Preview error' );
