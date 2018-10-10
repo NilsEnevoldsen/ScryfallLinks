@@ -155,3 +155,20 @@
 		} );
 	}() );
 }
+
+/* Hack for https://github.com/NilsEnevoldsen/ScryfallLinks/issues/22 */
+$( function () {
+	if ( getComputedStyle( document.body ).getPropertyValue( 'position' ) === 'relative' ) {
+		const bodyMarginTop = getComputedStyle( document.body ).getPropertyValue( 'margin-top' );
+		if ( bodyMarginTop.startsWith( '0' ) ) { return; }
+		var invertBodyMarginTop = '';
+		if ( bodyMarginTop.startsWith( '-' ) ) {
+			invertBodyMarginTop = bodyMarginTop.slice( 1 );
+		} else {
+			invertBodyMarginTop = '-' + bodyMarginTop;
+		}
+		const el = document.createElement( 'style' );
+		el.sheet.insertRule( 'div.tippy-popper { top: ' + invertBodyMarginTop + ' !important }', 0 );
+		document.head.appendChild( el );
+	}
+}() );
