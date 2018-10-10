@@ -168,7 +168,7 @@ $( function () {
 			invertBodyMarginTop = '-' + bodyMarginTop;
 		}
 		const el = document.createElement( 'style' );
-		el.sheet.insertRule( 'div.tippy-popper { top: ' + invertBodyMarginTop + ' !important }', 0 );
 		document.head.appendChild( el );
+		el.sheet.insertRule( 'div.tippy-popper { top: ' + invertBodyMarginTop + ' !important }', 0 );
 	}
 }() );
