@@ -87,7 +87,7 @@
 		tippy( '.ext-scryfall-cardname', {
 			arrow: false,
 			animateFill: false,
-			followCursor: 'horizontal',
+			followCursor: true,
 			touchHold: true,
 			delay: [ 50, 0 ],
 			animation: 'fade',
