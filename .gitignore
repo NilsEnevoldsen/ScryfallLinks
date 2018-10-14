@@ -4,8 +4,8 @@
 /composer.lock
 /vendor
 /node_modules
-modules/.Rhistory
-modules/.DS_Store
+resources/.Rhistory
+resources/.DS_Store
 .DS_Store
 *.pem
 /.vscode

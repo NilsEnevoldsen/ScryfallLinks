@@ -45,8 +45,8 @@
 		}
 	},
 	"ResourceFileModulePaths": {
-		"localBasePath": "modules",
-		"remoteExtPath": "ScryfallLinks/modules"
+		"localBasePath": "resources",
+		"remoteExtPath": "ScryfallLinks/resources"
 	},
 	"manifest_version": 2
 }
