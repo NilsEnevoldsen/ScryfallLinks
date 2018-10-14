@@ -10,35 +10,28 @@ module.exports = function ( grunt ) {
 	grunt.initConfig( {
 		eslint: {
 			all: [
-				'**/*.js',
-				'!modules/tippy.all.js',
-				'!modules/tippy.all.min.js',
-				'!node_modules/**',
-				'!vendor/**'
+				'.'
 			]
 		},
-		stylelint: {
-			options: {
-				syntax: 'less'
-			},
-			all: [
-				'**/*.{css,less}',
-				'!modules/ext.scryfallLinks.css',
-				'!modules/tippy.css',
-				'!node_modules/**',
-				'!vendor/**'
-			]
-		},
-		banana: conf.MessagesDirs,
 		jsonlint: {
 			all: [
 				'**/*.json',
 				'!node_modules/**',
 				'!vendor/**'
 			]
-		}
+		},
+		stylelint: {
+			all: [
+				'**/*.{css,less}',
+				'!node_modules/**',
+				'!vendor/**',
+				'!resources/ext.scryfallLinks.css',
+				'!resources/tippy.css'
+			]
+		},
+		banana: conf.MessagesDirs
 	} );
 
 	grunt.registerTask( 'test', [ 'eslint', 'stylelint', 'jsonlint', 'banana' ] );
-	grunt.registerTask( 'default', [ 'test' ] );
+	grunt.registerTask( 'default', 'test' );
 };

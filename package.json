@@ -1,26 +1,24 @@
 {
-  "private": true,
-  "scripts": {
-    "test": "grunt test"
-  },
-  "devDependencies": {
-    "eslint-config-wikimedia": "^0.8.1",
-    "grunt": "^1.0.3",
-    "grunt-banana-checker": "^0.6.0",
-    "grunt-contrib-less": "^2.0.0",
-    "grunt-eslint": "^21.0.0",
-    "grunt-jsonlint": "^1.1.0",
-    "grunt-stylelint": "^0.10.1",
-    "less-plugin-autoprefix": "^2.0.0",
-    "less-plugin-clean-css": "^1.5.1",
-    "stylelint": "^9.6.0",
-    "stylelint-config-wikimedia": "^0.4.3"
-  },
-  "dependencies": {
-    "ajv": "^6.5.4",
-    "autoprefixer": "^9.1.5",
-    "eslint-plugin-qunit": "^4.0.0",
-    "less": "^3.8.1",
-    "npm": "^6.4.1"
-  }
+	"private": true,
+	"scripts": {
+		"test": "grunt test"
+	},
+	"devDependencies": {
+		"eslint-config-wikimedia": "0.8.1",
+		"eslint-plugin-qunit": "3.3.0",
+		"grunt": "1.0.3",
+		"grunt-banana-checker": "0.6.0",
+		"grunt-eslint": "21.0.0",
+		"grunt-jsonlint": "1.1.0",
+		"grunt-stylelint": "0.10.1",
+		"stylelint": "9.2.0",
+		"stylelint-config-wikimedia": "0.4.3"
+	},
+	"eslintIgnore": [
+		"vendor/**",
+		"resources/tippy.all.js",
+		"resources/tippy.all.min.js",
+		"resources/tippy.all.js.map.json",
+		"resources/tippy.all.min.js.map.json"
+	]
 }
