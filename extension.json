@@ -1,6 +1,6 @@
 {
 	"name": "ScryfallLinks",
-	"version": "1.4.2",
+	"version": "1.4.3",
 	"author": [
 		"Nils Enevoldsen"
 	],
@@ -36,11 +36,19 @@
 			"styles": [
 				"tippy.css",
 				"ext.scryfallLinks.less"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
 			]
 		},
 		"ext.scryfallLinks.deckExport": {
 			"scripts": [
 				"ext.scryfallLinks.deckExport.js"
+			],
+			"targets": [
+				"desktop",
+				"mobile"
 			]
 		}
 	},
