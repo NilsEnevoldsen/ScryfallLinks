@@ -1,11 +1,12 @@
 {
-	"extends": "wikimedia",
-	"env": {
-		"browser": true,
-		"jquery": true
-	},
+	"root": true,
+	"extends": [
+		"wikimedia/client",
+		"wikimedia/jquery"
+	],
 	"globals": {
-		"mediaWiki": false
+		"mw": false,
+		"OO": false
 	},
 	"parserOptions": {
 		"ecmaVersion": 8
