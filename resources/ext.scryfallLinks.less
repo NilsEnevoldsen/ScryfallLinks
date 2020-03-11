@@ -4,30 +4,37 @@
 		text-decoration-style: dotted;
 		-webkit-text-decoration-style: dotted; // ResourceLoader fails to autoprefix this
 	}
+
 	&-cardimage {
 		// The ~'…' is necessary so LESS doesn't interpret the slash as division
 		border-radius: ~'4.75% / 3.5%';
 		display: block;
 		overflow: hidden;
 	}
+
 	&-rotate-90cw {
 		transform: rotate( 90deg );
 	}
+
 	&-rotate-90ccw {
 		transform: rotate( -90deg );
 	}
+
 	&-rotate-180 {
 		transform: rotate( 180deg );
 	}
+
 	&-deck {
 		overflow: hidden; // So border-radius applies to deck title
 		min-width: 15em;
 		max-width: 35em;
 		border: 1px solid #000;
 		border-radius: 0.8em;
+
 		p {
 			line-height: 1.2;
 		}
+
 		&titlecontainer {
 			padding: 0 1em;
 			background: #444;
@@ -35,29 +42,36 @@
 			line-height: 1.8em;
 			font-size: 1.6em;
 		}
+
 		&title {
 			font-weight: bold;
 		}
+
 		&contents {
 			columns: 15em 2;
 		}
+
 		&section {
 			break-inside: avoid-column;
 			overflow-x: hidden;
 			padding-left: 1em;
 		}
+
 		&cardcount {
 			display: inline-block;
 			width: 1.2em;
 			text-align: right;
 		}
+
 		&entry {
 			padding-left: 1.5em;
 			text-indent: -1.5em;
 		}
+
 		&export {
 			position: relative;
 			float: right;
+
 			&-dropbtn {
 				/* Reset */
 				border: 0;
@@ -79,6 +93,7 @@
 				background-size: 1.1em;
 				background-repeat: no-repeat;
 			}
+
 			&-dropmenu {
 				visibility: hidden;
 				opacity: 0;
@@ -90,14 +105,17 @@
 				right: 0;
 				background: #444;
 				box-shadow: 0 0.3em 0.6em 0 rgba( 0, 0, 0, 0.2 );
+
 				ul& {
 					list-style-type: none;
 					margin: 0;
 				}
+
 				li {
 					list-style-type: none;
 					font-size: small;
 					line-height: 1em;
+
 					button {
 						cursor: pointer;
 						color: #fff;
@@ -105,12 +123,14 @@
 						border: 0;
 						font-size: small;
 						padding: 0.5em 0.5em;
+
 						&:hover {
 							text-decoration: underline;
 						}
 					}
 				}
 			}
+
 			&:focus &-dropmenu,
 			&:focus-within &-dropmenu,
 			&:hover &-dropmenu {
@@ -130,6 +150,7 @@ div.tippy-tooltip {
 		background-color: transparent;
 		height: 340px;
 	}
+
 	&.scryfall-error-theme {
 		border-radius: 12px;
 		color: #fff;

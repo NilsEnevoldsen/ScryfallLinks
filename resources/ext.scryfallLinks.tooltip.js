@@ -17,7 +17,9 @@
 			fastImgUri.searchParams.set( 'format', 'image' );
 			fastImgUri.searchParams.set( 'version', 'normal' );
 			const response = await fetch( fastImgUri, { signal: fastController.signal } );
-			if ( !response.ok ) { throw Error( response.status ); }
+			if ( !response.ok ) {
+				throw Error( response.status );
+			}
 			img.src = URL.createObjectURL( await response.blob() );
 			tip.setContent( img );
 			tip.reference.dataset.imgUri = img.src;
@@ -30,7 +32,9 @@
 	// Rotates the image if necessary and fetches the correct card image if it's a back face
 	async function correctBranch( searchUri, tip, img, fastController ) {
 		const response = await fetch( searchUri );
-		if ( !response.ok ) { throw Error( response.status ); }
+		if ( !response.ok ) {
+			throw Error( response.status );
+		}
 		const data = await response.json();
 		const referenceUri = new URL( tip.reference.href );
 		const utmSource = referenceUri.searchParams.get( 'utm_source' );
@@ -73,7 +77,9 @@
 		if ( fastBranchIsInvalid ) {
 			fastController.abort();
 			const response = await fetch( data.card_faces[ 1 ].image_uris.normal, {} );
-			if ( !response.ok ) { throw Error( response.status ); }
+			if ( !response.ok ) {
+				throw Error( response.status );
+			}
 			img.src = URL.createObjectURL( await response.blob() );
 			tip.setContent( img );
 			tip.reference.dataset.imgUri = img.src;
@@ -95,7 +101,9 @@
 			performance: true,
 			theme: 'scryfall',
 			onShow( tip ) {
-				if ( tip.loading || tip.props.content !== '' ) { return; }
+				if ( tip.loading || tip.props.content !== '' ) {
+					return;
+				}
 				( async () => {
 					try {
 						if ( tip.reference.dataset.unrecognized ) {
@@ -160,7 +168,9 @@
 $( function () {
 	if ( getComputedStyle( document.body ).getPropertyValue( 'position' ) === 'relative' ) {
 		const bodyMarginTop = getComputedStyle( document.body ).getPropertyValue( 'margin-top' );
-		if ( bodyMarginTop.startsWith( '0' ) ) { return; }
+		if ( bodyMarginTop.startsWith( '0' ) ) {
+			return;
+		}
 		var invertBodyMarginTop = '';
 		if ( bodyMarginTop.startsWith( '-' ) ) {
 			invertBodyMarginTop = bodyMarginTop.slice( 1 );
