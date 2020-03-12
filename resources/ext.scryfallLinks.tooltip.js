@@ -92,13 +92,12 @@
 		/* global tippy */
 		tippy( '.ext-scryfall-cardname', {
 			arrow: false,
-			animateFill: false,
 			followCursor: true,
-			touchHold: true,
+			touch: 'hold',
 			delay: [ 50, 0 ],
 			animation: 'fade',
 			duration: 0,
-			performance: true,
+			ignoreAttributes: true,
 			theme: 'scryfall',
 			onShow( tip ) {
 				if ( tip.loading || tip.props.content !== '' ) {
@@ -147,7 +146,7 @@
 						} else {
 							tip.setContent( 'Preview error' );
 						}
-						tip.set( { theme: 'scryfall-error' } );
+						tip.setProps( { theme: 'scryfall-error' } );
 						// Show the tooltip by removing display:none
 						tip.popper.style.removeProperty( 'display' );
 					} finally {
@@ -163,22 +162,3 @@
 		} );
 	}() );
 }
-
-/* Hack for https://github.com/NilsEnevoldsen/ScryfallLinks/issues/22 */
-$( function () {
-	if ( getComputedStyle( document.body ).getPropertyValue( 'position' ) === 'relative' ) {
-		const bodyMarginTop = getComputedStyle( document.body ).getPropertyValue( 'margin-top' );
-		if ( bodyMarginTop.startsWith( '0' ) ) {
-			return;
-		}
-		var invertBodyMarginTop = '';
-		if ( bodyMarginTop.startsWith( '-' ) ) {
-			invertBodyMarginTop = bodyMarginTop.slice( 1 );
-		} else {
-			invertBodyMarginTop = '-' + bodyMarginTop;
-		}
-		const el = document.createElement( 'style' );
-		document.head.appendChild( el );
-		el.sheet.insertRule( 'div.tippy-popper { top: ' + invertBodyMarginTop + ' !important }', 0 );
-	}
-}() );

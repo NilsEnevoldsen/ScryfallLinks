@@ -16,9 +16,13 @@
 	},
 	"eslintIgnore": [
 		"vendor/**",
-		"resources/tippy.all.js",
-		"resources/tippy.all.min.js",
-		"resources/tippy.all.js.map.json",
-		"resources/tippy.all.min.js.map.json"
+		"resources/popper.js",
+		"resources/popper.min.js",
+		"resources/popper.js.map.json",
+		"resources/popper.min.js.map.json",
+		"resources/tippy.umd.js",
+		"resources/tippy.umd.min.js",
+		"resources/tippy.umd.js.map.json",
+		"resources/tippy.umd.min.js.map.json"
 	]
 }

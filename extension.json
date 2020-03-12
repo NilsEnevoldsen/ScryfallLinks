@@ -24,7 +24,8 @@
 	"ResourceModules": {
 		"ext.scryfallLinks.tooltip": {
 			"scripts": [
-				"tippy.all.min.js",
+				"popper.min.js",
+				"tippy.umd.min.js",
 				"ext.scryfallLinks.tooltip.js"
 			],
 			"styles": [

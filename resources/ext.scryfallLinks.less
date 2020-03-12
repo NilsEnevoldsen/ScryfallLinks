@@ -144,14 +144,14 @@
 	}
 }
 
-div.tippy-tooltip {
-	&.scryfall-theme {
+div.tippy-box {
+	&[ data-theme~='scryfall' ] {
 		padding: 0;
 		background-color: transparent;
 		height: 340px;
 	}
 
-	&.scryfall-error-theme {
+	&[ data-theme~='scryfall-error' ] {
 		border-radius: 12px;
 		color: #fff;
 		text-shadow: 2px 2px 6px #000;
