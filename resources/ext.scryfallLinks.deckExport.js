@@ -92,8 +92,8 @@
 
 	// getDeck() finds the nearest <deck> and returns it as a JSON object
 	function getDeck( event ) {
-		const xmlDeck = $( event.target ).closest( '.ext-scryfall-deck' );
-		return parseXMLDeck( xmlDeck );
+		const $xmlDeck = $( event.target ).closest( '.ext-scryfall-deck' );
+		return parseXMLDeck( $xmlDeck );
 	}
 
 	// Once we have the deck in the format we want it, this function downloads it as a file
@@ -117,7 +117,7 @@
 	}
 
 	$( function () {
-		$( '.ext-scryfall-deckexport-text' ).click( ( event ) => {
+		$( '.ext-scryfall-deckexport-text' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.txt',
@@ -126,7 +126,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-mtgo' ).click( ( event ) => {
+		$( '.ext-scryfall-deckexport-mtgo' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.txt',
@@ -135,7 +135,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-apprentice' ).click( ( event ) => {
+		$( '.ext-scryfall-deckexport-apprentice' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.dec',
@@ -144,7 +144,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-octgn' ).click( ( event ) => {
+		$( '.ext-scryfall-deckexport-octgn' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.o8d',
@@ -153,7 +153,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-decklist' ).click( ( event ) => {
+		$( '.ext-scryfall-deckexport-decklist' ).on( 'click', ( event ) => {
 			const deck = getDeck( event ),
 				uri = new URL( deck.print( 'decklist.org' ) );
 			window.open( uri, '_blank' );

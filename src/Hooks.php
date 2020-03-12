@@ -68,7 +68,7 @@ class Hooks {
 					$cards[$key]['sb'] = true;
 					$cards[$key + 10000] = $cards[$key];
 					unset( $cards[$key] );
-				};
+				}
 			}
 		};
 		$cardsraw = explode( PHP_EOL, $input );
