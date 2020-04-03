@@ -44,40 +44,60 @@ class Hooks {
 			return '';
 		}
 
-		// Save the title
 		$decktitle = $args['title'] ?? 'Untitled Deck';
 
-		// Create "cards" array from raw input
+		$cards = self::parseDeckCards( $input );
+
+		$html = self::buildDeckHtml( $decktitle, $cards );
+
+		return $html;
+	}
+
+	/**
+	 * Parse the <deck> tag input into an array of cards
+	 * @param string $input The tag input
+	 * @return array Parsed cards
+	 */
+	private static function parseDeckCards( $input ) {
+		$cardsraw = explode( PHP_EOL, $input );
+		$cardsraw = array_filter( $cardsraw );
 		$cards = [];
-		$thissection = '';
-		$split_cardcount = function ( $string, $key, &$thissection ) use ( &$cards ) {
-			// Split at the first whitespace following numerals
-			$line = preg_split( '/^\s*(?:(\d+)\s+)?/', $string, -1,
+		$sideboard = [];
+		$current = &$cards;
+		$thisSection = '';
+		$isSideboard = false;
+		foreach ( $cardsraw as $rawline ) {
+			$line = preg_split( '/^\s*(?:(\d+)\s+)?/', $rawline, -1,
 				PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY );
 			if ( count( $line ) == 1 ) {
 				// This line is a section title
-				$thissection = trim( preg_replace( '/[^A-Za-z- ]/', '', $line[0] ) );
+				$thisSection = trim( preg_replace( '/[^A-Za-z- ]/', '', $line[0] ) );
+				$isSideboard = in_array( strtolower( $thisSection ), [ 'sideboard', 'sb' ] );
+				if ( $isSideboard )	{
+					$current = &$sideboard;
+				} else {
+					$current = &$cards;
+				}
 			} else {
 				// This line is a card name with a quantity
-				$cards[$key]['quantity'] = $line[0];
-				$cards[$key]['name'] = $line[1];
-				$cards[$key]['section'] = $thissection;
-				$cards[$key]['sb'] = false;
-				// Hack to move SB cards to the end while preserving order (1/2)
-				if ( in_array( strtolower( $cards[$key]['section'] ), [ 'sideboard', 'sb' ] ) ) {
-					$cards[$key]['sb'] = true;
-					$cards[$key + 10000] = $cards[$key];
-					unset( $cards[$key] );
-				}
+				$current[] = [
+					'quantity' => $line[0],
+					'name' => $line[1],
+					'section' => $thisSection,
+					'sb' => $isSideboard
+				];
 			}
-		};
-		$cardsraw = explode( PHP_EOL, $input );
-		$cardsraw = array_filter( $cardsraw );
-		array_walk( $cardsraw, $split_cardcount, $thissection );
-		// Hack to move SB cards to the end while preserving order (2/2)
-		ksort( $cards );
+		}
+		return array_merge( $cards, $sideboard );
+	}
 
-		// Create HTML decklist
+	/**
+	 * Build the HTML for a <deck> tag
+	 * @param string $decktitle The title for the deck
+	 * @param array $cards The card list (see self::parseDeckCards)
+	 * @return string
+	 */
+	private static function buildDeckHtml( $decktitle, &$cards ) {
 		$decklist_html = [];
 		$prevsection = '';
 		$first_card_written = false;
