@@ -73,7 +73,7 @@ class Hooks {
 				// This line is a section title
 				$thisSection = trim( preg_replace( '/[^A-Za-z- ]/', '', $line[0] ) );
 				$isSideboard = in_array( strtolower( $thisSection ), [ 'sideboard', 'sb' ] );
-				if ( $isSideboard )	{
+				if ( $isSideboard ) {
 					$current = &$sideboard;
 				} else {
 					$current = &$cards;
@@ -94,7 +94,7 @@ class Hooks {
 	/**
 	 * Build the HTML for a <deck> tag
 	 * @param string $decktitle The title for the deck
-	 * @param array $cards The card list (see self::parseDeckCards)
+	 * @param array &$cards The card list (see self::parseDeckCards)
 	 * @return string
 	 */
 	private static function buildDeckHtml( $decktitle, &$cards ) {
