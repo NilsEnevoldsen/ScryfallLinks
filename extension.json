@@ -35,6 +35,9 @@
 			"targets": [
 				"desktop",
 				"mobile"
+			],
+			"messages": [
+				"scryfalllinks-unrecognized-card"	
 			]
 		},
 		"ext.scryfallLinks.deckExport": {

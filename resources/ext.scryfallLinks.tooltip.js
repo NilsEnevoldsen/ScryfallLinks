@@ -88,7 +88,7 @@
 		}
 	}
 
-	$( function () {
+	function initTippy() {
 		/* global tippy */
 		tippy( '.ext-scryfall-cardname', {
 			arrow: false,
@@ -138,9 +138,8 @@
 						await correctPromise;
 						tip.reference.dataset.cached = true;
 					} catch ( e ) {
-						// TODO: This should be localized
 						if ( e.message === '404' ) {
-							tip.setContent( 'Unrecognized card' );
+							tip.setContent( mw.message( 'scryfalllinks-unrecognized-card' ).escaped() );
 							// If we get a 404, we'll also short-circuit all future attempts
 							tip.reference.dataset.unrecognized = true;
 						} else {
@@ -160,5 +159,11 @@
 				tip.setContent( '' );
 			}
 		} );
-	}() );
+	}
+
+	$( function () {
+		mw.loader.using( 'mediawiki.api' ).then( () => {
+			return new mw.Api().loadMessagesIfMissing( [ 'scryfalllinks-unrecognized-card' ] );
+		} ).then( initTippy );
+	} );
 }
