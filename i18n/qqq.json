@@ -1,13 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Shirayuki",
-			"Umherirrender",
-			"Amire80",
-			"Fhocutt",
-			"Liuxinyu970226"
+			"Nils Enevoldsen",
+			"Aspallar"
 		]
 	},
 	"scryfalllinks-desc": "{{desc|name=ScryfallLinks|url=https://github.com/NilsEnevoldsen/ScryfallLinks}}",
-	"scryfalllinks-i18n-welcome": "Used to greet the user when reading the i18n/??.json file."
+	"scryfalllinks-unrecognized-card": "Contents of card tooltip if card cannot be found on Scryfall"
 }

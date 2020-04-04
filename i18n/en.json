@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nils Enevoldsen"
+			"Nils Enevoldsen",
+			"Aspallar"
 		]
 	},
 	"scryfalllinks-desc": "Creates Scryfall links from Magic: The Gathering card names.",
-	"scryfalllinks-i18n-welcome": "Welcome to the localization file of the ScryfallLinks extension."
+	"scryfalllinks-unrecognized-card": "Unrecognized card"
 }
