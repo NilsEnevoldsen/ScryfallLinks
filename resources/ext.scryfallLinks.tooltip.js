@@ -143,7 +143,7 @@
 							// If we get a 404, we'll also short-circuit all future attempts
 							tip.reference.dataset.unrecognized = true;
 						} else {
-							tip.setContent( 'Preview error' );
+							tip.setContent( mw.message( 'scryfalllinks-card-tooltip-error' ).escaped() );
 						}
 						tip.setProps( { theme: 'scryfall-error' } );
 						// Show the tooltip by removing display:none
@@ -163,7 +163,10 @@
 
 	$( function () {
 		mw.loader.using( 'mediawiki.api' ).then( () => {
-			return new mw.Api().loadMessagesIfMissing( [ 'scryfalllinks-unrecognized-card' ] );
+			return new mw.Api().loadMessagesIfMissing( [
+				'scryfalllinks-unrecognized-card',
+				'scryfalllinks-card-tooltip-error'
+			] );
 		} ).then( initTippy );
 	} );
 }
