@@ -6,5 +6,6 @@
 		]
 	},
 	"scryfalllinks-desc": "{{desc|name=ScryfallLinks|url=https://github.com/NilsEnevoldsen/ScryfallLinks}}",
-	"scryfalllinks-unrecognized-card": "Contents of card tooltip if card cannot be found on Scryfall"
+	"scryfalllinks-unrecognized-card": "Contents of card tooltip if card cannot be found on Scryfall",
+	"scryfalllinks-card-tooltip-error": "Used if something goes wrong fetching card data from scryfall"
 }
