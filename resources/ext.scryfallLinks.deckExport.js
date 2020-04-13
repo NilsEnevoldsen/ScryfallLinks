@@ -72,17 +72,19 @@
 		};
 
 	// parseXMLDeck() accepts a <deck> in XML and returns it in JSON
-	function parseXMLDeck( xmlDeck ) {
+	function parseXMLDeck( $xmlDeck ) {
 		const deck = Object.create( Deck );
-		deck.title = $( xmlDeck ).find( '.ext-scryfall-decktitle' ).text();
-		deck.sectionlist = $( xmlDeck ).find( '.ext-scryfall-decksection' ).toArray().map( ( section ) => {
-			const deckSection = Object.create( DeckSection );
-			deckSection.title = $( section ).find( '.ext-scryfall-decksectiontitle' ).text();
+		deck.title = $xmlDeck.find( '.ext-scryfall-decktitle' ).text();
+		deck.sectionlist = $xmlDeck.find( '.ext-scryfall-decksection' ).toArray().map( ( section ) => {
+			const deckSection = Object.create( DeckSection ),
+				$section = $( section );
+			deckSection.title = $section.find( '.ext-scryfall-decksectiontitle' ).text();
 			deckSection.isSideboard = section.classList.contains( 'ext-scryfall-decksideboard' );
-			deckSection.cardlist = $( section ).find( '.ext-scryfall-deckentry' ).toArray().map( ( entry ) => {
-				const deckEntry = Object.create( DeckEntry );
-				deckEntry.count = +( $( entry ).find( '.ext-scryfall-deckcardcount' ).text() );
-				deckEntry.name = $( entry ).find( '.ext-scryfall-cardname' ).text();
+			deckSection.cardlist = $section.find( '.ext-scryfall-deckentry' ).toArray().map( ( entry ) => {
+				const deckEntry = Object.create( DeckEntry ),
+					$entry = $( entry );
+				deckEntry.count = +( $entry.find( '.ext-scryfall-deckcardcount' ).text() );
+				deckEntry.name = $entry.find( '.ext-scryfall-cardname' ).text();
 				return deckEntry;
 			} );
 			return deckSection;
@@ -116,8 +118,11 @@
 		console.log( contenttype + '\n' + filename + '\n' + data ); // eslint-disable-line no-console
 	}
 
-	$( function () {
-		$( '.ext-scryfall-deckexport-text' ).on( 'click', ( event ) => {
+	// Initialize the download dropdown menu(s)
+	function initDownloadUi( $content ) {
+		const $decks = $content.find( '.ext-scryfall-deckexport' ).not( '.loaded' );
+
+		$decks.find( 'button.ext-scryfall-deckexport-text' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.txt',
@@ -126,7 +131,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-mtgo' ).on( 'click', ( event ) => {
+		$decks.find( '.ext-scryfall-deckexport-mtgo' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.txt',
@@ -135,7 +140,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-apprentice' ).on( 'click', ( event ) => {
+		$decks.find( '.ext-scryfall-deckexport-apprentice' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.dec',
@@ -144,7 +149,7 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-octgn' ).on( 'click', ( event ) => {
+		$decks.find( '.ext-scryfall-deckexport-octgn' ).on( 'click', ( event ) => {
 			const deck = getDeck( event );
 			download(
 				deck.title + '.o8d',
@@ -153,10 +158,17 @@
 			);
 		} );
 
-		$( '.ext-scryfall-deckexport-decklist' ).on( 'click', ( event ) => {
+		$decks.find( '.ext-scryfall-deckexport-decklist' ).on( 'click', ( event ) => {
 			const deck = getDeck( event ),
 				uri = new URL( deck.print( 'decklist.org' ) );
 			window.open( uri, '_blank' );
 		} );
-	} );
+
+		// 'wikipage.content' may fire multiple times for a given content so mark
+		// the download UI we just initialized as loaded so we don't repeat ourselves.
+		$decks.addClass( 'loaded' );
+	}
+
+	mw.hook( 'wikipage.content' ).add( initDownloadUi );
+
 }() );
