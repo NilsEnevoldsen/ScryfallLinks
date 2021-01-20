@@ -44,7 +44,7 @@
 		if ( Object.prototype.hasOwnProperty.call( data, 'card_faces' ) ) {
 			const isSecondface = data.card_faces[ 0 ].name.replace( /[^a-z]/ig, '' ).toUpperCase() !==
 				decodeURIComponent( tip.reference.dataset.cardName ).replace( /[^a-z]/ig, '' ).toUpperCase();
-			if ( data.layout === 'transform' || data.layout === 'double_faced_token' ) {
+			if ( data.layout === 'transform' || data.layout === 'modal_dfc' || data.layout === 'double_faced_token' ) {
 				if ( isSecondface ) {
 					fastBranchIsInvalid = true;
 					tip.reference.href = permapageUri.href + '&back';
