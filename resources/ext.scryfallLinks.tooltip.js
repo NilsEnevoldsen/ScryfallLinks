@@ -1,5 +1,5 @@
 /* eslint one-var: "off", vars-on-top: "off" */
-{
+( function () {
 	// Shows a tip that we've previously loaded
 	function showCachedTip( tip ) {
 		const img = document.createElement( 'img' );
@@ -50,6 +50,7 @@
 					tip.reference.href = permapageUri.href + '&back';
 				}
 			} else if ( data.layout === 'split' ) {
+				// eslint-disable-next-line no-restricted-properties
 				if ( data.card_faces[ 1 ].oracle_text.startsWith( 'Aftermath' ) ) {
 					if ( isSecondface ) {
 						img.classList.add( 'ext-scryfall-rotate-90ccw' );
@@ -76,11 +77,11 @@
 		// If fastBranch() is wrongly fetching the front face, abort it and fetch the back one
 		if ( fastBranchIsInvalid ) {
 			fastController.abort();
-			const response = await fetch( data.card_faces[ 1 ].image_uris.normal, {} );
-			if ( !response.ok ) {
-				throw Error( response.status );
+			const responsebackface = await fetch( data.card_faces[ 1 ].image_uris.normal, {} );
+			if ( !responsebackface.ok ) {
+				throw Error( responsebackface.status );
 			}
-			img.src = URL.createObjectURL( await response.blob() );
+			img.src = URL.createObjectURL( await responsebackface.blob() );
 			tip.setContent( img );
 			tip.reference.dataset.imgUri = img.src;
 			// Show the tooltip by removing display:none
@@ -169,4 +170,4 @@
 			] );
 		} ).then( initTippy );
 	} );
-}
+}() );
