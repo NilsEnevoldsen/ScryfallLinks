@@ -24,5 +24,6 @@
 		"resources/tippy.umd.min.js",
 		"resources/tippy.umd.js.map.json",
 		"resources/tippy.umd.min.js.map.json"
-	]
+	],
+	"dependencies": {}
 }
