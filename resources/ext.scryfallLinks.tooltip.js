@@ -3,6 +3,11 @@
 	// Shows a tip that we've previously loaded
 	function showCachedTip( tip ) {
 		const img = document.createElement( 'img' );
+		// The following class is used here:
+		// * ext-scryfall-cardimage
+		// * ext-scryfall-rotate-90ccw
+		// * ext-scryfall-rotate-90cw
+		// * ext-scryfall-rotate-180
 		img.classList.add( 'ext-scryfall-cardimage', tip.reference.dataset.rotationClass );
 		img.alt = tip.reference.text;
 		img.width = 244;
@@ -40,7 +45,7 @@
 		const utmSource = referenceUri.searchParams.get( 'utm_source' );
 		const permapageUri = new URL( data.scryfall_uri );
 		permapageUri.searchParams.set( 'utm_source', utmSource );
-		var fastBranchIsInvalid = false;
+		let fastBranchIsInvalid = false;
 		if ( Object.prototype.hasOwnProperty.call( data, 'card_faces' ) ) {
 			const isSecondface = data.card_faces[ 0 ].name.replace( /[^a-z]/ig, '' ).toUpperCase() !==
 				decodeURIComponent( tip.reference.dataset.cardName ).replace( /[^a-z]/ig, '' ).toUpperCase();
@@ -50,7 +55,6 @@
 					tip.reference.href = permapageUri.href + '&back';
 				}
 			} else if ( data.layout === 'split' ) {
-				// eslint-disable-next-line no-restricted-properties
 				if ( data.card_faces[ 1 ].oracle_text.startsWith( 'Aftermath' ) ) {
 					if ( isSecondface ) {
 						img.classList.add( 'ext-scryfall-rotate-90ccw' );

@@ -100,7 +100,7 @@
 
 	// Once we have the deck in the format we want it, this function downloads it as a file
 	function download( filename, data, contenttype ) {
-		var blob = new Blob( [ data ], { type: contenttype } );
+		const blob = new Blob( [ data ], { type: contenttype } );
 		if ( window.navigator.msSaveOrOpenBlob ) {
 			window.navigator.msSaveBlob( blob, filename );
 		} else {
