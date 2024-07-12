@@ -4,15 +4,12 @@
 		"test": "grunt test"
 	},
 	"devDependencies": {
-		"eslint-config-wikimedia": "0.20.0",
-		"eslint-plugin-qunit": "6.2.0",
-		"grunt": "1.5.3",
-		"grunt-banana-checker": "0.9.0",
-		"grunt-eslint": "23.0.0",
-		"grunt-jsonlint": "2.1.3",
-		"grunt-stylelint": "0.16.0",
-		"stylelint": "13.13.1",
-		"stylelint-config-wikimedia": "0.11.1"
+		"eslint-config-wikimedia": "0.28.2",
+		"grunt": "1.6.1",
+		"grunt-banana-checker": "0.13.0",
+		"grunt-eslint": "24.3.0",
+		"grunt-stylelint": "0.20.1",
+		"stylelint-config-wikimedia": "0.17.2"
 	},
 	"eslintIgnore": [
 		"vendor/**",
@@ -25,5 +22,7 @@
 		"resources/tippy.umd.js.map.json",
 		"resources/tippy.umd.min.js.map.json"
 	],
-	"dependencies": {}
+	"dependencies": {
+		"grunt-cli": "^1.4.3"
+	}
 }

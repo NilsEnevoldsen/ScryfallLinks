@@ -23,7 +23,7 @@
 			fastImgUri.searchParams.set( 'version', 'normal' );
 			const response = await fetch( fastImgUri, { signal: fastController.signal } );
 			if ( !response.ok ) {
-				throw Error( response.status );
+				throw new Error( response.status );
 			}
 			img.src = URL.createObjectURL( await response.blob() );
 			tip.setContent( img );
@@ -38,7 +38,7 @@
 	async function correctBranch( searchUri, tip, img, fastController ) {
 		const response = await fetch( searchUri );
 		if ( !response.ok ) {
-			throw Error( response.status );
+			throw new Error( response.status );
 		}
 		const data = await response.json();
 		const referenceUri = new URL( tip.reference.href );
@@ -85,7 +85,7 @@
 			fastController.abort();
 			const responsebackface = await fetch( data.card_faces[ 1 ].image_uris.normal, {} );
 			if ( !responsebackface.ok ) {
-				throw Error( responsebackface.status );
+				throw new Error( responsebackface.status );
 			}
 			img.src = URL.createObjectURL( await responsebackface.blob() );
 			tip.setContent( img );

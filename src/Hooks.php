@@ -163,7 +163,7 @@ class Hooks {
 	 * @return string
 	 */
 	public static function renderScryfallLink( $input, array $args, $parser, $frame ) {
-		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
+		$parser->getOutput()->addModules( [ 'ext.scryfallLinks.tooltip' ] );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
 		if ( !$input ) {
@@ -187,7 +187,7 @@ class Hooks {
 	 * @return string
 	 */
 	public static function renderScryfallMultiLink( $input, array $args, $parser, $frame ) {
-		$parser->getOutput()->addModules( 'ext.scryfallLinks.tooltip' );
+		$parser->getOutput()->addModules( [ 'ext.scryfallLinks.tooltip' ] );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
 		// Break input into array by lines
