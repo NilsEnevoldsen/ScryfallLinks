@@ -221,19 +221,19 @@ class Hooks {
 	protected static function outputLink( $card, $set, $cn, $anchor ) {
 		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
 		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
-		$setquery = $set ? ' set:' . $set : '';
-		$cnquery = $cn ? ' cn:' . $cn : '';
+		$setquery = ( $set != '' ) && !is_null($set) ? ' set:' . $set : '';
+		$cnquery = ( $cn != '' ) && !is_null($cn) ? ' cn:"' . $cn . '"' : '';
 		$search = '!"' . $card . '"' . $setquery . $cnquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
 			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-cardname"';
 
 		$output .= ' data-card-name="' . htmlspecialchars( $card ) . '"';
 
-		// Only add this attributes if set
-		if ( $set ) {
+		// Only add these attributes if not null and not empty string
+		if ( ( $set != '' ) && !is_null( $set ) ) {
 			$output .= ' data-card-set="' . htmlspecialchars( $set ) . '"';
 		}
-		if ( $cn ) {
+		if ( ( $cn != '' ) && !is_null( $cn ) ) {
 			$output .= ' data-card-number="' . htmlspecialchars( $cn ) . '"';
 		}
 
