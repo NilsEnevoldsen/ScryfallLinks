@@ -78,7 +78,7 @@ class Hooks {
 				} else {
 					$current = &$cards;
 				}
-			} else {
+			} else if ( is_set( $line[0] ) && is_set( $line[1] ) ) {
 				// This line is a card name with a quantity
 				$current[] = [
 					'quantity' => $line[0],
@@ -86,6 +86,8 @@ class Hooks {
 					'section' => $thisSection,
 					'sb' => $isSideboard
 				];
+			} else {
+				// This should not happen
 			}
 		}
 		return array_merge( $cards, $sideboard );
@@ -227,7 +229,7 @@ class Hooks {
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
 			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-cardname"';
 
-		$output .= ' data-card-name="' . htmlspecialchars( $card ) . '"';
+		$output .= ' data-card-name="' . htmlspecialchars( $card ?? '' ) . '"';
 
 		// Only add these attributes if not null and not empty string
 		if ( ( $set != '' ) && !is_null( $set ) ) {
@@ -237,7 +239,7 @@ class Hooks {
 			$output .= ' data-card-number="' . htmlspecialchars( $cn ) . '"';
 		}
 
-		$output .= '>' . htmlspecialchars( $anchor ) . '</a>';
+		$output .= '>' . htmlspecialchars( $anchor ?? '' ) . '</a>';
 
 		return $output;
 	}
