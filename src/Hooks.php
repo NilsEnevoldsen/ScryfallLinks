@@ -78,7 +78,7 @@ class Hooks {
 				} else {
 					$current = &$cards;
 				}
-			} else if ( is_set( $line[0] ) && is_set( $line[1] ) ) {
+			} else if ( isset( $line[0] ) && isset( $line[1] ) ) {
 				// This line is a card name with a quantity
 				$current[] = [
 					'quantity' => $line[0],
