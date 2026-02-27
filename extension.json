@@ -8,13 +8,19 @@
 	"descriptionmsg": "scryfalllinks-desc",
 	"license-name": "MIT",
 	"type": "parserhook",
-	"AutoloadClasses": {
-		"MediaWiki\\Extension\\ScryfallLinks\\Hooks": "src/Hooks.php"
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\ScryfallLinks\\": "src/"
+	},
+	"HookHandlers": {
+		"ScryfallLinksHooks": {
+			"class": "MediaWiki\\Extension\\ScryfallLinks\\Hooks"
+		}
 	},
 	"Hooks": {
-		"ParserFirstCallInit": [
-			"MediaWiki\\Extension\\ScryfallLinks\\Hooks::onParserFirstCallInit"
-		]
+		"ParserFirstCallInit": "ScryfallLinksHooks"
 	},
 	"MessagesDirs": {
 		"ScryfallLinks": [

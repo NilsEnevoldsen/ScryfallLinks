@@ -11,16 +11,18 @@ class HooksRenderTest extends TestCase {
 
 	private $parser;
 	private $frame;
+	private $hooks;
 
 	protected function setUp(): void {
 		$this->parser = new StubParser();
 		$this->frame = new StubPPFrame();
+		$this->hooks = new Hooks();
 	}
 
 	// --- renderScryfallLink ---
 
 	public function testRenderScryfallLinkBasic() {
-		$html = Hooks::renderScryfallLink(
+		$html = $this->hooks->renderScryfallLink(
 			'Lightning Bolt', [], $this->parser, $this->frame
 		);
 		$this->assertStringContainsString( 'ext-scryfall-cardname', $html );
@@ -29,7 +31,7 @@ class HooksRenderTest extends TestCase {
 	}
 
 	public function testRenderScryfallLinkWithSetAndNumber() {
-		$html = Hooks::renderScryfallLink(
+		$html = $this->hooks->renderScryfallLink(
 			'Lightning Bolt',
 			[ 'set' => 'LEA', 'number' => '161' ],
 			$this->parser, $this->frame
@@ -39,7 +41,7 @@ class HooksRenderTest extends TestCase {
 	}
 
 	public function testRenderScryfallLinkWithTitleAttr() {
-		$html = Hooks::renderScryfallLink(
+		$html = $this->hooks->renderScryfallLink(
 			'Lightning Bolt',
 			[ 'title' => 'Bolt' ],
 			$this->parser, $this->frame
@@ -49,14 +51,14 @@ class HooksRenderTest extends TestCase {
 	}
 
 	public function testRenderScryfallLinkEmptyInput() {
-		$html = Hooks::renderScryfallLink(
+		$html = $this->hooks->renderScryfallLink(
 			'', [], $this->parser, $this->frame
 		);
 		$this->assertSame( '', $html );
 	}
 
 	public function testRenderScryfallLinkLoadsTooltipModule() {
-		Hooks::renderScryfallLink(
+		$this->hooks->renderScryfallLink(
 			'Lightning Bolt', [], $this->parser, $this->frame
 		);
 		$this->assertContains(
@@ -68,7 +70,7 @@ class HooksRenderTest extends TestCase {
 	// --- renderScryfallMultiLink ---
 
 	public function testRenderScryfallMultiLinkMultiLine() {
-		$html = Hooks::renderScryfallMultiLink(
+		$html = $this->hooks->renderScryfallMultiLink(
 			"Lightning Bolt\nChain Lightning",
 			[], $this->parser, $this->frame
 		);
@@ -78,7 +80,7 @@ class HooksRenderTest extends TestCase {
 	}
 
 	public function testRenderScryfallMultiLinkSkipsBlankLines() {
-		$html = Hooks::renderScryfallMultiLink(
+		$html = $this->hooks->renderScryfallMultiLink(
 			"Lightning Bolt\n\nChain Lightning",
 			[], $this->parser, $this->frame
 		);
@@ -87,7 +89,7 @@ class HooksRenderTest extends TestCase {
 	}
 
 	public function testRenderScryfallMultiLinkLoadsTooltipModule() {
-		Hooks::renderScryfallMultiLink(
+		$this->hooks->renderScryfallMultiLink(
 			"Lightning Bolt", [], $this->parser, $this->frame
 		);
 		$this->assertContains(
@@ -99,7 +101,7 @@ class HooksRenderTest extends TestCase {
 	// --- renderScryfallDeck ---
 
 	public function testRenderScryfallDeckBasic() {
-		$html = Hooks::renderScryfallDeck(
+		$html = $this->hooks->renderScryfallDeck(
 			"Instants\n4 Lightning Bolt",
 			[ 'title' => 'Burn Deck' ],
 			$this->parser, $this->frame
@@ -110,21 +112,21 @@ class HooksRenderTest extends TestCase {
 	}
 
 	public function testRenderScryfallDeckEmptyInput() {
-		$html = Hooks::renderScryfallDeck(
+		$html = $this->hooks->renderScryfallDeck(
 			'', [ 'title' => 'Empty' ], $this->parser, $this->frame
 		);
 		$this->assertSame( '', $html );
 	}
 
 	public function testRenderScryfallDeckDefaultTitle() {
-		$html = Hooks::renderScryfallDeck(
+		$html = $this->hooks->renderScryfallDeck(
 			"4 Lightning Bolt", [], $this->parser, $this->frame
 		);
 		$this->assertStringContainsString( 'Untitled Deck', $html );
 	}
 
 	public function testRenderScryfallDeckLoadsBothModules() {
-		Hooks::renderScryfallDeck(
+		$this->hooks->renderScryfallDeck(
 			"4 Lightning Bolt", [], $this->parser, $this->frame
 		);
 		$this->assertContains(
@@ -141,8 +143,7 @@ class HooksRenderTest extends TestCase {
 
 	public function testOnParserFirstCallInitRegistersAllTags() {
 		$parser = new StubParser();
-		$result = Hooks::onParserFirstCallInit( $parser );
-		$this->assertTrue( $result );
+		$this->hooks->onParserFirstCallInit( $parser );
 
 		$expectedTags = [ 'd', 'deck', 'c', 'card', 'cs', 'cards' ];
 		foreach ( $expectedTags as $tag ) {

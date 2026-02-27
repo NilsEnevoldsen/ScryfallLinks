@@ -6,6 +6,20 @@
  * Each stub only implements the methods that Hooks.php actually calls.
  */
 
+namespace MediaWiki\Hook {
+
+	/**
+	 * Stub for the ParserFirstCallInitHook interface.
+	 */
+	interface ParserFirstCallInitHook {
+		/**
+		 * @param \Parser $parser
+		 * @return void
+		 */
+		public function onParserFirstCallInit( $parser ): void;
+	}
+}
+
 namespace MediaWiki {
 
 	class MediaWikiServices {

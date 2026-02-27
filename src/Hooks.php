@@ -2,6 +2,8 @@
 
 namespace MediaWiki\Extension\ScryfallLinks;
 
+use MediaWiki\Hook\ParserFirstCallInitHook;
+
 /**
  * Hooks for ScryfallLinks extension
  *
@@ -9,32 +11,30 @@ namespace MediaWiki\Extension\ScryfallLinks;
  * @ingroup Extensions
  */
 
-class Hooks {
+class Hooks implements ParserFirstCallInitHook {
 
 	/**
-	 * Register the render callback with the parser
-	 * @param Parser &$parser A parser
-	 * @return bool
+	 * Register the render callbacks with the parser
+	 * @param \Parser $parser
 	 */
-	public static function onParserFirstCallInit( &$parser ) {
-		$parser->setHook( 'd', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallDeck' );
-		$parser->setHook( 'deck', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallDeck' );
-		$parser->setHook( 'c', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
-		$parser->setHook( 'card', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallLink' );
-		$parser->setHook( 'cs', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallMultiLink' );
-		$parser->setHook( 'cards', 'MediaWiki\Extension\ScryfallLinks\Hooks::renderScryfallMultiLink' );
-		return true;
+	public function onParserFirstCallInit( $parser ): void {
+		$parser->setHook( 'd', [ $this, 'renderScryfallDeck' ] );
+		$parser->setHook( 'deck', [ $this, 'renderScryfallDeck' ] );
+		$parser->setHook( 'c', [ $this, 'renderScryfallLink' ] );
+		$parser->setHook( 'card', [ $this, 'renderScryfallLink' ] );
+		$parser->setHook( 'cs', [ $this, 'renderScryfallMultiLink' ] );
+		$parser->setHook( 'cards', [ $this, 'renderScryfallMultiLink' ] );
 	}
 
 	/**
 	 * Render <deck>
 	 * @param string $input Some input
 	 * @param array $args Some args
-	 * @param Parser $parser A parser
-	 * @param PPFrame $frame A PPFrame
+	 * @param \Parser $parser A parser
+	 * @param \PPFrame $frame A PPFrame
 	 * @return string
 	 */
-	public static function renderScryfallDeck( $input, array $args, $parser, $frame ) {
+	public function renderScryfallDeck( $input, array $args, $parser, $frame ) {
 		$parser->getOutput()->addModules(
 			[ 'ext.scryfallLinks.tooltip', 'ext.scryfallLinks.deckExport' ]
 		);
@@ -78,7 +78,7 @@ class Hooks {
 				} else {
 					$current = &$cards;
 				}
-			} else if ( isset( $line[0] ) && isset( $line[1] ) ) {
+			} elseif ( isset( $line[0] ) && isset( $line[1] ) ) {
 				// This line is a card name with a quantity
 				$current[] = [
 					'quantity' => $line[0],
@@ -160,11 +160,11 @@ class Hooks {
 	 * Render <c>
 	 * @param string $input Some input
 	 * @param array $args Some args
-	 * @param Parser $parser A parser
-	 * @param PPFrame $frame A PPFrame
+	 * @param \Parser $parser A parser
+	 * @param \PPFrame $frame A PPFrame
 	 * @return string
 	 */
-	public static function renderScryfallLink( $input, array $args, $parser, $frame ) {
+	public function renderScryfallLink( $input, array $args, $parser, $frame ) {
 		$parser->getOutput()->addModules( [ 'ext.scryfallLinks.tooltip' ] );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
@@ -184,11 +184,11 @@ class Hooks {
 	 * Render <cs>
 	 * @param string $input Some input
 	 * @param array $args Some args
-	 * @param Parser $parser A parser
-	 * @param PPFrame $frame A PPFrame
+	 * @param \Parser $parser A parser
+	 * @param \PPFrame $frame A PPFrame
 	 * @return string
 	 */
-	public static function renderScryfallMultiLink( $input, array $args, $parser, $frame ) {
+	public function renderScryfallMultiLink( $input, array $args, $parser, $frame ) {
 		$parser->getOutput()->addModules( [ 'ext.scryfallLinks.tooltip' ] );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
@@ -223,8 +223,8 @@ class Hooks {
 	protected static function outputLink( $card, $set, $cn, $anchor ) {
 		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
 		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
-		$setquery = ( $set != '' ) && !is_null($set) ? ' set:' . $set : '';
-		$cnquery = ( $cn != '' ) && !is_null($cn) ? ' cn:"' . $cn . '"' : '';
+		$setquery = ( $set != '' ) && $set !== null ? ' set:' . $set : '';
+		$cnquery = ( $cn != '' ) && $cn !== null ? ' cn:"' . $cn . '"' : '';
 		$search = '!"' . $card . '"' . $setquery . $cnquery;
 		$output = '<a href="https://scryfall.com/search?q=' . htmlspecialchars( urlencode( $search ) ) .
 			'&utm_source=mw_' . $sitename . '" class="ext-scryfall-cardname"';
@@ -232,10 +232,10 @@ class Hooks {
 		$output .= ' data-card-name="' . htmlspecialchars( $card ?? '' ) . '"';
 
 		// Only add these attributes if not null and not empty string
-		if ( ( $set != '' ) && !is_null( $set ) ) {
+		if ( ( $set != '' ) && $set !== null ) {
 			$output .= ' data-card-set="' . htmlspecialchars( $set ) . '"';
 		}
-		if ( ( $cn != '' ) && !is_null( $cn ) ) {
+		if ( ( $cn != '' ) && $cn !== null ) {
 			$output .= ' data-card-number="' . htmlspecialchars( $cn ) . '"';
 		}
 

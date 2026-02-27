@@ -10,3 +10,4 @@ resources/.DS_Store
 *.pem
 /.vscode
 .phpunit.result.cache
+.stylelintcache
