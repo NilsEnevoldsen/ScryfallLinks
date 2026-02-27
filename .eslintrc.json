@@ -5,9 +5,6 @@
 		"wikimedia/jquery",
 		"wikimedia/mediawiki"
 	],
-	"parserOptions": {
-		"ecmaVersion": 8
-	},
 	"rules": {
 		"compat/compat": [
 			"error",
