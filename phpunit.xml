@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<phpunit bootstrap="tests/php/bootstrap.php"
+		 colors="true"
+		 stopOnFailure="false">
+	<testsuites>
+		<testsuite name="ScryfallLinks">
+			<directory>tests/php</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

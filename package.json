@@ -1,9 +1,12 @@
 {
 	"private": true,
 	"scripts": {
-		"test": "grunt test"
+		"test": "grunt test && jest",
+		"jest": "jest"
 	},
 	"devDependencies": {
+		"jest": "^29.7.0",
+		"jest-environment-jsdom": "^29.7.0",
 		"eslint-config-wikimedia": "0.28.2",
 		"grunt": "1.6.1",
 		"grunt-banana-checker": "0.13.0",
@@ -13,6 +16,7 @@
 	},
 	"eslintIgnore": [
 		"vendor/**",
+		"tests/**",
 		"resources/popper.js",
 		"resources/popper.min.js",
 		"resources/popper.js.map.json",

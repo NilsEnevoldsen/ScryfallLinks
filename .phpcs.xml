@@ -4,4 +4,5 @@
 	<file>.</file>
 	<arg name="extensions" value="php,php5,inc" />
 	<exclude-pattern>vendor</exclude-pattern>
+	<exclude-pattern>tests</exclude-pattern>
 </ruleset>
