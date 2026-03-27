@@ -242,7 +242,7 @@
 		} else {
 			searchUri.pathname = 'cards/' +
 				params.cardSet.toLowerCase() + '/' +
-				params.cardNumber.toLowerCase();
+				params.cardNumber;
 		}
 		// Fast speculative loading alongside slow correct loading
 		const fastController = new AbortController();
