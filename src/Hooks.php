@@ -38,6 +38,7 @@ class Hooks implements ParserFirstCallInitHook {
 		$parser->getOutput()->addModules(
 			[ 'ext.scryfallLinks.tooltip', 'ext.scryfallLinks.deckExport' ]
 		);
+		$parser->addTrackingCategory( 'scryfalllinks-deck-category' );
 		$input = $parser->recursiveTagParse( $input, $frame );
 
 		if ( !$input ) {

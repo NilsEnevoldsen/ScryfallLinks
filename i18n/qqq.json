@@ -7,5 +7,7 @@
 	},
 	"scryfalllinks-desc": "{{desc|name=ScryfallLinks|url=https://github.com/NilsEnevoldsen/ScryfallLinks}}",
 	"scryfalllinks-unrecognized-card": "Contents of card tooltip if card cannot be found on Scryfall",
-	"scryfalllinks-card-tooltip-error": "Used if something goes wrong fetching card data from scryfall"
+	"scryfalllinks-card-tooltip-error": "Used if something goes wrong fetching card data from scryfall",
+	"scryfalllinks-deck-category": "{{doc-special-category}}\nCategory added to pages that use the deck tag.",
+	"scryfalllinks-deck-category-desc": "Description of the scryfalllinks-deck-category tracking category, shown on [[Special:TrackingCategories]]."
 }

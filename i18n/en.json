@@ -7,5 +7,7 @@
 	},
 	"scryfalllinks-desc": "Creates Scryfall links from Magic: The Gathering card names.",
 	"scryfalllinks-unrecognized-card": "Unrecognized card",
-	"scryfalllinks-card-tooltip-error": "Preview error"
+	"scryfalllinks-card-tooltip-error": "Preview error",
+	"scryfalllinks-deck-category": "Articles with deck lists",
+	"scryfalllinks-deck-category-desc": "The page contains a deck list using the <code>&lt;deck&gt;</code> tag."
 }
