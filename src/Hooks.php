@@ -176,10 +176,11 @@ class Hooks implements ParserFirstCallInitHook {
 
 		$set = $args['set'] ?? '';
 		$cn = $args['number'] ?? '';
+		$lang = $args['lang'] ?? '';
 
 		$anchor = $args['title'] ?? $input;
 
-		return self::outputLink( $input, $set, $cn, $anchor );
+		return self::outputLink( $input, $set, $cn, $anchor, $lang );
 	}
 
 	/**
@@ -220,9 +221,10 @@ class Hooks implements ParserFirstCallInitHook {
 	 * @param string $set Set abbreviation
 	 * @param string $cn Collector number
 	 * @param string $anchor Anchor text
+	 * @param string $lang Language code
 	 * @return string
 	 */
-	protected static function outputLink( $card, $set, $cn, $anchor ) {
+	protected static function outputLink( $card, $set, $cn, $anchor, $lang = '' ) {
 		$sitename = \MediaWiki\MediaWikiServices::getInstance()->getMainConfig()->get( 'Sitename' );
 		$sitename = preg_replace( "/[^A-Za-z0-9]/", '', $sitename );
 		$setquery = ( $set != '' ) && $set !== null ? ' set:' . $set : '';
@@ -239,6 +241,9 @@ class Hooks implements ParserFirstCallInitHook {
 		}
 		if ( ( $cn != '' ) && $cn !== null ) {
 			$output .= ' data-card-number="' . htmlspecialchars( $cn ) . '"';
+		}
+		if ( ( $lang != '' ) && $lang !== null ) {
+			$output .= ' data-card-lang="' . htmlspecialchars( $lang ) . '"';
 		}
 
 		$output .= '>' . htmlspecialchars( $anchor ?? '' ) . '</a>';
