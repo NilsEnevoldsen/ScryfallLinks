@@ -1,18 +1,18 @@
 /**
  * Tests for the tooltip module (ext.scryfallLinks.tooltip.js).
  *
- * Since the production code is an IIFE that depends on tippy, jQuery, mw.*,
- * and fetch, we test the critical logic by replicating it in isolation:
+ * Since the production code is an IIFE that depends on Popover API, jQuery,
+ * mw.*, and fetch, we test the critical logic by replicating it in isolation:
  *   - API URL construction
  *   - Card layout rotation decisions
  *   - Caching and error state management
  *
- * This avoids needing to load Tippy.js or jQuery in the test environment
+ * This avoids needing to load the full DOM environment in the test
  * while still covering the logic that's most likely to break during refactoring.
  */
 
 // --- API URL Construction ---
-// Replicates the URL-building logic from onShow (lines 130-139)
+// Replicates the URL-building logic from loadCard
 
 function buildSearchUri( params ) {
 	const searchUri = new URL( 'https://api.scryfall.com/cards/named' );
@@ -90,7 +90,6 @@ describe( 'API URL construction', () => {
 } );
 
 // --- Fast branch URL ---
-// Replicates lines 21-23
 
 function buildFastImageUri( searchUri ) {
 	const fastImgUri = new URL( searchUri.href );
@@ -110,7 +109,7 @@ describe( 'Fast branch URL construction', () => {
 } );
 
 // --- Card layout rotation logic ---
-// Replicates the rotation decision tree from correctBranch (lines 49-80)
+// Replicates the rotation decision tree from correctBranch
 
 function determineRotation( data, requestedCardName ) {
 	const result = {
@@ -354,118 +353,87 @@ describe( 'Face name normalization', () => {
 	} );
 } );
 
-// --- Caching and error state logic ---
-// Replicates the tip dataset state machine from onShow
+// --- Link state management ---
+// Tests the dataset-based state machine used by the tooltip system.
+// State is stored on the link element's dataset properties:
+//   - dataset.loading: currently fetching card data
+//   - dataset.cached: card data has been fetched and cached
+//   - dataset.unrecognized: card was not found (404)
+//   - dataset.imgUri: cached image blob URL
+//   - dataset.rotationClass: rotation CSS class for the image
 
-describe( 'Tooltip state management', () => {
-	let tipMock;
+describe( 'Link state management', () => {
+	let link;
 
 	beforeEach( () => {
-		tipMock = {
-			loading: false,
-			props: { content: '' },
-			reference: {
-				text: 'Lightning Bolt',
-				href: 'https://scryfall.com/search?q=test&utm_source=mw_TestWiki',
-				style: { cursor: null, removeProperty: jest.fn() },
-				dataset: {
-					cardName: 'Lightning Bolt'
-				}
-			},
-			popper: {
-				style: {
-					display: null,
-					removeProperty: jest.fn()
-				}
-			},
-			setContent: jest.fn(),
-			setProps: jest.fn()
-		};
+		link = document.createElement( 'a' );
+		link.className = 'ext-scryfall-cardname';
+		link.textContent = 'Lightning Bolt';
+		link.href = 'https://scryfall.com/search?q=test&utm_source=mw_TestWiki';
+		link.dataset.cardName = 'Lightning Bolt';
 	} );
 
-	test( 'already loading returns early', () => {
-		tipMock.loading = true;
-		// The guard condition: if (tip.loading || tip.props.content !== '')
-		const shouldSkip = tipMock.loading || tipMock.props.content !== '';
-		expect( shouldSkip ).toBe( true );
+	test( 'fresh link has no state flags', () => {
+		expect( link.dataset.loading ).toBeUndefined();
+		expect( link.dataset.cached ).toBeUndefined();
+		expect( link.dataset.unrecognized ).toBeUndefined();
 	} );
 
-	test( 'already has content returns early', () => {
-		tipMock.props.content = '<img>';
-		const shouldSkip = tipMock.loading || tipMock.props.content !== '';
-		expect( shouldSkip ).toBe( true );
+	test( 'loading state prevents re-trigger', () => {
+		link.dataset.loading = 'true';
+		expect( link.dataset.loading ).toBeTruthy();
 	} );
 
-	test( 'no loading and empty content proceeds', () => {
-		const shouldSkip = tipMock.loading || tipMock.props.content !== '';
-		expect( shouldSkip ).toBe( false );
+	test( 'cached state triggers cached path', () => {
+		link.dataset.cached = 'true';
+		link.dataset.imgUri = 'blob:http://example.com/abc';
+		expect( link.dataset.cached ).toBeTruthy();
+		expect( link.dataset.imgUri ).toBeTruthy();
 	} );
 
-	test( 'unrecognized flag causes immediate 404', () => {
-		tipMock.reference.dataset.unrecognized = 'true';
-		// The code: if (tip.reference.dataset.unrecognized) throw new Error('404')
-		expect( tipMock.reference.dataset.unrecognized ).toBeTruthy();
+	test( 'unrecognized state triggers error path', () => {
+		link.dataset.unrecognized = 'true';
+		expect( link.dataset.unrecognized ).toBeTruthy();
 	} );
 
-	test( 'cached flag triggers cached path', () => {
-		tipMock.reference.dataset.cached = 'true';
-		tipMock.reference.dataset.imgUri = 'blob:http://example.com/abc';
-		expect( tipMock.reference.dataset.cached ).toBeTruthy();
-		expect( tipMock.reference.dataset.imgUri ).toBeTruthy();
+	test( 'after successful load, cached is set and loading is cleared', () => {
+		link.dataset.loading = 'true';
+		// Simulate successful load
+		link.dataset.cached = 'true';
+		delete link.dataset.loading;
+
+		expect( link.dataset.cached ).toBeTruthy();
+		expect( link.dataset.loading ).toBeUndefined();
 	} );
 
-	test( 'after successful load, cached is set', () => {
-		// Simulating what the code does after await correctPromise
-		tipMock.reference.dataset.cached = true;
-		expect( tipMock.reference.dataset.cached ).toBeTruthy();
+	test( '404 error sets unrecognized', () => {
+		link.dataset.loading = 'true';
+		// Simulate 404 error
+		link.dataset.unrecognized = 'true';
+		delete link.dataset.loading;
+
+		expect( link.dataset.unrecognized ).toBe( 'true' );
+		expect( link.dataset.loading ).toBeUndefined();
 	} );
 
-	test( '404 error sets unrecognized and error content', () => {
-		// Simulating the catch block for 404
-		tipMock.reference.dataset.unrecognized = true;
-		tipMock.setContent( 'Unrecognized card' );
-		tipMock.setProps( { theme: 'scryfall-error' } );
-
-		expect( tipMock.reference.dataset.unrecognized ).toBe( true );
-		expect( tipMock.setContent ).toHaveBeenCalledWith( 'Unrecognized card' );
-		expect( tipMock.setProps ).toHaveBeenCalledWith( { theme: 'scryfall-error' } );
+	test( 'loading sets cursor to progress', () => {
+		link.style.cursor = 'progress';
+		expect( link.style.cursor ).toBe( 'progress' );
 	} );
 
-	test( 'non-404 error sets generic error content', () => {
-		tipMock.setContent( 'Preview error' );
-		tipMock.setProps( { theme: 'scryfall-error' } );
-
-		expect( tipMock.setContent ).toHaveBeenCalledWith( 'Preview error' );
-		expect( tipMock.setProps ).toHaveBeenCalledWith( { theme: 'scryfall-error' } );
+	test( 'load completion clears cursor', () => {
+		link.style.cursor = 'progress';
+		link.style.removeProperty( 'cursor' );
+		expect( link.style.cursor ).toBe( '' );
 	} );
 
-	test( 'error shows tooltip by removing display:none', () => {
-		tipMock.popper.style.removeProperty( 'display' );
-		expect( tipMock.popper.style.removeProperty ).toHaveBeenCalledWith( 'display' );
-	} );
-
-	test( 'loading state sets cursor to progress', () => {
-		// Simulating onShow loading start
-		tipMock.reference.style.cursor = 'progress';
-		expect( tipMock.reference.style.cursor ).toBe( 'progress' );
-	} );
-
-	test( 'finally block clears cursor and loading', () => {
-		// Simulating the finally block
-		tipMock.loading = true;
-		tipMock.reference.style.cursor = 'progress';
-
-		// finally:
-		tipMock.reference.style.removeProperty( 'cursor' );
-		tipMock.loading = false;
-
-		expect( tipMock.reference.style.removeProperty ).toHaveBeenCalledWith( 'cursor' );
-		expect( tipMock.loading ).toBe( false );
+	test( 'rotation class stored for caching', () => {
+		link.dataset.rotationClass = 'ext-scryfall-rotate-90cw';
+		expect( link.dataset.rotationClass ).toBe( 'ext-scryfall-rotate-90cw' );
 	} );
 } );
 
 // --- Permalink URL construction ---
-// Replicates lines 44-47, 82
 
 describe( 'Permalink URL construction', () => {
 	test( 'preserves utm_source from original link', () => {
@@ -487,16 +455,5 @@ describe( 'Permalink URL construction', () => {
 		permapageUri.searchParams.set( 'utm_source', 'mw_TestWiki' );
 		const backUrl = permapageUri.href + '&back';
 		expect( backUrl ).toContain( '&back' );
-	} );
-} );
-
-// --- onHidden callback ---
-
-describe( 'onHidden callback', () => {
-	test( 'clears content', () => {
-		const tip = { setContent: jest.fn() };
-		// Replicating: onHidden(tip) { tip.setContent('') }
-		tip.setContent( '' );
-		expect( tip.setContent ).toHaveBeenCalledWith( '' );
 	} );
 } );

@@ -18,13 +18,6 @@
 	"eslintIgnore": [
 		"vendor/**",
 		"tests/**",
-		"resources/popper.js",
-		"resources/popper.min.js",
-		"resources/popper.js.map.json",
-		"resources/popper.min.js.map.json",
-		"resources/tippy.umd.js",
-		"resources/tippy.umd.min.js",
-		"resources/tippy.umd.js.map.json",
-		"resources/tippy.umd.min.js.map.json"
+		"resources/popover-polyfill.min.js"
 	]
 }

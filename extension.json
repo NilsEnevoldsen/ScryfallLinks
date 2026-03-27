@@ -30,13 +30,11 @@
 	"ResourceModules": {
 		"ext.scryfallLinks.tooltip": {
 			"scripts": [
-				"popper.min.js",
-				"tippy.umd.min.js",
+				"popover-polyfill.min.js",
 				"ext.scryfallLinks.tooltip.js"
 			],
 			"styles": [
-				"tippy.css",
-				"ext.scryfallLinks.less"
+				"ext.scryfallLinks.css"
 			],
 			"targets": [
 				"desktop",

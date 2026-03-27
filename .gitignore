@@ -11,3 +11,5 @@ resources/.DS_Store
 /.vscode
 .phpunit.result.cache
 .stylelintcache
+test.html
+.DS_Store

@@ -101,21 +101,12 @@
 	// Once we have the deck in the format we want it, this function downloads it as a file
 	function download( filename, data, contenttype ) {
 		const blob = new Blob( [ data ], { type: contenttype } );
-		if ( window.navigator.msSaveOrOpenBlob ) {
-			window.navigator.msSaveBlob( blob, filename );
-		} else {
-			const elem = window.document.createElement( 'a' );
-			elem.href = window.URL.createObjectURL( blob );
-			elem.download = filename;
-			document.body.appendChild( elem );
-			elem.click();
-			document.body.removeChild( elem );
-		}
-	}
-
-	// Although we use download() in production, printToConsole() is useful for debugging
-	function printToConsole( filename, data, contenttype ) { // eslint-disable-line no-unused-vars
-		console.log( contenttype + '\n' + filename + '\n' + data ); // eslint-disable-line no-console
+		const elem = document.createElement( 'a' );
+		elem.href = URL.createObjectURL( blob );
+		elem.download = filename;
+		document.body.appendChild( elem );
+		elem.click();
+		document.body.removeChild( elem );
 	}
 
 	// Initialize the download dropdown menu(s)

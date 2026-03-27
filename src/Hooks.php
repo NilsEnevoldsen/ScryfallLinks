@@ -59,7 +59,7 @@ class Hooks implements ParserFirstCallInitHook {
 	 * @return array Parsed cards
 	 */
 	private static function parseDeckCards( $input ) {
-		$cardsraw = explode( PHP_EOL, $input );
+		$cardsraw = explode( "\n", $input );
 		$cardsraw = array_filter( $cardsraw );
 		$cards = [];
 		$sideboard = [];
@@ -103,6 +103,7 @@ class Hooks implements ParserFirstCallInitHook {
 		$decklist_html = [];
 		$prevsection = '';
 		$first_card_written = false;
+		$sectionquantities = [];
 		foreach ( $cards as $card ) {
 			$sectionquantities[$card['section']][] = $card['quantity'];
 		}
@@ -128,7 +129,7 @@ class Hooks implements ParserFirstCallInitHook {
 			$first_card_written = true;
 		}
 		$decklist_html[] = '</div>';
-		$decklist_html = implode( PHP_EOL, $decklist_html );
+		$decklist_html = implode( "\n", $decklist_html );
 
 		// Create deck download tools
 		$deckexport_anchor = '<div class="ext-scryfall-deckexport">' .
