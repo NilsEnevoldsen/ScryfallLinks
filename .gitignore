@@ -4,12 +4,9 @@
 /vendor
 /node_modules
 .eslintcache
-resources/.Rhistory
-resources/.DS_Store
 .DS_Store
 *.pem
 /.vscode
 .phpunit.result.cache
 .stylelintcache
 test.html
-.DS_Store
