@@ -388,6 +388,7 @@
 		document.addEventListener( 'pointerdown', ( e ) => {
 			isTouchMode = e.pointerType === 'touch';
 		} );
+		window.addEventListener( 'pagehide', hideTooltip );
 	}
 
 	$( () => {
