@@ -34,6 +34,24 @@
 	position: fixed;
 }
 
+/* --- Touch modal --- */
+
+.ext-scryfall-tooltip.ext-scryfall-touch {
+	translate: -50% -50%;
+}
+
+.ext-scryfall-touch .ext-scryfall-cardimage {
+	width: min( 300px, 80vw );
+}
+
+.ext-scryfall-backdrop {
+	position: fixed;
+	inset: 0;
+	background: rgba( 0, 0, 0, 0.6 );
+}
+
+/* --- Error state --- */
+
 .ext-scryfall-tooltip-error {
 	border-radius: 12px;
 	background: #333;

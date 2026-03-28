@@ -1,7 +1,7 @@
 ( function () {
-	let tooltip, activeLink, showTimeout, touchTimeout, lastMouseX, lastMouseY;
+	let tooltip, backdrop, activeLink, showTimeout, lastMouseX, lastMouseY;
+	let isTouchMode = false;
 	const SHOW_DELAY = 50;
-	const TOUCH_HOLD_DELAY = 500;
 	const CURSOR_OFFSET = 28;
 	const VIEWPORT_MARGIN = 12;
 	const CARD_IMAGE_WIDTH = 244;
@@ -11,7 +11,14 @@
 		tooltip.id = 'ext-scryfall-tooltip';
 		tooltip.className = 'ext-scryfall-tooltip';
 		tooltip.setAttribute( 'popover', 'manual' );
+		tooltip.addEventListener( 'click', handleTooltipClick );
 		document.body.appendChild( tooltip );
+
+		backdrop = document.createElement( 'div' );
+		backdrop.className = 'ext-scryfall-backdrop';
+		backdrop.hidden = true;
+		backdrop.addEventListener( 'click', hideTooltip );
+		document.body.appendChild( backdrop );
 	}
 
 	function createCardImage( link ) {
@@ -24,6 +31,13 @@
 	}
 
 	function positionTooltip() {
+		if ( isTouchMode ) {
+			// Center on screen; CSS translate handles the offset
+			tooltip.style.left = '50%';
+			tooltip.style.top = '50%';
+			return;
+		}
+
 		const rect = tooltip.getBoundingClientRect();
 		const visualWidth = rect.width;
 		const visualHeight = rect.height;
@@ -63,20 +77,25 @@
 			// * ext-scryfall-rotate-180
 			tooltip.classList.add( link.dataset.rotationClass );
 		}
-		document.addEventListener( 'mousemove', handleMouseMove, true );
+		if ( isTouchMode ) {
+			tooltip.classList.add( 'ext-scryfall-touch' );
+			backdrop.hidden = false;
+		} else {
+			document.addEventListener( 'mousemove', handleMouseMove, true );
+		}
 		tooltip.showPopover();
 		positionTooltip();
 	}
 
 	function hideTooltip() {
 		clearTimeout( showTimeout );
-		clearTimeout( touchTimeout );
 		document.removeEventListener( 'mousemove', handleMouseMove, true );
 		try {
 			tooltip.hidePopover();
 		} catch ( e ) {
 			// Already hidden
 		}
+		backdrop.hidden = true;
 		activeLink = null;
 		tooltip.className = 'ext-scryfall-tooltip';
 		tooltip.textContent = '';
@@ -287,6 +306,9 @@
 	}
 
 	function handleMouseEnter( e ) {
+		if ( isTouchMode ) {
+			return;
+		}
 		const link = e.target.closest( '.ext-scryfall-cardname' );
 		if ( !link ) {
 			return;
@@ -315,6 +337,9 @@
 	}
 
 	function handleMouseLeave( e ) {
+		if ( isTouchMode ) {
+			return;
+		}
 		const link = e.target.closest( '.ext-scryfall-cardname' );
 		if ( !link ) {
 			return;
@@ -322,39 +347,47 @@
 		hideTooltip();
 	}
 
-	function handleTouchStart( e ) {
-		const link = e.target.closest( '.ext-scryfall-cardname' );
-		if ( !link ) {
-			return;
+	function handleTooltipClick() {
+		if ( isTouchMode && activeLink && !activeLink.dataset.unrecognized ) {
+			window.location.href = activeLink.href;
 		}
-		clearTimeout( touchTimeout );
-		touchTimeout = setTimeout( () => {
-			handleMouseEnter( e );
-		}, TOUCH_HOLD_DELAY );
 	}
 
-	function handleTouchEnd( e ) {
+	function handleCardClick( e ) {
+		if ( !isTouchMode ) {
+			return;
+		}
 		const link = e.target.closest( '.ext-scryfall-cardname' );
 		if ( !link ) {
 			return;
 		}
-		clearTimeout( touchTimeout );
-		hideTooltip();
+		e.preventDefault();
+		if ( link.dataset.loading ) {
+			return;
+		}
+		if ( link.dataset.unrecognized ) {
+			showTooltipError( link,
+				mw.message(
+					'scryfalllinks-unrecognized-card'
+				).escaped()
+			);
+			return;
+		}
+		if ( link.dataset.cached ) {
+			showCachedImage( link );
+			return;
+		}
+		loadCard( link );
 	}
 
 	function init() {
 		createTooltip();
 		document.addEventListener( 'mouseenter', handleMouseEnter, true );
 		document.addEventListener( 'mouseleave', handleMouseLeave, true );
-		document.addEventListener( 'touchstart', handleTouchStart,
-			{ passive: true }
-		);
-		document.addEventListener( 'touchend', handleTouchEnd,
-			{ passive: true }
-		);
-		document.addEventListener( 'touchcancel', handleTouchEnd,
-			{ passive: true }
-		);
+		document.addEventListener( 'click', handleCardClick, true );
+		document.addEventListener( 'pointerdown', ( e ) => {
+			isTouchMode = e.pointerType === 'touch';
+		} );
 	}
 
 	$( () => {
