@@ -41,7 +41,14 @@
 }
 
 .ext-scryfall-touch .ext-scryfall-cardimage {
-	width: min( 300px, 80vw );
+	max-width: 90dvw;
+	max-height: 90dvh;
+}
+
+.ext-scryfall-touch.ext-scryfall-rotate-90cw .ext-scryfall-cardimage,
+.ext-scryfall-touch.ext-scryfall-rotate-90ccw .ext-scryfall-cardimage {
+	max-width: 90dvh;
+	max-height: 90dvw;
 }
 
 .ext-scryfall-backdrop {

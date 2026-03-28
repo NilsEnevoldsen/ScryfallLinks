@@ -25,7 +25,9 @@
 		const img = document.createElement( 'img' );
 		img.classList.add( 'ext-scryfall-cardimage' );
 		img.alt = link.textContent;
-		img.width = CARD_IMAGE_WIDTH;
+		if ( !isTouchMode ) {
+			img.width = CARD_IMAGE_WIDTH;
+		}
 		img.onload = positionTooltip;
 		return img;
 	}
