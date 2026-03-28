@@ -80,6 +80,9 @@ namespace {
 		public function recursiveTagParse( $input, $frame ) {
 			return $input;
 		}
+
+		public function addTrackingCategory( $msg ) {
+		}
 	}
 
 	/**
