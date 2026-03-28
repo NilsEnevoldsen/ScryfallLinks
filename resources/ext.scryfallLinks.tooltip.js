@@ -91,9 +91,10 @@
 		}
 	}
 
-	function setTooltipError( message ) {
-		tooltip.className = 'ext-scryfall-tooltip ext-scryfall-tooltip-error';
+	function showTooltipError( link, message ) {
 		setTooltipContent( message );
+		showTooltip( link );
+		tooltip.classList.add( 'ext-scryfall-tooltip-error' );
 	}
 
 	// Shows a cached card image
@@ -259,20 +260,19 @@
 			} )
 			.catch( ( e ) => {
 				if ( e.message === '404' ) {
-					setTooltipError(
+					showTooltipError( link,
 						mw.message(
 							'scryfalllinks-unrecognized-card'
 						).escaped()
 					);
 					link.dataset.unrecognized = 'true';
 				} else {
-					setTooltipError(
+					showTooltipError( link,
 						mw.message(
 							'scryfalllinks-card-tooltip-error'
 						).escaped()
 					);
 				}
-				showTooltip( link );
 			} )
 			.then( () => {
 				link.style.removeProperty( 'cursor' );
@@ -299,12 +299,11 @@
 				return;
 			}
 			if ( link.dataset.unrecognized ) {
-				setTooltipError(
+				showTooltipError( link,
 					mw.message(
 						'scryfalllinks-unrecognized-card'
 					).escaped()
 				);
-				showTooltip( link );
 				return;
 			}
 			if ( link.dataset.cached ) {
