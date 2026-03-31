@@ -219,6 +219,11 @@
 				}
 				// Change from redirect link to permapage link
 				link.href = permapageUri.href;
+				// Re-show the tooltip to apply rotation even if
+				// fastBranch() already displayed the image
+				if ( !fastBranchIsInvalid && link.dataset.rotationClass ) {
+					showTooltip( link );
+				}
 				// If fastBranch() is wrongly fetching the front face,
 				// abort it and fetch the back one
 				if ( fastBranchIsInvalid ) {
