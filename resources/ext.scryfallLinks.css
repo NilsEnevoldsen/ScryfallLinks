@@ -38,6 +38,7 @@
 
 .ext-scryfall-tooltip.ext-scryfall-touch {
 	translate: -50% -50%;
+	perspective: 600px;
 }
 
 .ext-scryfall-touch .ext-scryfall-cardimage {

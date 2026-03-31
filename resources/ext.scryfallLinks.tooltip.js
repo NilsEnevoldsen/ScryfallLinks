@@ -6,6 +6,16 @@
 	const VIEWPORT_MARGIN = 12;
 	const CARD_IMAGE_WIDTH = 244;
 
+	// Touch tilt state
+	let tiltRotX = 0, tiltRotY = 0;
+	let tiltTargetX = 0, tiltTargetY = 0;
+	let tiltDragging = false;
+	let tiltLastX = null, tiltLastY = null;
+	let tiltRafId = null;
+	const MAX_TILT = 20;
+	const TILT_SENSITIVITY = 0.15;
+	const TILT_SPRING = 0.1;
+
 	function createTooltip() {
 		tooltip = document.createElement( 'div' );
 		tooltip.id = 'ext-scryfall-tooltip';
@@ -86,6 +96,7 @@
 		if ( isTouchMode ) {
 			tooltip.classList.add( 'ext-scryfall-touch' );
 			backdrop.hidden = false;
+			startTilt();
 		} else {
 			document.addEventListener( 'mousemove', handleMouseMove, true );
 		}
@@ -102,6 +113,7 @@
 			// Already hidden
 		}
 		backdrop.hidden = true;
+		stopTilt();
 		activeLink = null;
 		tooltip.className = 'ext-scryfall-tooltip';
 		tooltip.textContent = '';
@@ -114,6 +126,79 @@
 		} else {
 			tooltip.appendChild( content );
 		}
+	}
+
+	function tiltAnimate() {
+		const img = tooltip.querySelector( '.ext-scryfall-cardimage' );
+		if ( !img ) {
+			return;
+		}
+		if ( !tiltDragging ) {
+			tiltRotX += ( 0 - tiltRotX ) * TILT_SPRING;
+			tiltRotY += ( 0 - tiltRotY ) * TILT_SPRING;
+		} else {
+			tiltRotX += ( tiltTargetX - tiltRotX ) * 0.3;
+			tiltRotY += ( tiltTargetY - tiltRotY ) * 0.3;
+		}
+		img.style.transform =
+			'rotateX(' + tiltRotX + 'deg) rotateY(' + tiltRotY + 'deg)';
+		tiltRafId = requestAnimationFrame( tiltAnimate );
+	}
+
+	function startTilt() {
+		tiltRotX = 0;
+		tiltRotY = 0;
+		tiltTargetX = 0;
+		tiltTargetY = 0;
+		tiltDragging = false;
+		tiltRafId = requestAnimationFrame( tiltAnimate );
+		tooltip.addEventListener( 'touchstart', handleTiltStart );
+		tooltip.addEventListener( 'touchmove', handleTiltMove );
+		tooltip.addEventListener( 'touchend', handleTiltEnd );
+	}
+
+	function stopTilt() {
+		cancelAnimationFrame( tiltRafId );
+		tiltRafId = null;
+		tiltDragging = false;
+		const img = tooltip.querySelector( '.ext-scryfall-cardimage' );
+		if ( img ) {
+			img.style.transform = '';
+		}
+		tooltip.removeEventListener( 'touchstart', handleTiltStart );
+		tooltip.removeEventListener( 'touchmove', handleTiltMove );
+		tooltip.removeEventListener( 'touchend', handleTiltEnd );
+	}
+
+	function handleTiltStart( e ) {
+		tiltDragging = true;
+		tiltLastX = e.touches[ 0 ].clientX;
+		tiltLastY = e.touches[ 0 ].clientY;
+	}
+
+	function handleTiltMove( e ) {
+		if ( !tiltDragging ) {
+			return;
+		}
+		e.preventDefault();
+		const dx = e.touches[ 0 ].clientX - tiltLastX;
+		const dy = e.touches[ 0 ].clientY - tiltLastY;
+		tiltTargetY += dx * TILT_SENSITIVITY;
+		tiltTargetX -= dy * TILT_SENSITIVITY;
+		tiltTargetX = Math.max( -MAX_TILT,
+			Math.min( MAX_TILT, tiltTargetX )
+		);
+		tiltTargetY = Math.max( -MAX_TILT,
+			Math.min( MAX_TILT, tiltTargetY )
+		);
+		tiltLastX = e.touches[ 0 ].clientX;
+		tiltLastY = e.touches[ 0 ].clientY;
+	}
+
+	function handleTiltEnd() {
+		tiltDragging = false;
+		tiltTargetX = 0;
+		tiltTargetY = 0;
 	}
 
 	function showTooltipError( link, message ) {
