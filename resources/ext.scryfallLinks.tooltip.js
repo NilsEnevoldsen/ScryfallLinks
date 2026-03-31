@@ -261,11 +261,15 @@
 				if ( Object.prototype.hasOwnProperty.call(
 					data, 'card_faces'
 				) ) {
-					const isSecondface =
-						data.card_faces[ 0 ].name
-							.replace( /[^a-z]/ig, '' ).toUpperCase() !==
+					const normalize = ( s ) => s.replace( /[^a-z]/ig, '' ).toUpperCase();
+					const requestedName = normalize(
 						decodeURIComponent( link.dataset.cardName )
-							.replace( /[^a-z]/ig, '' ).toUpperCase();
+					);
+					const secondFaceName = normalize(
+						data.card_faces[ 1 ].name
+					);
+					const isSecondface =
+						secondFaceName === requestedName;
 					if (
 						data.layout === 'transform' ||
 						data.layout === 'modal_dfc' ||
