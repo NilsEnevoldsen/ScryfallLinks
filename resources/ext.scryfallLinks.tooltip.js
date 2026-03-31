@@ -181,8 +181,19 @@
 			return;
 		}
 		e.preventDefault();
-		const dx = e.touches[ 0 ].clientX - tiltLastX;
-		const dy = e.touches[ 0 ].clientY - tiltLastY;
+		let dx = e.touches[ 0 ].clientX - tiltLastX;
+		let dy = e.touches[ 0 ].clientY - tiltLastY;
+		// Counter-rotate drag deltas so tilt axes match the
+		// visually rotated card
+		const rot = activeLink && activeLink.dataset.rotationClass;
+		if ( rot === 'ext-scryfall-rotate-90cw' ) {
+			[ dx, dy ] = [ dy, -dx ];
+		} else if ( rot === 'ext-scryfall-rotate-90ccw' ) {
+			[ dx, dy ] = [ -dy, dx ];
+		} else if ( rot === 'ext-scryfall-rotate-180' ) {
+			dx = -dx;
+			dy = -dy;
+		}
 		tiltTargetY += dx * TILT_SENSITIVITY;
 		tiltTargetX -= dy * TILT_SENSITIVITY;
 		tiltTargetX = Math.max( -MAX_TILT,

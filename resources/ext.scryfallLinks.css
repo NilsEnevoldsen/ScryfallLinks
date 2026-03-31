@@ -1,6 +1,25 @@
 .ext-scryfall-cardname {
 	text-decoration: underline;
 	text-decoration-style: dotted;
+	
+	@media ( pointer: coarse ) {
+		&:active {
+			color: inherit;
+		}
+	}
+}
+
+@keyframes ext-scryfall-shimmer {
+	from { mask-position: -100px center; }
+	to { mask-position: 400px center; }
+}
+
+@media ( pointer: coarse ) {
+	.ext-scryfall-cardname[data-loading] {
+		mask-image: linear-gradient( to right, #0004, #000f 100px, #000f 700px, #0004 );
+		mask-size: 800px 100%;
+		animation: ext-scryfall-shimmer 1s linear infinite;
+	}
 }
 
 .ext-scryfall-cardimage {
@@ -38,12 +57,13 @@
 
 .ext-scryfall-tooltip.ext-scryfall-touch {
 	translate: -50% -50%;
-	perspective: 600px;
+	perspective: 400dvmin;
 }
 
 .ext-scryfall-touch .ext-scryfall-cardimage {
 	max-width: 90dvw;
 	max-height: 90dvh;
+	transform-style: preserve-3d;
 }
 
 .ext-scryfall-touch.ext-scryfall-rotate-90cw .ext-scryfall-cardimage,
