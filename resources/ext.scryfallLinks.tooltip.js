@@ -185,6 +185,12 @@
 						if ( isSecondface ) {
 							fastBranchIsInvalid = true;
 							link.href = permapageUri.href + '&back';
+						} else if (
+							data.card_faces[ 0 ].type_line
+								.startsWith( 'Battle' )
+						) {
+							link.dataset.rotationClass =
+								'ext-scryfall-rotate-90cw';
 						}
 					} else if ( data.layout === 'split' ) {
 						if ( data.set.match( /cmb\d/ ) ) {
