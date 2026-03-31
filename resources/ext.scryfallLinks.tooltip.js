@@ -70,6 +70,10 @@
 	}
 
 	function showTooltip( link ) {
+		// Don't show if cursor left the link before load finished (#80)
+		if ( !isTouchMode && !link.matches( ':hover' ) ) {
+			return;
+		}
 		activeLink = link;
 		tooltip.className = 'ext-scryfall-tooltip';
 		if ( link.dataset.rotationClass ) {
