@@ -20,9 +20,7 @@ module.exports = function ( grunt ) {
 			all: [
 				'**/*.{css,less}',
 				'!node_modules/**',
-				'!vendor/**',
-				'!resources/ext.scryfallLinks.css',
-				'!resources/tippy.css'
+				'!vendor/**'
 			]
 		},
 		banana: conf.MessagesDirs
