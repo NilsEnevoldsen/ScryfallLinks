@@ -264,6 +264,10 @@
 				return response.json();
 			} )
 			.then( ( data ) => {
+				if ( data.image_status === 'missing' ) {
+					fastController.abort();
+					throw new Error( 'no-image' );
+				}
 				const referenceUri = new URL( link.href );
 				const utmSource = referenceUri.searchParams.get( 'utm_source' );
 				const permapageUri = new URL( data.scryfall_uri );
@@ -402,6 +406,13 @@
 						).escaped()
 					);
 					link.dataset.unrecognized = 'true';
+				} else if ( e.message === 'no-image' ) {
+					showTooltipError( link,
+						mw.message(
+							'scryfalllinks-no-image'
+						).escaped()
+					);
+					link.dataset.noImage = 'true';
 				} else {
 					showTooltipError( link,
 						mw.message(
@@ -441,6 +452,14 @@
 				showTooltipError( link,
 					mw.message(
 						'scryfalllinks-unrecognized-card'
+					).escaped()
+				);
+				return;
+			}
+			if ( link.dataset.noImage ) {
+				showTooltipError( link,
+					mw.message(
+						'scryfalllinks-no-image'
 					).escaped()
 				);
 				return;
@@ -490,6 +509,14 @@
 			);
 			return;
 		}
+		if ( link.dataset.noImage ) {
+			showTooltipError( link,
+				mw.message(
+					'scryfalllinks-no-image'
+				).escaped()
+			);
+			return;
+		}
 		if ( link.dataset.cached ) {
 			showCachedImage( link );
 			return;
@@ -512,7 +539,8 @@
 		mw.loader.using( 'mediawiki.api' ).then(
 			() => new mw.Api().loadMessagesIfMissing( [
 				'scryfalllinks-unrecognized-card',
-				'scryfalllinks-card-tooltip-error'
+				'scryfalllinks-card-tooltip-error',
+				'scryfalllinks-no-image'
 			] )
 		).then( init );
 	} );
