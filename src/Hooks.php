@@ -7,10 +7,8 @@ use MediaWiki\Hook\ParserFirstCallInitHook;
 /**
  * Hooks for ScryfallLinks extension
  *
- * @file
  * @ingroup Extensions
  */
-
 class Hooks implements ParserFirstCallInitHook {
 
 	/**
