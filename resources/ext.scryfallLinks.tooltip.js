@@ -26,9 +26,11 @@
 
 		backdrop = document.createElement( 'div' );
 		backdrop.className = 'ext-scryfall-backdrop';
-		backdrop.hidden = true;
+		// Top layer, so it sits above page overlays like the
+		// MobileFrontend editor (#88)
+		backdrop.setAttribute( 'popover', 'manual' );
 		backdrop.addEventListener( 'click', hideTooltip );
-		document.body.appendChild( backdrop );
+		document.body.insertBefore( backdrop, tooltip );
 	}
 
 	function createCardImage( link ) {
@@ -95,7 +97,11 @@
 		}
 		if ( isTouchMode ) {
 			tooltip.classList.add( 'ext-scryfall-touch' );
-			backdrop.hidden = false;
+			if ( !backdrop.matches( ':popover-open' ) ) {
+				// Reopen the tooltip so it stacks above the backdrop
+				hidePopover( tooltip );
+				backdrop.showPopover();
+			}
 			startTilt();
 		} else {
 			document.addEventListener( 'mousemove', handleMouseMove, true );
@@ -104,15 +110,19 @@
 		positionTooltip();
 	}
 
-	function hideTooltip() {
-		clearTimeout( showTimeout );
-		document.removeEventListener( 'mousemove', handleMouseMove, true );
+	function hidePopover( el ) {
 		try {
-			tooltip.hidePopover();
+			el.hidePopover();
 		} catch ( e ) {
 			// Already hidden
 		}
-		backdrop.hidden = true;
+	}
+
+	function hideTooltip() {
+		clearTimeout( showTimeout );
+		document.removeEventListener( 'mousemove', handleMouseMove, true );
+		hidePopover( tooltip );
+		hidePopover( backdrop );
 		stopTilt();
 		activeLink = null;
 		tooltip.className = 'ext-scryfall-tooltip';

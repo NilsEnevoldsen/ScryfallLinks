@@ -78,8 +78,14 @@
 }
 
 .ext-scryfall-backdrop {
+	/* Reset popover UA defaults */
 	position: fixed;
 	inset: 0;
+	width: auto;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	border: 0;
 	background: rgba( 0, 0, 0, 0.6 );
 }
 
