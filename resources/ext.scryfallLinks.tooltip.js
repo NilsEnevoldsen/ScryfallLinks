@@ -240,7 +240,7 @@
 	function fastBranch( searchUri, link, img, fastController ) {
 		const fastImgUri = new URL( searchUri.href );
 		fastImgUri.searchParams.set( 'format', 'image' );
-		fastImgUri.searchParams.set( 'version', 'normal' );
+		fastImgUri.searchParams.set( 'version', 'grid' );
 		return fetch( fastImgUri, { signal: fastController.signal } )
 			.then( ( response ) => {
 				if ( !response.ok ) {
@@ -353,7 +353,7 @@
 				if ( fastBranchIsInvalid ) {
 					fastController.abort();
 					return fetch(
-						data.card_faces[ 1 ].image_uris.normal
+						data.card_faces[ 1 ].image_uris.grid
 					)
 						.then( ( responsebackface ) => {
 							if ( !responsebackface.ok ) {

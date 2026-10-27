@@ -94,16 +94,16 @@ describe( 'API URL construction', () => {
 function buildFastImageUri( searchUri ) {
 	const fastImgUri = new URL( searchUri.href );
 	fastImgUri.searchParams.set( 'format', 'image' );
-	fastImgUri.searchParams.set( 'version', 'normal' );
+	fastImgUri.searchParams.set( 'version', 'grid' );
 	return fastImgUri;
 }
 
 describe( 'Fast branch URL construction', () => {
-	test( 'adds format=image and version=normal params', () => {
+	test( 'adds format=image and version=grid params', () => {
 		const searchUri = buildSearchUri( { cardName: 'Lightning Bolt' } );
 		const fastUri = buildFastImageUri( searchUri );
 		expect( fastUri.searchParams.get( 'format' ) ).toBe( 'image' );
-		expect( fastUri.searchParams.get( 'version' ) ).toBe( 'normal' );
+		expect( fastUri.searchParams.get( 'version' ) ).toBe( 'grid' );
 		expect( fastUri.searchParams.get( 'exact' ) ).toBe( 'Lightning Bolt' );
 	} );
 } );
@@ -178,12 +178,12 @@ function mockDfcData( frontName, backName, layout ) {
 			{
 				name: frontName,
 				oracle_text: 'Front face text',
-				image_uris: { normal: 'https://example.com/front.jpg' }
+				image_uris: { grid: 'https://example.com/front.webp' }
 			},
 			{
 				name: backName,
 				oracle_text: 'Back face text',
-				image_uris: { normal: 'https://example.com/back.jpg' }
+				image_uris: { grid: 'https://example.com/back.webp' }
 			}
 		]
 	} );
