@@ -15,14 +15,6 @@ const messages = {
 
 // MediaWiki globals
 global.mw = {
-	loader: {
-		using: () => Promise.resolve()
-	},
-	Api: function () {
-		return {
-			loadMessagesIfMissing: () => Promise.resolve()
-		};
-	},
 	message: function ( key ) {
 		return {
 			escaped: () => messages[ key ] || key

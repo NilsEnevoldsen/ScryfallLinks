@@ -45,7 +45,8 @@
 			],
 			"messages": [
 				"scryfalllinks-unrecognized-card",
-				"scryfalllinks-card-tooltip-error"
+				"scryfalllinks-card-tooltip-error",
+				"scryfalllinks-no-image"
 			]
 		},
 		"ext.scryfallLinks.deckExport": {

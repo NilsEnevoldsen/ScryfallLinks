@@ -545,13 +545,5 @@
 		window.addEventListener( 'pagehide', hideTooltip );
 	}
 
-	$( () => {
-		mw.loader.using( 'mediawiki.api' ).then(
-			() => new mw.Api().loadMessagesIfMissing( [
-				'scryfalllinks-unrecognized-card',
-				'scryfalllinks-card-tooltip-error',
-				'scryfalllinks-no-image'
-			] )
-		).then( init );
-	} );
+	$( init );
 }() );
