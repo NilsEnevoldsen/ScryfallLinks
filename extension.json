@@ -31,13 +31,25 @@
 		"scryfalllinks-deck-category"
 	],
 	"ResourceModules": {
+		"ext.scryfallLinks.popoverPolyfill": {
+			"scripts": [
+				"popover-polyfill.min.js"
+			],
+			"skipFunction": "skip-popover-polyfill.js",
+			"targets": [
+				"desktop",
+				"mobile"
+			]
+		},
 		"ext.scryfallLinks.tooltip": {
 			"scripts": [
-				"popover-polyfill.min.js",
 				"ext.scryfallLinks.tooltip.js"
 			],
 			"styles": [
 				"ext.scryfallLinks.css"
+			],
+			"dependencies": [
+				"ext.scryfallLinks.popoverPolyfill"
 			],
 			"targets": [
 				"desktop",
