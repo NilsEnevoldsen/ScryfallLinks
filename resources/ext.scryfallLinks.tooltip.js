@@ -1,6 +1,7 @@
 ( function () {
 	let tooltip, backdrop, activeLink, showTimeout, lastMouseX, lastMouseY;
 	let isTouchMode = false;
+	let hasPreconnected = false;
 	const SHOW_DELAY = 50;
 	const CURSOR_OFFSET = 28;
 	const VIEWPORT_MARGIN = 12;
@@ -373,7 +374,21 @@
 			} );
 	}
 
+	// Opens the image host connection while the API request is in flight
+	function preconnectImageHost() {
+		if ( hasPreconnected ) {
+			return;
+		}
+		hasPreconnected = true;
+		const preconnect = document.createElement( 'link' );
+		preconnect.rel = 'preconnect';
+		preconnect.href = 'https://cards.scryfall.io';
+		preconnect.crossOrigin = 'anonymous';
+		document.head.appendChild( preconnect );
+	}
+
 	function loadCard( link ) {
+		preconnectImageHost();
 		link.dataset.loading = 'true';
 		link.style.cursor = 'progress';
 		const img = createCardImage( link );
