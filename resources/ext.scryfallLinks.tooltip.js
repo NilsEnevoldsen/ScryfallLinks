@@ -459,7 +459,7 @@
 	}
 
 	function handleMouseEnter( e ) {
-		if ( isTouchMode ) {
+		if ( isTouchMode || !( e.target instanceof Element ) ) {
 			return;
 		}
 		const link = e.target.closest( '.ext-scryfall-cardname' );
@@ -498,7 +498,7 @@
 	}
 
 	function handleMouseLeave( e ) {
-		if ( isTouchMode ) {
+		if ( isTouchMode || !( e.target instanceof Element ) ) {
 			return;
 		}
 		const link = e.target.closest( '.ext-scryfall-cardname' );
