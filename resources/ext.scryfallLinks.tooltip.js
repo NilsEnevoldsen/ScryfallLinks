@@ -27,8 +27,8 @@
 
 		backdrop = document.createElement( 'div' );
 		backdrop.className = 'ext-scryfall-backdrop';
-		// Top layer, so it sits above page overlays like the
-		// MobileFrontend editor (#88)
+		// Top layer, so it sits above page overlays like
+		// VisualEditor's save dialog (#88)
 		backdrop.setAttribute( 'popover', 'manual' );
 		backdrop.addEventListener( 'click', hideTooltip );
 		document.body.insertBefore( backdrop, tooltip );
@@ -96,6 +96,10 @@
 			// * ext-scryfall-rotate-180
 			tooltip.classList.add( link.dataset.rotationClass );
 		}
+		// OOUI modal windows, like VisualEditor's save dialog, mark the
+		// rest of the body inert, which would let taps fall through (#88)
+		tooltip.inert = false;
+		backdrop.inert = false;
 		if ( isTouchMode ) {
 			tooltip.classList.add( 'ext-scryfall-touch' );
 			if ( !backdrop.matches( ':popover-open' ) ) {
